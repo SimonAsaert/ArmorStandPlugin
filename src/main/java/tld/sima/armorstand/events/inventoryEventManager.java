@@ -60,21 +60,23 @@ public class inventoryEventManager implements Listener {
 			
 			String itemName = item.getItemMeta().getDisplayName();
 			
-			if (itemName.equals(ChatColor.WHITE + "Move Stand with Player")) {
-				// Stand moving with player stuff
-			}else if (itemName.equals(ChatColor.WHITE + "Animations")) {
+			player.sendMessage(itemName);
+			
+			if (itemName.contains("Move Stand with Player")) {
 				player.sendMessage(ChatColor.RED + "Not implemented yet");
-			}else if (itemName.equals(ChatColor.WHITE + "Options")) {
+			}else if (itemName.contains("Animations")) {
+				player.sendMessage(ChatColor.RED + "Not implemented yet");
+			}else if (itemName.contains("Options")) {
 				optionsMenuInventory i = new optionsMenuInventory();
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Delete Stand")) {
+			}else if (itemName.contains("Delete Stand")) {
 				if (plugin.getParentMap().containsKey(stand.getUniqueId())){
 					plugin.getParentMap().remove(stand.getUniqueId());
 				}
 				stand.remove();
 				player.closeInventory();
 				player.sendMessage(ChatColor.GOLD + "Removed stand");
-			}else if (itemName.equals(ChatColor.WHITE + "Clone Stand")) {
+			}else if (itemName.contains("Clone Stand")) {
 				ItemStack tool = new ItemStack(Material.STICK);
 				ItemMeta toolMeta = tool.getItemMeta();
 				toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
@@ -85,7 +87,7 @@ public class inventoryEventManager implements Listener {
 				plugin.getCloneMap().put(player.getUniqueId(), stand);
 				player.closeInventory();
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Position")) {
+			}else if (itemName.contains("Position")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				MovementConv conversation = new MovementConv();
@@ -94,7 +96,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Rotation")) {
+			}else if (itemName.contains("Rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -103,16 +105,16 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Head x-rotation")) {
+			}else if (itemName.contains("Change Head x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
 				converstaion.setData(player.getUniqueId(), true, "HX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
-				conv.begin();
+//				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Head y-rotation")) {
+			}else if (itemName.contains("Change Head y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -121,7 +123,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Head z-rotation")) {
+			}else if (itemName.contains("Change Head z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -130,7 +132,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Torso x-rotation")) {
+			}else if (itemName.contains("Change Torso x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -139,7 +141,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Torso y-rotation")) {
+			}else if (itemName.contains("Change Torso y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -148,7 +150,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Torso z-rotation")) {
+			}else if (itemName.contains("Change Torso z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -157,7 +159,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Arm's x-rotation")) {
+			}else if (itemName.contains("Change Left Arm's x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -166,7 +168,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Arm's y-rotation")) {
+			}else if (itemName.contains("Change Left Arm's y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -175,7 +177,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Arm's z-rotation")) {
+			}else if (itemName.contains("Change Left Arm's z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -184,7 +186,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Arm's x-rotation")) {
+			}else if (itemName.contains("Change Right Arm's x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -193,7 +195,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Arm's y-rotation")) {
+			}else if (itemName.contains("Change Right Arm's y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -202,7 +204,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Arm's z-rotation")) {
+			}else if (itemName.contains("Change Right Arm's z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -211,7 +213,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Leg's x-rotation")) {
+			}else if (itemName.contains("Change Left Leg's x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -220,7 +222,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Leg's y-rotation")) {
+			}else if (itemName.contains("Change Left Leg's y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -229,7 +231,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Leg's z-rotation")) {
+			}else if (itemName.contains("Change Left Leg's z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -238,7 +240,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Leg's x-rotation")) {
+			}else if (itemName.contains("Change Right Leg's x-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -247,7 +249,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Leg's y-rotation")) {
+			}else if (itemName.contains("Change Right Leg's y-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -256,7 +258,7 @@ public class inventoryEventManager implements Listener {
 				conv.begin();
 				plugin.getConv().add(conv);
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Leg's z-rotation")) {
+			}else if (itemName.contains("Change Right Leg's z-rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -264,64 +266,7 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}
-			
-			mainMenuInventory i = new mainMenuInventory();
-			if (itemName.equals(ChatColor.WHITE + "Change Head")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getHelmet().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getHelmet());
-				}
-				stand.getEquipment().setHelmet(setter);
-				player.sendMessage(ChatColor.GOLD + "Helmet set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Change Chest")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getChestplate().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getChestplate());
-				}
-				stand.getEquipment().setChestplate(setter);
-				player.sendMessage(ChatColor.GOLD + "Chestplate set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Change Legs")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getLeggings().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getLeggings());
-				}
-				stand.getEquipment().setLeggings(setter);
-				player.sendMessage(ChatColor.GOLD + "Chestplate set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Change Feet")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getBoots().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getBoots());
-				}
-				stand.getEquipment().setBoots(setter);
-				player.sendMessage(ChatColor.GOLD + "Boots set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Change Left Hand")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
-				}
-				stand.getEquipment().setItemInMainHand(setter);
-				player.sendMessage(ChatColor.GOLD + "Main-hand set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Change Right Hand")) {
-				ItemStack setter = event.getCursor();
-				if (!(stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR)))) {
-					player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
-				}
-				stand.getEquipment().setItemInOffHand(setter);
-				player.sendMessage(ChatColor.GOLD + "Off-hand set.");
-				event.getCursor().setAmount(0);
-				i.newInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Set Radius")) {
+			}else if (itemName.contains("Set Radius")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RadiusConv conversation = new RadiusConv();
@@ -329,39 +274,97 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}else if (itemName.equals(ChatColor.WHITE + "Set Parent")) {
-				UUID uuid = stand.getUniqueId();
-				if (!plugin.getParentMap().containsKey(uuid)) {
-					int radius = 1;
-					plugin.getParentMap().put(uuid, radius);
-					
-					stand.setVisible(false);
-					stand.setCustomNameVisible(false);
-					stand.setCustomName("N/A");
-
-					player.getInventory().addItem(stand.getEquipment().getHelmet());
-					player.getInventory().addItem(stand.getEquipment().getChestplate());
-					player.getInventory().addItem(stand.getEquipment().getLeggings());
-					player.getInventory().addItem(stand.getEquipment().getBoots());
-					player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
-					player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
-
-					stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
-					stand.getEquipment().setChestplate(new ItemStack(Material.AIR));
-					stand.getEquipment().setLeggings(new ItemStack(Material.AIR));
-					stand.getEquipment().setBoots(new ItemStack(Material.AIR));
-					stand.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
-					stand.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
-					
-					stand.setGravity(false);
-					stand.setBasePlate(false);
-					stand.setArms(false);
-					stand.setSmall(false);
-				}else {
-					plugin.getParentMap().remove(uuid);
-					stand.setVisible(true);
+			}else {
+			
+				mainMenuInventory i = new mainMenuInventory();
+				if (itemName.contains("Change Head")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getHelmet().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getHelmet());
+					}
+					stand.getEquipment().setHelmet(setter);
+					player.sendMessage(ChatColor.GOLD + "Helmet set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Chest")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getChestplate().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getChestplate());
+					}
+					stand.getEquipment().setChestplate(setter);
+					player.sendMessage(ChatColor.GOLD + "Chestplate set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Legs")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getLeggings().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getLeggings());
+					}
+					stand.getEquipment().setLeggings(setter);
+					player.sendMessage(ChatColor.GOLD + "Chestplate set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Feet")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getBoots().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getBoots());
+					}
+					stand.getEquipment().setBoots(setter);
+					player.sendMessage(ChatColor.GOLD + "Boots set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Left Hand")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
+					}
+					stand.getEquipment().setItemInMainHand(setter);
+					player.sendMessage(ChatColor.GOLD + "Main-hand set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Right Hand")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
+					}
+					stand.getEquipment().setItemInOffHand(setter);
+					player.sendMessage(ChatColor.GOLD + "Off-hand set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Set Parent")) {
+					UUID uuid = stand.getUniqueId();
+					if (!plugin.getParentMap().containsKey(uuid)) {
+						int radius = 1;
+						plugin.getParentMap().put(uuid, radius);
+						
+						stand.setVisible(false);
+						stand.setCustomNameVisible(false);
+						stand.setCustomName("N/A");
+	
+						player.getInventory().addItem(stand.getEquipment().getHelmet());
+						player.getInventory().addItem(stand.getEquipment().getChestplate());
+						player.getInventory().addItem(stand.getEquipment().getLeggings());
+						player.getInventory().addItem(stand.getEquipment().getBoots());
+						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
+						player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
+	
+						stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
+						stand.getEquipment().setChestplate(new ItemStack(Material.AIR));
+						stand.getEquipment().setLeggings(new ItemStack(Material.AIR));
+						stand.getEquipment().setBoots(new ItemStack(Material.AIR));
+						stand.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
+						stand.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
+						
+						stand.setGravity(false);
+						stand.setBasePlate(false);
+						stand.setArms(false);
+						stand.setSmall(false);
+					}else {
+						plugin.getParentMap().remove(uuid);
+						stand.setVisible(true);
+					}
+					i.newInventory(player, stand);
 				}
-				i.newInventory(player, stand);
 			}
 		}else if (open.getName().equals(prefixOptions)) {
 			event.setCancelled(true);
@@ -380,14 +383,14 @@ public class inventoryEventManager implements Listener {
 				mainMenuInventory i = new mainMenuInventory();
 				i.newInventory(player, stand);
 				return;
-			}else if (itemName.equals(ChatColor.WHITE + "Delete Stand")) {
+			}else if (itemName.contains("Delete Stand")) {
 				if (plugin.getParentMap().containsKey(stand.getUniqueId())){
 					plugin.getParentMap().remove(stand.getUniqueId());
 				}
 				player.closeInventory();
 				stand.remove();
 				player.sendMessage(ChatColor.GOLD + "Stand removed");
-			}else if (itemName.equals(ChatColor.WHITE + "Position")) {
+			}else if (itemName.contains("Position")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				MovementConv conversation = new MovementConv();
@@ -395,7 +398,7 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}else if (itemName.equals(ChatColor.WHITE + "Rotation")) {
+			}else if (itemName.contains("Rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -403,7 +406,7 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}else if (itemName.equals(ChatColor.WHITE + "Name")) {
+			}else if (itemName.contains("Name")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				NameConv conversation = new NameConv();
@@ -411,7 +414,7 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}else if (itemName.equals(ChatColor.WHITE + "Set Radius")) {
+			}else if (itemName.contains("Set Radius")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RadiusConv conversation = new RadiusConv();
@@ -419,9 +422,9 @@ public class inventoryEventManager implements Listener {
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
 				plugin.getConv().add(conv);
-			}else if (itemName.equals(ChatColor.WHITE + "Move Stand with Player")) {
+			}else if (itemName.contains("Move Stand with Player")) {
 				
-			}else if (itemName.equals(ChatColor.WHITE + "Clone Stand")) {
+			}else if (itemName.contains("Clone Stand")) {
 				ItemStack tool = new ItemStack(Material.STICK);
 				ItemMeta toolMeta = tool.getItemMeta();
 				toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
@@ -431,7 +434,7 @@ public class inventoryEventManager implements Listener {
 				}
 				plugin.getCloneMap().put(player.getUniqueId(), stand);
 				player.closeInventory();
-			}else if (itemName.equals(ChatColor.WHITE + "Special Clone")) {
+			}else if (itemName.contains("Special Clone")) {
 				Location loc = stand.getLocation().clone();
 				loc.add(0, 1, 0);
 				ArmorStand newStand = (ArmorStand) Bukkit.getWorld(stand.getWorld().getUID()).spawnEntity(loc, EntityType.ARMOR_STAND);
@@ -440,16 +443,16 @@ public class inventoryEventManager implements Listener {
 			}
 
 			optionsMenuInventory i = new optionsMenuInventory();
-			if (itemName.equals(ChatColor.WHITE + "Toggle Glow")) {
+			if (itemName.contains("Toggle Glow")) {
 				stand.setGlowing(!stand.isGlowing());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Size")){
+			}else if (itemName.contains("Toggle Size")){
 				stand.setSmall(!stand.isSmall());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Invisibility")) {
+			}else if (itemName.contains("Toggle Invisibility")) {
 				stand.setVisible(!stand.isVisible());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Fire")) {
+			}else if (itemName.contains("Toggle Fire")) {
 				int fireTicks = stand.getFireTicks();
 				if (fireTicks == -1) {
 					stand.setFireTicks(2147483645);
@@ -458,16 +461,16 @@ public class inventoryEventManager implements Listener {
 					stand.setFireTicks(-1);
 				}
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Base")) {
+			}else if (itemName.contains("Toggle Base")) {
 				stand.setBasePlate(!stand.hasBasePlate());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Gravity")) {
+			}else if (itemName.contains("Toggle Gravity")) {
 				stand.setGravity(!stand.hasGravity());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Toggle Arms")) {
+			}else if (itemName.contains("Toggle Arms")) {
 				stand.setArms(!stand.hasArms());
 				i.openInventory(player, stand);
-			}else if (itemName.equals(ChatColor.WHITE + "Set Parent")) {
+			}else if (itemName.contains("Set Parent")) {
 				UUID uuid = stand.getUniqueId();
 				if (!plugin.getParentMap().containsKey(uuid)) {
 					int radius = 1;
