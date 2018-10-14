@@ -24,6 +24,7 @@ public class Main extends JavaPlugin {
 	private HashMap<UUID,Integer> parentList;
 	private HashMap<UUID, ArmorStand> cloneMap = new HashMap<UUID, ArmorStand>();
 	private StorageManager stmgr;
+	public boolean AnimationActive = false;
 	
 	@Override
 	public void onEnable() {
@@ -36,6 +37,9 @@ public class Main extends JavaPlugin {
 		stmgr.setup();
 		parentList = stmgr.getList();
 		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Enabled.");
+		if (this.getServer().getPluginManager().getPlugin("ArmorstandAnimation") != null) {
+			AnimationActive = true;
+		}
 	}
 
 	@Override

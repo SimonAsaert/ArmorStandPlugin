@@ -12,10 +12,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
@@ -47,8 +49,93 @@ public class inventoryEventManager implements Listener {
 		}
 		String prefixMain = (ChatColor.DARK_BLUE + "Armorstand GUI");
 		String prefixOptions = (ChatColor.DARK_BLUE + "Armorstand GUI Options");
+		
 		if (open.getName().equals(prefixMain)) {
 			event.setCancelled(true);
+
+			if (event.getAction().equals(InventoryAction.PICKUP_HALF)) {
+				if (item == null) {
+//					player.sendMessage(ChatColor.WHITE + "Clicked something null!");
+					return;
+				}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
+//					player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
+					return;
+				}
+				String itemName = item.getItemMeta().getDisplayName();
+				if (itemName.contains("Head") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Head ");
+					if (stand.hasMetadata("HeadLock")) {
+						stand.removeMetadata("HeadLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("HeadLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}else if (itemName.contains("Torso") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Torso ");
+					if (stand.hasMetadata("TorsoLock")) {
+						stand.removeMetadata("TorsoLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("TorsoLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}else if (itemName.contains("Left Arm's") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Left Arm ");
+					if (stand.hasMetadata("LeftArmLock")) {
+						stand.removeMetadata("LeftArmLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("LeftArmLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}else if (itemName.contains("Right Arm's") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Right Arm ");
+					if (stand.hasMetadata("RightArmLock")) {
+						stand.removeMetadata("RightArmLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("RightArmLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}else if (itemName.contains("Left Leg's") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Left Leg ");
+					if (stand.hasMetadata("LeftLegLock")) {
+						stand.removeMetadata("LeftLegLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("LeftLegLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}else if (itemName.contains("Right Leg's") && itemName.contains("rotation")) {
+					StringBuilder string = new StringBuilder();
+					string.append(ChatColor.GOLD + "Right Leg ");
+					if (stand.hasMetadata("RightLegLock")) {
+						stand.removeMetadata("RightLegLock", plugin);
+						string.append(ChatColor.GREEN + "unlocked");
+					}else {
+						stand.setMetadata("RightLegLock", new FixedMetadataValue(plugin, true));
+						string.append(ChatColor.RED + "locked");
+					}
+					player.sendMessage(string.toString());
+					return;
+				}
+			}
 
 			if (item == null) {
 //				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
@@ -60,11 +147,9 @@ public class inventoryEventManager implements Listener {
 			
 			String itemName = item.getItemMeta().getDisplayName();
 			
-			player.sendMessage(itemName);
-			
 			if (itemName.contains("Move Stand with Player")) {
 				player.sendMessage(ChatColor.RED + "Not implemented yet");
-			}else if (itemName.contains("Animations")) {
+			}else if (itemName.contains("Animations") && !plugin.AnimationActive) {
 				player.sendMessage(ChatColor.RED + "Not implemented yet");
 			}else if (itemName.contains("Options")) {
 				optionsMenuInventory i = new optionsMenuInventory();
@@ -106,6 +191,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Head x-rotation")) {
+				if (stand.hasMetadata("HeadLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -115,6 +204,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Head y-rotation")) {
+				if (stand.hasMetadata("HeadLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -124,6 +217,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Head z-rotation")) {
+				if (stand.hasMetadata("HeadLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -133,6 +230,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Torso x-rotation")) {
+				if (stand.hasMetadata("TorsoLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -142,6 +243,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Torso y-rotation")) {
+				if (stand.hasMetadata("TorsoLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -151,6 +256,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Torso z-rotation")) {
+				if (stand.hasMetadata("TorsoLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -160,6 +269,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Left Arm's x-rotation")) {
+				if (stand.hasMetadata("LeftArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -169,6 +282,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Left Arm's y-rotation")) {
+				if (stand.hasMetadata("LeftArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -178,6 +295,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Left Arm's z-rotation")) {
+				if (stand.hasMetadata("LeftArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -187,6 +308,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Right Arm's x-rotation")) {
+				if (stand.hasMetadata("RightArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -196,6 +321,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Right Arm's y-rotation")) {
+				if (stand.hasMetadata("RightArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -205,6 +334,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Right Arm's z-rotation")) {
+				if (stand.hasMetadata("RightArmLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -214,6 +347,9 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 
 			}else if (itemName.contains("Change Left Leg's x-rotation")) {
+				if (stand.hasMetadata("LeftLegLock")) {
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -223,6 +359,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Left Leg's y-rotation")) {
+				if (stand.hasMetadata("LeftLegLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -232,6 +372,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Left Leg's z-rotation")) {
+				if (stand.hasMetadata("LeftLegLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -241,6 +385,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Right Leg's x-rotation")) {
+				if (stand.hasMetadata("RightLegLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -250,6 +398,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Right Leg's y-rotation")) {
+				if (stand.hasMetadata("RightLegLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
@@ -259,6 +411,10 @@ public class inventoryEventManager implements Listener {
 				plugin.getConv().add(conv);
 				
 			}else if (itemName.contains("Change Right Leg's z-rotation")) {
+				if (stand.hasMetadata("RightLegLock")) {
+					player.sendMessage(ChatColor.RED + "Limb Locked");
+					return;
+				}
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
 				RotationConv converstaion = new RotationConv();
