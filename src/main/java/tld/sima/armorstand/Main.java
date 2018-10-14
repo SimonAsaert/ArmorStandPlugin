@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
+import tld.sima.armorstand.api.API;
 import tld.sima.armorstand.events.EventManager;
 import tld.sima.armorstand.events.inventoryEventManager;
 
@@ -24,6 +25,7 @@ public class Main extends JavaPlugin {
 	private HashMap<UUID,Integer> parentList;
 	private HashMap<UUID, ArmorStand> cloneMap = new HashMap<UUID, ArmorStand>();
 	private StorageManager stmgr;
+	private API api = new API();
 	public boolean AnimationActive = false;
 	
 	@Override
@@ -74,5 +76,9 @@ public class Main extends JavaPlugin {
 	
 	public ItemStack getRemoveTool() {
 		return removeTool;
+	}
+	
+	public API getAPI() {
+		return api;
 	}
 }
