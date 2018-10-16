@@ -21,6 +21,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
+import tld.sima.armorstand.conversations.MoveStandToPlayerConv;
 import tld.sima.armorstand.conversations.MovementConv;
 import tld.sima.armorstand.conversations.NameConv;
 import tld.sima.armorstand.conversations.RadiusConv;
@@ -148,9 +149,18 @@ public class inventoryEventManager implements Listener {
 			String itemName = item.getItemMeta().getDisplayName();
 			
 			if (itemName.contains("Move Stand with Player")) {
-				player.sendMessage(ChatColor.RED + "Not implemented yet");
+				player.closeInventory();
+				ConversationFactory cf = new ConversationFactory(plugin);
+				MoveStandToPlayerConv conversation = new MoveStandToPlayerConv();
+				conversation.setData(player.getUniqueId());
+				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+				conv.begin();
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Animations") && !plugin.AnimationActive) {
-				player.sendMessage(ChatColor.RED + "Not implemented yet");
+				player.sendMessage(ChatColor.RED + "No animations plugin active!");
 			}else if (itemName.contains("Options")) {
 				optionsMenuInventory i = new optionsMenuInventory();
 				i.openInventory(player, stand);
@@ -179,7 +189,10 @@ public class inventoryEventManager implements Listener {
 				conversation.setData(player.getUniqueId(), true);
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Rotation")) {
 				player.closeInventory();
@@ -188,7 +201,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "BODY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Head x-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
@@ -200,8 +216,11 @@ public class inventoryEventManager implements Listener {
 				RotationConv converstaion = new RotationConv();
 				converstaion.setData(player.getUniqueId(), true, "HX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
-//				conv.begin();
-				plugin.getConv().add(conv);
+				conv.begin();
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Head y-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
@@ -214,7 +233,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "HY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Head z-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
@@ -227,7 +249,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "HZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Torso x-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
@@ -240,7 +265,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "TX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Torso y-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
@@ -253,7 +281,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "TY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Torso z-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
@@ -266,7 +297,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "TZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Left Arm's x-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
@@ -279,7 +313,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LAX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Left Arm's y-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
@@ -292,7 +329,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LAY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Left Arm's z-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
@@ -305,7 +345,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LAZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Right Arm's x-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
@@ -318,7 +361,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RAX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Right Arm's y-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
@@ -331,7 +377,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RAY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Right Arm's z-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
@@ -344,7 +393,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RAZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 
 			}else if (itemName.contains("Change Left Leg's x-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
@@ -356,7 +408,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LLX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Left Leg's y-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
@@ -369,7 +424,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LLY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Left Leg's z-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
@@ -382,7 +440,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "LLZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Right Leg's x-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
@@ -395,7 +456,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RLX");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Right Leg's y-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
@@ -408,7 +472,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RLY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Change Right Leg's z-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
@@ -421,7 +488,11 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), true, "RLZ");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
+				
 			}else if (itemName.contains("Set Radius")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -429,7 +500,11 @@ public class inventoryEventManager implements Listener {
 				conversation.setData(player.getUniqueId(), true);
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
+				
 			}else {
 			
 				mainMenuInventory i = new mainMenuInventory();
@@ -535,7 +610,7 @@ public class inventoryEventManager implements Listener {
 			
 			String itemName = item.getItemMeta().getDisplayName();
 			
-			if (itemName.equals(ChatColor.WHITE + "Back")) {
+			if (itemName.contains("Back")) {
 				mainMenuInventory i = new mainMenuInventory();
 				i.newInventory(player, stand);
 				return;
@@ -553,7 +628,10 @@ public class inventoryEventManager implements Listener {
 				conversation.setData(player.getUniqueId(), false);
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Rotation")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -561,7 +639,10 @@ public class inventoryEventManager implements Listener {
 				converstaion.setData(player.getUniqueId(), false, "BODY");
 				Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Name")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -569,7 +650,10 @@ public class inventoryEventManager implements Listener {
 				conversation.setData(player.getUniqueId());
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Set Radius")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -577,8 +661,21 @@ public class inventoryEventManager implements Listener {
 				conversation.setData(player.getUniqueId(), false);
 				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 				conv.begin();
-				plugin.getConv().add(conv);
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Move Stand with Player")) {
+				player.closeInventory();
+				ConversationFactory cf = new ConversationFactory(plugin);
+				MoveStandToPlayerConv conversation = new MoveStandToPlayerConv();
+				conversation.setData(player.getUniqueId());
+				Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+				conv.begin();
+				if (plugin.getConv().containsKey(player.getUniqueId())) {
+					plugin.getConv().get(player.getUniqueId()).abandon();
+				}
+				plugin.getConv().put(player.getUniqueId(), conv);
 				
 			}else if (itemName.contains("Clone Stand")) {
 				ItemStack tool = new ItemStack(Material.STICK);

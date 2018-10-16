@@ -16,7 +16,6 @@ public class NameConv extends StringPrompt {
 	private UUID uuid;
 	private Main plugin = Main.getPlugin(Main.class);
 	
-	
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
 		ArmorStand stand = plugin.getStandMap().get(uuid);

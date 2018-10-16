@@ -155,6 +155,7 @@ public class EventManager implements Listener {
 		newStand.setGravity(oldStand.hasGravity());
 		newStand.setSmall(oldStand.isSmall());
 		newStand.setVisible(oldStand.isVisible());
+		newStand.setArms(oldStand.hasArms());
 		
 	}
 }
