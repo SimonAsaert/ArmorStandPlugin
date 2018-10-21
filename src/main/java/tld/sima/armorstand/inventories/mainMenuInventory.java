@@ -205,16 +205,16 @@ public class mainMenuInventory {
 				curboots = createItem(stand.getBoots(), ChatColor.WHITE + "Change Feet", "");
 			}
 			ItemStack curleftHand;
-			if(stand.getItemInHand() == (null) || stand.getItemInHand().equals(new ItemStack(Material.AIR))) {
-				curleftHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Left Hand", "");
-			}else {
-				curleftHand = createItem(stand.getItemInHand(), ChatColor.WHITE + "Change Left Hand", "");
-			}
-			ItemStack currightHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", "");
 			if(stand.getEquipment().getItemInOffHand() == (null) || stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR))) {
 				curleftHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Left Hand", "");
 			}else {
 				curleftHand = createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand", "");
+			}
+			ItemStack currightHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", "");
+			if(stand.getEquipment().getItemInMainHand() == (null) || stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR))) {
+				currightHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Right Hand", "");
+			}else {
+				currightHand = createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand", "");
 			}
 			// Items in locations
 			i.setItem(0, head);
@@ -240,12 +240,12 @@ public class mainMenuInventory {
 			i.setItem(18, legs);
 			i.setItem(19, curlegs);
 
-			i.setItem(21, rightlegx);
-			i.setItem(22, rightlegy);
-			i.setItem(23, rightlegz);
-			i.setItem(24, leftlegx);
-			i.setItem(25, leftlegy);
-			i.setItem(26, leftlegz);
+			i.setItem(21, leftlegx);
+			i.setItem(22, leftlegy);
+			i.setItem(23, leftlegz);
+			i.setItem(24, rightlegx);
+			i.setItem(25, rightlegy);
+			i.setItem(26, rightlegz);
 			
 			i.setItem(27, boots);
 			i.setItem(28, curboots);
@@ -268,6 +268,4 @@ public class mainMenuInventory {
 		
 		player.openInventory(i);
 	}
-	
-
 }

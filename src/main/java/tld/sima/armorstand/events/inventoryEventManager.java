@@ -11,6 +11,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -33,7 +34,7 @@ public class inventoryEventManager implements Listener {
 	
 	Main plugin = Main.getPlugin(Main.class);
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
 		if (player == null) {
@@ -172,16 +173,17 @@ public class inventoryEventManager implements Listener {
 				player.closeInventory();
 				player.sendMessage(ChatColor.GOLD + "Removed stand");
 			}else if (itemName.contains("Clone Stand")) {
-				ItemStack tool = new ItemStack(Material.STICK);
-				ItemMeta toolMeta = tool.getItemMeta();
-				toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
-				tool.setItemMeta(toolMeta);
-				if (!player.getInventory().contains(tool)) {
-					player.getInventory().addItem(tool);
+				if(player.hasPermission("armorstand.clone")) {
+					ItemStack tool = new ItemStack(Material.STICK);
+					ItemMeta toolMeta = tool.getItemMeta();
+					toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
+					tool.setItemMeta(toolMeta);
+					if (!player.getInventory().contains(tool)) {
+						player.getInventory().addItem(tool);
+					}
+					plugin.getCloneMap().put(player.getUniqueId(), stand);
+					player.closeInventory();
 				}
-				plugin.getCloneMap().put(player.getUniqueId(), stand);
-				player.closeInventory();
-				
 			}else if (itemName.contains("Position")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -546,20 +548,20 @@ public class inventoryEventManager implements Listener {
 					i.newInventory(player, stand);
 				}else if (itemName.contains("Change Left Hand")) {
 					ItemStack setter = event.getCursor();
-					if (!(stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR)))) {
-						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
-					}
-					stand.getEquipment().setItemInMainHand(setter);
-					player.sendMessage(ChatColor.GOLD + "Main-hand set.");
-					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
-				}else if (itemName.contains("Change Right Hand")) {
-					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR)))) {
 						player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
 					}
 					stand.getEquipment().setItemInOffHand(setter);
 					player.sendMessage(ChatColor.GOLD + "Off-hand set.");
+					event.getCursor().setAmount(0);
+					i.newInventory(player, stand);
+				}else if (itemName.contains("Change Right Hand")) {
+					ItemStack setter = event.getCursor();
+					if (!(stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR)))) {
+						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
+					}
+					stand.getEquipment().setItemInMainHand(setter);
+					player.sendMessage(ChatColor.GOLD + "Main-hand set.");
 					event.getCursor().setAmount(0);
 					i.newInventory(player, stand);
 				}else if (itemName.contains("Set Parent")) {

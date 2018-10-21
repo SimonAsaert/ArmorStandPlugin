@@ -10,6 +10,10 @@ permissions:
     description: Allow interaction with armorstand
     permission: armorstand.stand
     permission-message: You don't have the armorstand.stand permission.
+  interact:
+    description: Allow interaction with armorstand
+    permission: stand.interact
+    permission-message: You don't have the armorstand.stand permission.
   clone:
     description: When interacting with stand, usually when placing items into it, it returns a copy of the old item and the item placed. This ensures only item that was in place is returned.
     permission: armorstand.clone

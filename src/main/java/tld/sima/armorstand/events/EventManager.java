@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -33,14 +34,22 @@ public class EventManager implements Listener {
 	ItemStack removetool = main.getRemoveTool();
 
 	@EventHandler
+	public void onDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof ArmorStand) {
+			event.setCancelled(true);;
+		}
+	}
+	
+	@EventHandler
 	public void leftClicked(EntityDamageByEntityEvent event) {
 		if(event.getEntity() instanceof ArmorStand) {
 			if(event.getDamager() instanceof Player) {
 				Player player = (Player) event.getDamager();
-				if (!(player.getInventory().getItemInMainHand().equals(removetool))) {
-					event.setCancelled(true);
+				if ((player.getInventory().getItemInMainHand().equals(removetool))) {
+					return;
 				}
 			}
+			event.setCancelled(true);
 		}
 	}
 	
@@ -62,7 +71,7 @@ public class EventManager implements Listener {
 	public void onRightClick(PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.hasPermission("armorstand.clone")) {
 
 			ItemStack tool = new ItemStack(Material.STICK);
 			ItemMeta toolMeta = tool.getItemMeta();
@@ -117,11 +126,13 @@ public class EventManager implements Listener {
 		}
 		
 		if (event.getRightClicked() instanceof ArmorStand) {
-			event.setCancelled(true);
 			if (player.hasPermission("stand.interact")) {
-				mainMenuInventory i = new mainMenuInventory();
 				ArmorStand stand = (ArmorStand) event.getRightClicked();
-				i.newInventory(player, stand);
+				if (!stand.hasMetadata("Animated")) {
+					event.setCancelled(true);
+					mainMenuInventory i = new mainMenuInventory();
+					i.newInventory(player, stand);
+				}
 				main.getStandMap().put(player.getUniqueId(), stand);
 			}
 		}
