@@ -161,7 +161,12 @@ public class inventoryEventManager implements Listener {
 				}
 				plugin.getConv().put(player.getUniqueId(), conv);
 			}else if (itemName.contains("Animations") && !plugin.AnimationActive) {
+				if(Bukkit.getServer().getPluginManager().getPlugin("ArmorstandAnimation") != null) {
+					plugin.AnimationActive = true;
+					return;
+				}
 				player.sendMessage(ChatColor.RED + "No animations plugin active!");
+				
 			}else if (itemName.contains("Options")) {
 				optionsMenuInventory i = new optionsMenuInventory();
 				i.openInventory(player, stand);

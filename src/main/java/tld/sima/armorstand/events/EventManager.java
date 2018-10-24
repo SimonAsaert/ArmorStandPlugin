@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -19,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,22 +36,24 @@ public class EventManager implements Listener {
 	ItemStack removetool = main.getRemoveTool();
 
 	@EventHandler
-	public void onDamage(EntityDamageEvent event) {
-		if (event.getEntity() instanceof ArmorStand) {
-			event.setCancelled(true);;
-		}
-	}
-	
-	@EventHandler
 	public void leftClicked(EntityDamageByEntityEvent event) {
 		if(event.getEntity() instanceof ArmorStand) {
 			if(event.getDamager() instanceof Player) {
 				Player player = (Player) event.getDamager();
 				if ((player.getInventory().getItemInMainHand().equals(removetool))) {
+					ArmorStand stand = (ArmorStand)event.getEntity();
+					stand.remove();
 					return;
 				}
 			}
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof ArmorStand) {
+			event.setCancelled(true);;
 		}
 	}
 	
@@ -67,17 +71,15 @@ public class EventManager implements Listener {
 	
 	Set<UUID> delay = new HashSet<UUID>();
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onRightClick(PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
-
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.hasPermission("armorstand.clone")) {
-
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.hasPermission("armorstand.clone") && !event.isCancelled()) {
 			ItemStack tool = new ItemStack(Material.STICK);
 			ItemMeta toolMeta = tool.getItemMeta();
 			toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
 			tool.setItemMeta(toolMeta);
-			if(player.getInventory().getItemInMainHand().isSimilar(tool) && !delay.contains(player.getUniqueId())) {
+			if(player.getInventory().getItemInMainHand().isSimilar(tool) && event.getHand().equals(EquipmentSlot.HAND) && !delay.contains(player.getUniqueId())) {
 				delay.add(player.getUniqueId());
 				new BukkitRunnable() {
 					public void run() {
@@ -118,7 +120,7 @@ public class EventManager implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onRightClickStand(PlayerInteractAtEntityEvent event) {
 		Player player = event.getPlayer();
 		if (player == null) {
@@ -167,6 +169,5 @@ public class EventManager implements Listener {
 		newStand.setSmall(oldStand.isSmall());
 		newStand.setVisible(oldStand.isVisible());
 		newStand.setArms(oldStand.hasArms());
-		
 	}
 }
