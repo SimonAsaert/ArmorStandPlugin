@@ -127,11 +127,7 @@ public class StorageManager {
 		int radius;
 		for (String string : list) {
 			radius = storagecfg.getInt("Stands." + string + ".radius");
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "Radius of " + string + ": " + ChatColor.WHITE + radius);
 			returnList.put(UUID.fromString(string), radius);
-		}
-		for (UUID uuid : returnList.keySet()) {
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_AQUA + uuid.toString() + " | " + Bukkit.getServer().getEntity(uuid).getType().toString());
 		}
 		return returnList;
 	}

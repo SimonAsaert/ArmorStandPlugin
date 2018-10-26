@@ -32,6 +32,7 @@ public class RotationConv extends StringPrompt {
 	
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
+		
 		// If somehow input to function is incorrect, fallback to a main menu.
 		if (typeUsed == null) {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "Something somewhere went wrong");
@@ -118,7 +119,7 @@ public class RotationConv extends StringPrompt {
 				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Left Leg Y angle changed to: " + ChatColor.WHITE + degreesD);
 			}else if (typeUsed.equals(rotationType.LLZ)) {
 				stand.setLeftLegPose(stand.getLeftLegPose().setZ(degrees));
-				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Left Leg Z angle changed to: " + ChatColor.WHITE + degrees);
+				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Left Leg Z angle changed to: " + ChatColor.WHITE + degreesD);
 			}else if (typeUsed.equals(rotationType.RLX)) {
 				stand.setRightLegPose(stand.getRightLegPose().setX(degrees));
 				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Right Leg X angle changed to: " + ChatColor.WHITE + degreesD);

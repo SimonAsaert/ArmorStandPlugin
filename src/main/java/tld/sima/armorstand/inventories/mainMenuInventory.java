@@ -1,6 +1,7 @@
 package tld.sima.armorstand.inventories;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,7 +36,8 @@ public class mainMenuInventory {
 		Inventory i = plugin.getServer().createInventory(null, 54, ChatColor.DARK_BLUE + "Armorstand GUI");
 		
 		// Parent Options come first as a check to ensure it isn't in place for anything else.
-		boolean parent = plugin.getParentMap().containsKey(stand.getUniqueId());
+		UUID standuuid = stand.getUniqueId();
+		boolean parent = plugin.getParentMap().containsKey(standuuid);
 		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
 		setparent = createItem(setparent, ChatColor.WHITE + "Set Parent", ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent);
 
