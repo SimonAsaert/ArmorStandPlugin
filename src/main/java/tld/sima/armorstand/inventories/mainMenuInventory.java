@@ -57,6 +57,8 @@ public class mainMenuInventory {
 		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
 		clone = createItem(clone, ChatColor.WHITE + "Clone Stand", ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool");
 		
+		ItemStack rotation = new ItemStack(Material.OAK_PLANKS,1);
+		rotation = createItem(rotation, ChatColor.WHITE + "Rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw());
 		
 		if (parent) {
 			// Further Options
@@ -101,7 +103,7 @@ public class mainMenuInventory {
 			i.setItem(40, animations);
 			i.setItem(41, setparent);
 			i.setItem(42, setradius);
-			i.setItem(43, disabled);
+			i.setItem(43, rotation);
 			
 			i.setItem(45, disabled);
 			
@@ -113,10 +115,8 @@ public class mainMenuInventory {
 		}else {
 		
 			// Further Options
-			ItemStack rotation = new ItemStack(Material.OAK_PLANKS,1);
 			ItemStack movement = new ItemStack(Material.ARROW,1);
 			movement = createItem(movement, ChatColor.WHITE + "Move Stand with Player", ChatColor.GRAY + "" + ChatColor.ITALIC + "Moves stand with respect to player.");
-			rotation = createItem(rotation, ChatColor.WHITE + "Rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw());
 			
 			// Segment rotation
 			ItemStack headx = new ItemStack(Material.LEATHER_HELMET, 1);

@@ -1,5 +1,6 @@
 package tld.sima.armorstand.conversations;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -7,10 +8,12 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
+import tld.sima.armorstand.VectorEuler;
 import tld.sima.armorstand.inventories.mainMenuInventory;
 import tld.sima.armorstand.inventories.optionsMenuInventory;
 
@@ -46,7 +49,7 @@ public class RotationConv extends StringPrompt {
 			return null;
 		}
 		
-		// Get angle between 360 and 0
+		// Get angle
 		double degrees;
 		try {
 			degrees = Double.parseDouble(message);
@@ -62,12 +65,31 @@ public class RotationConv extends StringPrompt {
 			return null;
 			
 		}
-		if (degrees < 0){degrees = 360+degrees;}
 		
 		ArmorStand stand = plugin.getStandMap().get(player.getUniqueId());
 		
 		// Setting armorstand rotations depending on type.
 		if (typeUsed.equals(rotationType.BODY)) {
+			if(plugin.getParentMap().containsKey(stand.getUniqueId())) {
+				int radius = plugin.getParentMap().get(stand.getUniqueId());
+				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
+				double angle = degrees - stand.getLocation().getYaw();
+				
+				if(!(angle == 0) && !(angle % 360 == 0)) {
+					for(Entity entity : entities) {
+						if(entity instanceof ArmorStand) {
+							Location vector = entity.getLocation().clone().subtract(stand.getLocation().clone());
+							VectorEuler euler = new VectorEuler(vector);
+							euler.add(angle*(Math.PI/180));
+							vector.setX(euler.getX());
+							vector.setZ(euler.getZ());
+							Location newloc = stand.getLocation().clone().add(vector);
+							newloc.setYaw(entity.getLocation().getYaw() + (float)angle);
+							entity.teleport(newloc);
+						}
+					}
+				}
+			}
 			Location loc = stand.getLocation().clone();
 			loc.setYaw((float) degrees);
 			stand.teleport(loc);
