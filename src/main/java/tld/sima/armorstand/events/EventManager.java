@@ -40,7 +40,7 @@ public class EventManager implements Listener {
 		if(event.getEntity() instanceof ArmorStand) {
 			if(event.getDamager() instanceof Player) {
 				Player player = (Player) event.getDamager();
-				if ((player.getInventory().getItemInMainHand().equals(removetool))) {
+				if ((player.getInventory().getItemInMainHand().isSimilar(removetool))) {
 					ArmorStand stand = (ArmorStand)event.getEntity();
 					stand.remove();
 					return;
