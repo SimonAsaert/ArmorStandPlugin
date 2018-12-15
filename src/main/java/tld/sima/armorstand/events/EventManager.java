@@ -137,8 +137,8 @@ public class EventManager implements Listener {
 				if(!e.isCancelled()) {
 					mainMenuInventory i = new mainMenuInventory();
 					i.newInventory(player, stand);
-					plugin.getStandMap().put(player.getUniqueId(), stand);
 				}
+				plugin.getStandMap().put(player.getUniqueId(), stand);
 			}
 		}
 	}

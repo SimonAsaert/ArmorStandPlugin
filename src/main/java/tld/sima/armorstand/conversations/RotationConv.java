@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.VectorEuler;
+import tld.sima.armorstand.events.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.mainMenuInventory;
 import tld.sima.armorstand.inventories.optionsMenuInventory;
 
@@ -156,8 +157,13 @@ public class RotationConv extends StringPrompt {
 		
 
 		if(invType) {
-			mainMenuInventory i = new mainMenuInventory();
-			i.newInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+			ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
+			plugin.getServer().getPluginManager().callEvent(e);
+			
+			if(!e.isCancelled()) {
+				mainMenuInventory i = new mainMenuInventory();
+				i.newInventory(player, stand);
+			}
 		}else {
 			optionsMenuInventory i = new optionsMenuInventory();
 			i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));

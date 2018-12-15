@@ -52,17 +52,18 @@ public class inventoryEventManager implements Listener {
 		String prefixMain = (ChatColor.DARK_BLUE + "Armorstand GUI");
 		String prefixOptions = (ChatColor.DARK_BLUE + "Armorstand GUI Options");
 		
-		if (open.getName().equals(prefixMain)) {
+		if (open.getName().equals(prefixMain) && !event.isCancelled()) {
 			event.setCancelled(true);
 
+			if (item == null) {
+				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
+				return;
+			}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
+				player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
+				return;
+			}
+
 			if (event.getAction().equals(InventoryAction.PICKUP_HALF)) {
-				if (item == null) {
-//					player.sendMessage(ChatColor.WHITE + "Clicked something null!");
-					return;
-				}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-//					player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
-					return;
-				}
 				String itemName = item.getItemMeta().getDisplayName();
 				if (itemName.contains("Head") && itemName.contains("rotation")) {
 					StringBuilder string = new StringBuilder();
@@ -138,17 +139,8 @@ public class inventoryEventManager implements Listener {
 					return;
 				}
 			}
-
-			if (item == null) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
-				return;
-			}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
-				return;
-			}
 			
 			String itemName = item.getItemMeta().getDisplayName();
-			
 			if (itemName.contains("Move Stand with Player")) {
 				player.closeInventory();
 				ConversationFactory cf = new ConversationFactory(plugin);
@@ -621,8 +613,13 @@ public class inventoryEventManager implements Listener {
 			String itemName = item.getItemMeta().getDisplayName();
 			
 			if (itemName.contains("Back")) {
-				mainMenuInventory i = new mainMenuInventory();
-				i.newInventory(player, stand);
+				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
+				plugin.getServer().getPluginManager().callEvent(e);
+				
+				if(!e.isCancelled()) {
+					mainMenuInventory i = new mainMenuInventory();
+					i.newInventory(player, stand);
+				}
 				return;
 			}else if (itemName.contains("Delete Stand")) {
 				if (plugin.getParentMap().containsKey(stand.getUniqueId())){
