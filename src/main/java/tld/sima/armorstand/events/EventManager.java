@@ -32,8 +32,8 @@ import tld.sima.armorstand.inventories.mainMenuInventory;
 
 public class EventManager implements Listener {
 	
-	Main main = Main.getPlugin(Main.class);
-	ItemStack removetool = main.getRemoveTool();
+	Main plugin = Main.getPlugin(Main.class);
+	ItemStack removetool = plugin.getRemoveTool();
 
 	@EventHandler
 	public void leftClicked(EntityDamageByEntityEvent event) {
@@ -85,15 +85,15 @@ public class EventManager implements Listener {
 					public void run() {
 						delay.remove(player.getUniqueId());
 					}
-				}.runTaskLater(this.main, 5);
-				if (main.getCloneMap().containsKey(player.getUniqueId())) {
-					ArmorStand oldStand = main.getCloneMap().get(player.getUniqueId());
+				}.runTaskLater(this.plugin, 5);
+				if (plugin.getCloneMap().containsKey(player.getUniqueId())) {
+					ArmorStand oldStand = plugin.getCloneMap().get(player.getUniqueId());
 					Location loc = event.getClickedBlock().getLocation().clone();
 					loc.add(0.5, 1, 0.5);
 					
-					if (main.getParentMap().containsKey(oldStand.getUniqueId())) {
+					if (plugin.getParentMap().containsKey(oldStand.getUniqueId())) {
 						player.sendMessage("Is parent");
-						int radius = main.getParentMap().get(oldStand.getUniqueId());
+						int radius = plugin.getParentMap().get(oldStand.getUniqueId());
 						Collection<Entity> entities = oldStand.getLocation().getWorld().getNearbyEntities(oldStand.getLocation(), 2.0, 2.0, 2.0);
 						for (Entity entity : entities) {
 							if (entity instanceof ArmorStand) {
@@ -106,7 +106,7 @@ public class EventManager implements Listener {
 								ArmorStand newStand = (ArmorStand) newloc.getWorld().spawnEntity(newloc, EntityType.ARMOR_STAND);
 								copyStandSettings(stands, newStand);
 
-								if (main.getParentMap().containsKey(stands.getUniqueId())) {main.getParentMap().put(newStand.getUniqueId(), radius);}
+								if (plugin.getParentMap().containsKey(stands.getUniqueId())) {plugin.getParentMap().put(newStand.getUniqueId(), radius);}
 							}
 						}
 					}else {
@@ -130,12 +130,15 @@ public class EventManager implements Listener {
 		if (event.getRightClicked() instanceof ArmorStand) {
 			if (player.hasPermission("stand.interact")) {
 				ArmorStand stand = (ArmorStand) event.getRightClicked();
-				if (!stand.hasMetadata("Animated")) {
-					event.setCancelled(true);
+				
+				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
+				plugin.getServer().getPluginManager().callEvent(e);
+				
+				if(!e.isCancelled()) {
 					mainMenuInventory i = new mainMenuInventory();
 					i.newInventory(player, stand);
+					plugin.getStandMap().put(player.getUniqueId(), stand);
 				}
-				main.getStandMap().put(player.getUniqueId(), stand);
 			}
 		}
 	}

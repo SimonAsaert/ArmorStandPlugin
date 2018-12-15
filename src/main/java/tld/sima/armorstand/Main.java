@@ -16,6 +16,7 @@ import tld.sima.armorstand.events.EventManager;
 import tld.sima.armorstand.events.inventoryEventManager;
 
 public class Main extends JavaPlugin {
+	
 	private HashMap<UUID, ArmorStand> standMap = new HashMap<UUID, ArmorStand>();
 	private HashMap<UUID, Conversation> convList = new HashMap<UUID, Conversation>();
 	private ItemStack removeTool = new ItemStack(Material.POISONOUS_POTATO);
@@ -41,7 +42,8 @@ public class Main extends JavaPlugin {
 			AnimationActive = true;
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Detected Armour stands animations.");
 		}
-		api = new API();
+		api = new API(); 
+		
 	}
 
 	@Override
