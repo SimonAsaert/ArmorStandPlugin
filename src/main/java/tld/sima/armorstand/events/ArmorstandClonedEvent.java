@@ -2,6 +2,7 @@ package tld.sima.armorstand.events;
 
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -11,16 +12,19 @@ public class ArmorstandClonedEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 	private UUID playerUUID;
 	private UUID standUUID;
+	private Location loc;
 	private boolean cancelled = false;
 
-	public ArmorstandClonedEvent(Player player, ArmorStand stand) {
+	public ArmorstandClonedEvent(Player player, ArmorStand stand, Location loc) {
 		this.playerUUID = player.getUniqueId();
 		this.standUUID = stand.getUniqueId();
+		this.loc = loc;
 	}
 	
-	public ArmorstandClonedEvent(UUID player, UUID stand) {
+	public ArmorstandClonedEvent(UUID player, UUID stand, Location loc) {
 		this.playerUUID = player;
 		this.standUUID = stand;
+		this.loc = loc;
 	}
 	
 	public UUID getPlayer() {
@@ -29,6 +33,10 @@ public class ArmorstandClonedEvent extends Event {
 	
 	public UUID getStand() {
 		return standUUID;
+	}
+	
+	public Location getLocation() {
+		return loc;
 	}
 	
 	public boolean isCancelled() {

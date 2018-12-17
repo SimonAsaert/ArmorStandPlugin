@@ -88,12 +88,14 @@ public class EventManager implements Listener {
 				}.runTaskLater(this.plugin, 10);
 				if (plugin.getCloneMap().containsKey(player.getUniqueId())) {
 					ArmorStand oldStand = plugin.getCloneMap().get(player.getUniqueId());
-					ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand);
+
+					Location loc = event.getClickedBlock().getLocation().clone();
+					loc.add(0.5, 1, 0.5);
+					
+					ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand, loc);
 					plugin.getServer().getPluginManager().callEvent(e);
 					
 					if(!e.isCancelled()) {
-						Location loc = event.getClickedBlock().getLocation().clone();
-						loc.add(0.5, 1, 0.5);
 						
 						if (plugin.getParentMap().containsKey(oldStand.getUniqueId())) {
 							int radius = plugin.getParentMap().get(oldStand.getUniqueId());
