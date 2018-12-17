@@ -85,35 +85,39 @@ public class EventManager implements Listener {
 					public void run() {
 						delay.remove(player.getUniqueId());
 					}
-				}.runTaskLater(this.plugin, 5);
+				}.runTaskLater(this.plugin, 10);
 				if (plugin.getCloneMap().containsKey(player.getUniqueId())) {
 					ArmorStand oldStand = plugin.getCloneMap().get(player.getUniqueId());
-					Location loc = event.getClickedBlock().getLocation().clone();
-					loc.add(0.5, 1, 0.5);
+					ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand);
+					plugin.getServer().getPluginManager().callEvent(e);
 					
-					if (plugin.getParentMap().containsKey(oldStand.getUniqueId())) {
-						player.sendMessage("Is parent");
-						int radius = plugin.getParentMap().get(oldStand.getUniqueId());
-						Collection<Entity> entities = oldStand.getLocation().getWorld().getNearbyEntities(oldStand.getLocation(), 2.0, 2.0, 2.0);
-						for (Entity entity : entities) {
-							if (entity instanceof ArmorStand) {
-								ArmorStand stands = (ArmorStand) entity;
-								Vector offset = stands.getLocation().toVector().subtract(oldStand.getLocation().toVector());
-								Location newloc = loc.clone();
-								newloc.add(offset);
-								newloc.setYaw(stands.getLocation().getYaw());
-								newloc.setPitch(stands.getLocation().getPitch());
-								ArmorStand newStand = (ArmorStand) newloc.getWorld().spawnEntity(newloc, EntityType.ARMOR_STAND);
-								copyStandSettings(stands, newStand);
-
-								if (plugin.getParentMap().containsKey(stands.getUniqueId())) {plugin.getParentMap().put(newStand.getUniqueId(), radius);}
+					if(!e.isCancelled()) {
+						Location loc = event.getClickedBlock().getLocation().clone();
+						loc.add(0.5, 1, 0.5);
+						
+						if (plugin.getParentMap().containsKey(oldStand.getUniqueId())) {
+							int radius = plugin.getParentMap().get(oldStand.getUniqueId());
+							Collection<Entity> entities = oldStand.getLocation().getWorld().getNearbyEntities(oldStand.getLocation(), 2.0, 2.0, 2.0);
+							for (Entity entity : entities) {
+								if (entity instanceof ArmorStand) {
+									ArmorStand stands = (ArmorStand) entity;
+									Vector offset = stands.getLocation().toVector().subtract(oldStand.getLocation().toVector());
+									Location newloc = loc.clone();
+									newloc.add(offset);
+									newloc.setYaw(stands.getLocation().getYaw());
+									newloc.setPitch(stands.getLocation().getPitch());
+									ArmorStand newStand = (ArmorStand) newloc.getWorld().spawnEntity(newloc, EntityType.ARMOR_STAND);
+									copyStandSettings(stands, newStand);
+	
+									if (plugin.getParentMap().containsKey(stands.getUniqueId())) {plugin.getParentMap().put(newStand.getUniqueId(), radius);}
+								}
 							}
+						}else {
+							loc.setYaw(oldStand.getLocation().getYaw());
+							loc.setPitch(oldStand.getLocation().getPitch());
+							ArmorStand newOStand = (ArmorStand) loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+							copyStandSettings(oldStand, newOStand);
 						}
-					}else {
-						loc.setYaw(oldStand.getLocation().getYaw());
-						loc.setPitch(oldStand.getLocation().getPitch());
-						ArmorStand newOStand = (ArmorStand) loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
-						copyStandSettings(oldStand, newOStand);
 					}
 				}
 			}
@@ -127,19 +131,17 @@ public class EventManager implements Listener {
 			return;
 		}
 		
-		if (event.getRightClicked() instanceof ArmorStand) {
-			if (player.hasPermission("stand.interact")) {
-				ArmorStand stand = (ArmorStand) event.getRightClicked();
-				
-				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
-				plugin.getServer().getPluginManager().callEvent(e);
-				
-				if(!e.isCancelled()) {
-					mainMenuInventory i = new mainMenuInventory();
-					i.newInventory(player, stand);
-				}
-				plugin.getStandMap().put(player.getUniqueId(), stand);
+		if (event.getRightClicked() instanceof ArmorStand && player.hasPermission("stand.interact")) {
+			ArmorStand stand = (ArmorStand) event.getRightClicked();
+			
+			ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
+			plugin.getServer().getPluginManager().callEvent(e);
+			
+			if(!e.isCancelled()) {
+				mainMenuInventory i = new mainMenuInventory();
+				i.newInventory(player, stand);
 			}
+			plugin.getStandMap().put(player.getUniqueId(), stand);
 		}
 	}
 	
