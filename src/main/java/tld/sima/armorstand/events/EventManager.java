@@ -133,17 +133,21 @@ public class EventManager implements Listener {
 			return;
 		}
 		
-		if (event.getRightClicked() instanceof ArmorStand && player.hasPermission("stand.interact")) {
-			ArmorStand stand = (ArmorStand) event.getRightClicked();
+		if (event.getRightClicked() instanceof ArmorStand) {
+			event.setCancelled(true);
 			
-			ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
-			plugin.getServer().getPluginManager().callEvent(e);
-			
-			if(!e.isCancelled()) {
-				mainMenuInventory i = new mainMenuInventory();
-				i.newInventory(player, stand);
+			if(player.hasPermission("stand.interact")) {
+				ArmorStand stand = (ArmorStand) event.getRightClicked();
+				
+				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
+				plugin.getServer().getPluginManager().callEvent(e);
+				
+				if(!e.isCancelled()) {
+					mainMenuInventory i = new mainMenuInventory();
+					i.newInventory(player, stand);
+				}
+				plugin.getStandMap().put(player.getUniqueId(), stand);
 			}
-			plugin.getStandMap().put(player.getUniqueId(), stand);
 		}
 	}
 	
