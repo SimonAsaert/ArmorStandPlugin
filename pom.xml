@@ -39,6 +39,16 @@
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+    
+    <repository>
+      <id>sk80q</id>
+      <url>http://maven.sk89q.com/artifactory/repo/</url>
+    </repository>
+    
+    <repository>
+        <id>PlotSquared-repo</id>
+        <url>http://ci.athion.net/job/PlotSquared/ws/mvn/</url>
+    </repository>
   </repositories>
   
   <dependencies>
@@ -53,6 +63,21 @@
       <groupId>org.bukkit</groupId>
         <artifactId>bukkit</artifactId>
         <version>1.13.2-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.sk89q</groupId>
+      <artifactId>worldedit</artifactId>
+      <version>6.0.0-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.plotsquared</groupId>
+        <artifactId>plotsquared-api</artifactId>
+        <version>latest</version>
         <scope>provided</scope>
     </dependency>
   </dependencies>

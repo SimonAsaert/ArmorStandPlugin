@@ -1,6 +1,6 @@
 package tld.sima.armorstand.inventories;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -8,29 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import tld.sima.armorstand.Main;
 
 public class mainMenuInventory {
 	private Main plugin = Main.getPlugin(Main.class);
-	
-	private ItemStack createItem(ItemStack item, String disName, String loreName) {
-		
-		ItemMeta itemM = item.getItemMeta();
-		itemM.setDisplayName(disName);
-		ArrayList<String> itemL = new ArrayList<String>();
-		itemL.add(loreName);
-		itemM.setLore(itemL);
-		itemM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		itemM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		itemM.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		item.setItemMeta(itemM);
-		
-		return item;
-	}
 	
 	public void newInventory(Player player, ArmorStand stand){
 		Inventory i = plugin.getServer().createInventory(null, 54, ChatColor.DARK_BLUE + "Armorstand GUI");
@@ -39,34 +22,34 @@ public class mainMenuInventory {
 		UUID standuuid = stand.getUniqueId();
 		boolean parent = plugin.getParentMap().containsKey(standuuid);
 		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
-		setparent = createItem(setparent, ChatColor.WHITE + "Set Parent", ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent);
+		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Set Parent", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent));
 
 		ItemStack delete = new ItemStack(Material.SKELETON_SKULL, 1);
-		delete = createItem(delete, ChatColor.WHITE + "Delete Stand", ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand");
+		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 		
 		ItemStack options = new ItemStack(Material.ANVIL, 1);
-		options = createItem(options, ChatColor.WHITE + "Options", ChatColor.GRAY + "" + ChatColor.ITALIC + "More Armorstand Options");
+		options = plugin.createItem(options, ChatColor.WHITE + "Options", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "More Armorstand Options"));
 
 		ItemStack animations = new ItemStack(Material.REDSTONE, 1);
-		animations = createItem(animations, ChatColor.WHITE + "Animations", ChatColor.GRAY + "" + ChatColor.ITALIC + "Armorstand animations");
+		animations = plugin.createItem(animations, ChatColor.WHITE + "Animations", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Armorstand animations"));
 
 		ItemStack position = new ItemStack(Material.STONE,1);
-		position = createItem(position, ChatColor.WHITE + "Position", ChatColor.GRAY + "" + ChatColor.ITALIC + "Move armorstands in XYZ position");
+		position = plugin.createItem(position, ChatColor.WHITE + "Position", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Move armorstands in XYZ position"));
 
 
 		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
-		clone = createItem(clone, ChatColor.WHITE + "Clone Stand", ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool");
+		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 		
 		ItemStack rotation = new ItemStack(Material.OAK_PLANKS,1);
-		rotation = createItem(rotation, ChatColor.WHITE + "Rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw());
+		rotation = plugin.createItem(rotation, ChatColor.WHITE + "Rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
 		
 		if (parent) {
 			// Further Options
 			ItemStack disabled = new ItemStack(Material.BARRIER,1);		
-			disabled = createItem(disabled, ChatColor.RED + "Disabled due to parent status", ChatColor.RED + "Disabled due to parent status");
+			disabled = plugin.createItem(disabled, ChatColor.RED + "Disabled due to parent status", Arrays.asList(ChatColor.RED + "Disabled due to parent status"));
 
 			ItemStack setradius = new ItemStack(Material.STICK,1);
-			setradius = createItem(setradius, ChatColor.WHITE + "Set Radius", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId()));
+			setradius = plugin.createItem(setradius, ChatColor.WHITE + "Set Radius", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId())));
 
 			i.setItem(0, disabled);
 			
@@ -116,7 +99,7 @@ public class mainMenuInventory {
 		
 			// Further Options
 			ItemStack movement = new ItemStack(Material.ARROW,1);
-			movement = createItem(movement, ChatColor.WHITE + "Move Stand with Player", ChatColor.GRAY + "" + ChatColor.ITALIC + "Moves stand with respect to player.");
+			movement = plugin.createItem(movement, ChatColor.WHITE + "Move Stand with Player", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Moves stand with respect to player."));
 			
 			// Segment rotation
 			ItemStack headx = new ItemStack(Material.LEATHER_HELMET, 1);
@@ -143,29 +126,29 @@ public class mainMenuInventory {
 			ItemStack rightlegy = new ItemStack(Material.LEATHER_LEGGINGS, 1);
 			ItemStack rightlegz = new ItemStack(Material.LEATHER_LEGGINGS, 1);
 			
-			headx = createItem(headx, ChatColor.WHITE + "Change Head x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Xhead: " + ChatColor.WHITE + (double)(stand.getHeadPose().getX())*180/Math.PI);
-			heady = createItem(heady, ChatColor.WHITE + "Change Head y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Yhead: " + ChatColor.WHITE + (double)stand.getHeadPose().getY()*180/Math.PI);
-			headz = createItem(headz, ChatColor.WHITE + "Change Head z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Zhead: " + ChatColor.WHITE + (double)stand.getHeadPose().getZ()*180/Math.PI);
+			headx = plugin.createItem(headx, ChatColor.WHITE + "Change Head x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Xhead: " + ChatColor.WHITE + (double)(stand.getHeadPose().getX())*180/Math.PI));
+			heady = plugin.createItem(heady, ChatColor.WHITE + "Change Head y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Yhead: " + ChatColor.WHITE + (double)stand.getHeadPose().getY()*180/Math.PI));
+			headz = plugin.createItem(headz, ChatColor.WHITE + "Change Head z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Zhead: " + ChatColor.WHITE + (double)stand.getHeadPose().getZ()*180/Math.PI));
 			
-			torsox = createItem(torsox, ChatColor.WHITE + "Change Torso x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Xtorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getX()*180/Math.PI);
-			torsoy = createItem(torsoy, ChatColor.WHITE + "Change Torso y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Ytorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getY()*180/Math.PI);
-			torsoz = createItem(torsoz, ChatColor.WHITE + "Change Torso z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Ztorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getZ()*180/Math.PI);
+			torsox = plugin.createItem(torsox, ChatColor.WHITE + "Change Torso x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Xtorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getX()*180/Math.PI));
+			torsoy = plugin.createItem(torsoy, ChatColor.WHITE + "Change Torso y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Ytorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getY()*180/Math.PI));
+			torsoz = plugin.createItem(torsoz, ChatColor.WHITE + "Change Torso z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Ztorso: " + ChatColor.WHITE + (double)stand.getBodyPose().getZ()*180/Math.PI));
 			
-			leftarmx = createItem(leftarmx, ChatColor.WHITE + "Change Left Arm's x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getX()*180/Math.PI);
-			leftarmy = createItem(leftarmy, ChatColor.WHITE + "Change Left Arm's y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getY()*180/Math.PI);
-			leftarmz = createItem(leftarmz, ChatColor.WHITE + "Change Left Arm's z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getZ()*180/Math.PI);
+			leftarmx = plugin.createItem(leftarmx, ChatColor.WHITE + "Change Left Arm's x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getX()*180/Math.PI));
+			leftarmy = plugin.createItem(leftarmy, ChatColor.WHITE + "Change Left Arm's y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getY()*180/Math.PI));
+			leftarmz = plugin.createItem(leftarmz, ChatColor.WHITE + "Change Left Arm's z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZLeft Arm: " + ChatColor.WHITE + (double)stand.getLeftArmPose().getZ()*180/Math.PI));
 	
-			rightarmx = createItem(rightarmx, ChatColor.WHITE + "Change Right Arm's x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getX()*180/Math.PI);
-			rightarmy = createItem(rightarmy, ChatColor.WHITE + "Change Right Arm's y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getY()*180/Math.PI);
-			rightarmz = createItem(rightarmz, ChatColor.WHITE + "Change Right Arm's z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getZ()*180/Math.PI);
+			rightarmx = plugin.createItem(rightarmx, ChatColor.WHITE + "Change Right Arm's x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getX()*180/Math.PI));
+			rightarmy = plugin.createItem(rightarmy, ChatColor.WHITE + "Change Right Arm's y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getY()*180/Math.PI));
+			rightarmz = plugin.createItem(rightarmz, ChatColor.WHITE + "Change Right Arm's z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZRight Arm: " + ChatColor.WHITE + (double)stand.getRightArmPose().getZ()*180/Math.PI));
 	
-			leftlegx = createItem(leftlegx, ChatColor.WHITE + "Change Left Leg's x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getX()*180/Math.PI);
-			leftlegy = createItem(leftlegy, ChatColor.WHITE + "Change Left Leg's y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getY()*180/Math.PI);
-			leftlegz = createItem(leftlegz, ChatColor.WHITE + "Change Left Leg's z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getZ()*180/Math.PI);
+			leftlegx = plugin.createItem(leftlegx, ChatColor.WHITE + "Change Left Leg's x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getX()*180/Math.PI));
+			leftlegy = plugin.createItem(leftlegy, ChatColor.WHITE + "Change Left Leg's y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getY()*180/Math.PI));
+			leftlegz = plugin.createItem(leftlegz, ChatColor.WHITE + "Change Left Leg's z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZLeft Leg: " + ChatColor.WHITE + (double)stand.getLeftLegPose().getZ()*180/Math.PI));
 	
-			rightlegx = createItem(rightlegx, ChatColor.WHITE + "Change Right Leg's x-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getX()*180/Math.PI);
-			rightlegy = createItem(rightlegy, ChatColor.WHITE + "Change Right Leg's y-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getY()*180/Math.PI);
-			rightlegz = createItem(rightlegz, ChatColor.WHITE + "Change Right Leg's z-rotation", ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getZ()*180/Math.PI);
+			rightlegx = plugin.createItem(rightlegx, ChatColor.WHITE + "Change Right Leg's x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of XRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getX()*180/Math.PI));
+			rightlegy = plugin.createItem(rightlegy, ChatColor.WHITE + "Change Right Leg's y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of YRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getY()*180/Math.PI));
+			rightlegz = plugin.createItem(rightlegz, ChatColor.WHITE + "Change Right Leg's z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getZ()*180/Math.PI));
 	
 			// Set Items in Positions
 			ItemStack head = new ItemStack(Material.LEATHER_HELMET, 1);
@@ -175,48 +158,48 @@ public class mainMenuInventory {
 			ItemStack leftHand = new ItemStack(Material.STICK, 1);
 			ItemStack rightHand = new ItemStack(Material.STICK, 1);
 			
-			head = createItem(head, ChatColor.WHITE + "Change Head", ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the head");
-			torso = createItem(torso, ChatColor.WHITE + "Change Chest", ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the chest");
-			legs = createItem(legs, ChatColor.WHITE + "Change Legs", ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the legs");
-			boots = createItem(boots, ChatColor.WHITE + "Change Feet", ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the feet");
-			leftHand = createItem(leftHand, ChatColor.WHITE + "Change Left Hand", ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is in the left hand");
-			rightHand = createItem(rightHand, ChatColor.WHITE+ "Change Right Hand", ChatColor.GRAY + "" + ChatColor.ITALIC  + "Use to change what item is in the right hand");
+			head = plugin.createItem(head, ChatColor.WHITE + "Change Head", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the head"));
+			torso = plugin.createItem(torso, ChatColor.WHITE + "Change Chest", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the chest"));
+			legs = plugin.createItem(legs, ChatColor.WHITE + "Change Legs", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the legs"));
+			boots = plugin.createItem(boots, ChatColor.WHITE + "Change Feet", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the feet"));
+			leftHand = plugin.createItem(leftHand, ChatColor.WHITE + "Change Left Hand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is in the left hand"));
+			rightHand = plugin.createItem(rightHand, ChatColor.WHITE+ "Change Right Hand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC  + "Use to change what item is in the right hand"));
 			
 			ItemStack curhead;
 			if(stand.getHelmet() == (null) || stand.getHelmet().equals(new ItemStack(Material.AIR))) {
-				curhead = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Head", "");
+				curhead = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}else {
-				curhead = createItem(stand.getHelmet(), ChatColor.WHITE + "Change Head", "");
+				curhead = plugin.createItem(stand.getHelmet(), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}
 			ItemStack curtorso;
 			if(stand.getChestplate() == (null) || stand.getChestplate().equals(new ItemStack(Material.AIR))) {
-				curtorso = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Chest", "");
+				curtorso = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}else {
-				curtorso = createItem(stand.getChestplate(), ChatColor.WHITE + "Change Chest", "");
+				curtorso = plugin.createItem(stand.getChestplate(), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}
 			ItemStack curlegs;
 			if(stand.getLeggings() == (null) || stand.getLeggings().equals(new ItemStack(Material.AIR))) {
-				curlegs = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Legs", "");
+				curlegs = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}else {
-				curlegs = createItem(stand.getLeggings(), ChatColor.WHITE + "Change Legs", "");
+				curlegs = plugin.createItem(stand.getLeggings(), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}
 			ItemStack curboots;
 			if(stand.getBoots() == (null) || stand.getBoots().equals(new ItemStack(Material.AIR))) {
-				curboots = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Feet", "");
+				curboots = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}else {
-				curboots = createItem(stand.getBoots(), ChatColor.WHITE + "Change Feet", "");
+				curboots = plugin.createItem(stand.getBoots(), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}
 			ItemStack curleftHand;
 			if(stand.getEquipment().getItemInOffHand() == (null) || stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR))) {
-				curleftHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Left Hand", "");
+				curleftHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}else {
-				curleftHand = createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand", "");
+				curleftHand = plugin.createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}
-			ItemStack currightHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", "");
+			ItemStack currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			if(stand.getEquipment().getItemInMainHand() == (null) || stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR))) {
-				currightHand = createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Right Hand", "");
+				currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			}else {
-				currightHand = createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand", "");
+				currightHand = plugin.createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			}
 			// Items in locations
 			i.setItem(0, head);

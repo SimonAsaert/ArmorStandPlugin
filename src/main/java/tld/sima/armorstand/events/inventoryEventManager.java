@@ -167,17 +167,16 @@ public class inventoryEventManager implements Listener {
 				if (plugin.getParentMap().containsKey(stand.getUniqueId())){
 					plugin.getParentMap().remove(stand.getUniqueId());
 				}
+				UUID standUUID = stand.getUniqueId();
+				ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
+				plugin.getServer().getPluginManager().callEvent(are);
 				stand.remove();
 				player.closeInventory();
 				player.sendMessage(ChatColor.GOLD + "Removed stand");
 			}else if (itemName.contains("Clone Stand")) {
 				if(player.hasPermission("armorstand.clone")) {
-					ItemStack tool = new ItemStack(Material.STICK);
-					ItemMeta toolMeta = tool.getItemMeta();
-					toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
-					tool.setItemMeta(toolMeta);
-					if (!player.getInventory().contains(tool)) {
-						player.getInventory().addItem(tool);
+					if (!player.getInventory().contains(plugin.getCloneTool())) {
+						player.getInventory().addItem(plugin.getCloneTool());
 					}
 					plugin.getCloneMap().put(player.getUniqueId(), stand);
 					player.closeInventory();
