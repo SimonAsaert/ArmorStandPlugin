@@ -24,7 +24,7 @@ public class mainMenuInventory {
 		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
 		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Set Parent", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent));
 
-		ItemStack delete = new ItemStack(Material.SKELETON_SKULL, 1);
+		ItemStack delete = new ItemStack(Material.SKELETON_SKULL);
 		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 		
 		ItemStack options = new ItemStack(Material.ANVIL, 1);
@@ -40,7 +40,7 @@ public class mainMenuInventory {
 		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
 		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 		
-		ItemStack rotation = new ItemStack(Material.OAK_PLANKS,1);
+		ItemStack rotation = new ItemStack(Material.OAK_WOOD,1);
 		rotation = plugin.createItem(rotation, ChatColor.WHITE + "Rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
 		
 		if (parent) {

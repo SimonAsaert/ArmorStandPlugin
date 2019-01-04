@@ -27,7 +27,7 @@ public class optionsMenuInventory {
 		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
 		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 		
-		ItemStack delete = new ItemStack(Material.SKELETON_SKULL, 1);
+		ItemStack delete = new ItemStack(Material.SKELETON_SKULL);
 		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 		
 		ItemStack back = new ItemStack(Material.BARRIER, 1);
@@ -42,7 +42,7 @@ public class optionsMenuInventory {
 			ItemStack invisible = new ItemStack(Material.POTION, 1);
 			ItemStack togglearms = new ItemStack(Material.STICK, 1);
 			ItemStack togglefire = new ItemStack(Material.FLINT_AND_STEEL,1);
-			ItemStack rotation = new ItemStack(Material.OAK_PLANKS,1);
+			ItemStack rotation = new ItemStack(Material.OAK_WOOD,1);
 			ItemStack togglebase = new ItemStack(Material.STONE_PRESSURE_PLATE,1);
 			ItemStack togglegravity = new ItemStack(Material.APPLE,1);
 			ItemStack movement = new ItemStack(Material.ARROW,1);

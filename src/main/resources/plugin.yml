@@ -18,3 +18,10 @@ permissions:
     description: When interacting with stand, usually when placing items into it, it returns a copy of the old item and the item placed. This ensures only item that was in place is returned.
     permission: armorstand.clone
     permission-message: You don't have the armorstand.clone permission.
+commands:
+  atool:
+    description: Sets player's custom tool to allow them to mass-alter stands
+    usage: /atool <type>
+    permission: armorstand.atool
+    permission-message: You don't have the armorstand.tool permission.
+    

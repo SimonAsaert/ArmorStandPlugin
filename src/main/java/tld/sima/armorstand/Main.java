@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.api.API;
 import tld.sima.armorstand.events.EventManager;
+import tld.sima.armorstand.events.Pair;
+import tld.sima.armorstand.events.ToolType;
 import tld.sima.armorstand.events.inventoryEventManager;
 import tld.sima.armorstand.files.DefaultSettings;
 
@@ -22,6 +26,7 @@ public class Main extends JavaPlugin {
 	
 	private HashMap<UUID, ArmorStand> standMap = new HashMap<UUID, ArmorStand>();
 	private HashMap<UUID, Conversation> convList = new HashMap<UUID, Conversation>();
+	private HashMap<UUID, Pair<Material, ToolType>> playerTool = new HashMap<UUID, Pair<Material, ToolType>>();
 	private ItemStack removeTool;
 	private ItemStack cloneTool;
 
@@ -51,6 +56,15 @@ public class Main extends JavaPlugin {
 		settings.setup();
 		this.removeTool = settings.getRemoveTool();
 		this.cloneTool = settings.getCloneTool();
+		
+		// Initialize command manager
+		ToolCommandManager tcm = new ToolCommandManager();
+		this.getCommand(tcm.cmd1).setExecutor(tcm);
+		
+		for(Player player : this.getServer().getOnlinePlayers()) {
+			Pair<Material, ToolType> pair = new Pair<Material, ToolType>(Material.AIR, ToolType.NONE);
+			playerTool.put(player.getUniqueId(), pair);
+		}
 		
 		// Initialize API for other plugins to hook onto!
 		api = new API(); 
@@ -95,6 +109,10 @@ public class Main extends JavaPlugin {
 
 	public API getAPI() {
 		return api;
+	}
+	
+	public HashMap<UUID, Pair<Material, ToolType>> getPlayerCustomTool() {
+		return playerTool;
 	}
 
 	public ItemStack createItem(ItemStack item, String disName, List<String> list) {
