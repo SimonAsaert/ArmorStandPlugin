@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -242,7 +243,18 @@ public class mainMenuInventory {
 			i.setItem(40, animations);
 			i.setItem(41, setparent);
 			i.setItem(43, rotation);
-			
+			// Go to parent item
+			for(Entity entity : stand.getNearbyEntities(8, 8, 8)){
+				UUID uuid = entity.getUniqueId();
+				if(plugin.getParentMap().containsKey(uuid)) {
+					int distance = plugin.getParentMap().get(entity.getUniqueId());
+					if(Math.max(Math.abs(stand.getLocation().getX() - entity.getLocation().getX()), 
+						Math.abs(stand.getLocation().getZ() - entity.getLocation().getZ())) <= distance) {
+						i.setItem(44, plugin.createItem(new ItemStack(Material.ITEM_FRAME), ChatColor.GREEN + "Go to parent stand", Arrays.asList("")));
+					break;
+					}
+				}
+			}
 			i.setItem(45, rightHand);
 			i.setItem(46, currightHand);
 			i.setItem(48, clone);

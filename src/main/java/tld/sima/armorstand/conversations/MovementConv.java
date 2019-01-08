@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
+import tld.sima.armorstand.events.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.mainMenuInventory;
 import tld.sima.armorstand.inventories.optionsMenuInventory;
@@ -49,16 +50,26 @@ public class MovementConv extends StringPrompt{
 			for (Entity entity : entities) {
 				if (entity instanceof ArmorStand) {
 					Location loc = entity.getLocation().clone();
-					loc.add(movement[0], movement[1], movement[2]);
-					entity.teleport(loc);
+					Location newLoc = loc.clone().add(movement[0], movement[1], movement[2]);
+					ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
+					if(!ame.isCancelled()) {
+						plugin.getServer().getPluginManager().callEvent(ame);
+						entity.teleport(newLoc);
+					}
 				}
 			}
 		}
-		Location loc = stand.getLocation().clone();
-		loc.add(movement[0], movement[1], movement[2]);
-		stand.teleport(loc);
+		Location oldLoc = stand.getLocation().clone();
+		Location newLoc = oldLoc.clone().add(movement[0], movement[1], movement[2]);
+		
+		ArmorstandMovedEvent ame = new ArmorstandMovedEvent(stand, newLoc, false);
+		plugin.getServer().getPluginManager().callEvent(ame);
+		
+		if(!ame.isCancelled()) {
+			stand.teleport(newLoc);
+			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Position set!");
+		}
 		openInventory(player, stand);
-		con.getForWhom().sendRawMessage(ChatColor.GOLD + "Position set!");
 		
 		return null;
 	}

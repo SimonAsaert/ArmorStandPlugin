@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -160,6 +161,31 @@ public class inventoryEventManager implements Listener {
 					plugin.AnimationActive = true;
 					return;
 				}
+			}else if (itemName.contains("Go to parent stand")) {
+				ArmorStand parent = null;
+				for(Entity entity: stand.getNearbyEntities(8, 8, 8)) {
+					if(plugin.getParentMap().containsKey(entity.getUniqueId())) {
+						int distance = plugin.getParentMap().get(entity.getUniqueId());
+						if(Math.max(Math.abs(stand.getLocation().getX() - entity.getLocation().getX()), 
+								Math.abs(stand.getLocation().getZ() - entity.getLocation().getZ())) <= distance) {
+							parent = (ArmorStand) entity;
+							break;
+						}
+					}
+				}
+				if(parent == null) {
+					player.sendMessage(ChatColor.RED + "Unable to find parent stand!");
+					return;
+				}
+				
+				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, parent);
+				plugin.getServer().getPluginManager().callEvent(e);
+				
+				if(!e.isCancelled()) {
+					mainMenuInventory j = new mainMenuInventory();
+					j.newInventory(player, parent);
+				}
+				plugin.getStandMap().put(player.getUniqueId(), parent);
 			}else if (itemName.contains("Options")) {
 				optionsMenuInventory i = new optionsMenuInventory();
 				i.openInventory(player, stand);
@@ -170,7 +196,9 @@ public class inventoryEventManager implements Listener {
 				UUID standUUID = stand.getUniqueId();
 				ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
 				plugin.getServer().getPluginManager().callEvent(are);
+				Bukkit.getServer().getConsoleSender().sendMessage("KILLING STAND!");
 				stand.remove();
+				Bukkit.getServer().getConsoleSender().sendMessage("KILLED STAND!");
 				player.closeInventory();
 				player.sendMessage(ChatColor.GOLD + "Removed stand");
 			}else if (itemName.contains("Clone Stand")) {

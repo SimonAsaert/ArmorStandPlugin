@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.VectorEuler;
+import tld.sima.armorstand.events.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.mainMenuInventory;
 import tld.sima.armorstand.inventories.optionsMenuInventory;
@@ -71,6 +72,7 @@ public class RotationConv extends StringPrompt {
 		
 		// Setting armorstand rotations depending on type.
 		if (typeUsed.equals(rotationType.BODY)) {
+			
 			if(plugin.getParentMap().containsKey(stand.getUniqueId())) {
 				int radius = plugin.getParentMap().get(stand.getUniqueId());
 				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
@@ -86,15 +88,26 @@ public class RotationConv extends StringPrompt {
 							vector.setZ(euler.getZ());
 							Location newloc = stand.getLocation().clone().add(vector);
 							newloc.setYaw(entity.getLocation().getYaw() + (float)angle);
-							entity.teleport(newloc);
+							ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newloc, true);
+							if(!ame.isCancelled()) {
+								entity.teleport(newloc);
+							}
 						}
 					}
 				}
 			}
 			Location loc = stand.getLocation().clone();
-			loc.setYaw((float) degrees);
-			stand.teleport(loc);
-			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Body angle changed to: " + ChatColor.WHITE + degrees);
+			Location newLoc = loc.clone();
+			newLoc.setYaw((float) degrees);
+			
+			ArmorstandMovedEvent ame = new ArmorstandMovedEvent(stand, newLoc, true);
+			plugin.getServer().getPluginManager().callEvent(ame);
+			
+			if(!ame.isCancelled()) {
+				stand.teleport(newLoc);
+				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Body angle changed to: " + ChatColor.WHITE + degrees);
+			}
+			
 		}else {
 			int degreesD = (int)degrees;
 			degrees = degrees*Math.PI/180;
@@ -154,7 +167,6 @@ public class RotationConv extends StringPrompt {
 				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Right Leg Z angle changed to: " + ChatColor.WHITE + degreesD);
 			}
 		}
-		
 
 		if(invType) {
 			ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);

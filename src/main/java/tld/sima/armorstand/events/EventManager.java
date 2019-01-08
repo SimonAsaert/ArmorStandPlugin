@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -93,6 +94,7 @@ public class EventManager implements Listener {
 						break;
 					case NAME:
 					{
+						plugin.getStandMap().put(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						NameConv conversation = new NameConv();
 						conversation.setData(player.getUniqueId());
@@ -106,6 +108,7 @@ public class EventManager implements Listener {
 						break;
 					case ROTATION:
 					{
+						plugin.getStandMap().put(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						RotationConv converstaion = new RotationConv();
 						converstaion.setData(player.getUniqueId(), true, "BODY");
@@ -119,6 +122,7 @@ public class EventManager implements Listener {
 						break;
 					case MOVE:
 					{
+						plugin.getStandMap().put(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						MovementConv conversation = new MovementConv();
 						conversation.setData(player.getUniqueId(), true);
@@ -153,6 +157,14 @@ public class EventManager implements Listener {
 			stand.setCustomName("N/A");
 			stand.setCustomNameVisible(false);
 			stand.setGravity(false); 
+		}
+	}
+	
+	@EventHandler
+	public void onStandDeath(EntityDeathEvent event) {
+		if (event.getEntity() instanceof ArmorStand) {
+			ArmorstandRemovedEvent e = new ArmorstandRemovedEvent(event.getEntity().getUniqueId());
+			plugin.getServer().getPluginManager().callEvent(e);
 		}
 	}
 	
