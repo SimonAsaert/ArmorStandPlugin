@@ -1,4 +1,4 @@
-package tld.sima.armorstand;
+package tld.sima.armorstand.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import tld.sima.armorstand.Main;
 
 public class StorageManager {
 	

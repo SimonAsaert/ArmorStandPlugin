@@ -1,4 +1,4 @@
-package tld.sima.armorstand.events;
+package tld.sima.armorstand.utils;
 
 public class Pair<T1, T2> {
 	public T1 left;

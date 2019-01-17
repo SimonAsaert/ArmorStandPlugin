@@ -1,4 +1,4 @@
-package tld.sima.armorstand.events;
+package tld.sima.armorstand.utils;
 
 public enum ToolType {
 	// When defined as 'OTHER', let other plugins take over.

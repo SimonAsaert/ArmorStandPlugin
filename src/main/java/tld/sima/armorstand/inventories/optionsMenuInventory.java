@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
 
-public class optionsMenuInventory {
+public class OptionsMenuInventory {
 	private Main plugin = Main.getPlugin(Main.class);
 	
 	public void openInventory(Player player, ArmorStand stand) {

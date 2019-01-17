@@ -52,6 +52,9 @@ public class DefaultSettings {
 		maincfg.addDefault("Settings.clonetool.type", Material.STICK.toString());
 		maincfg.addDefault("Settings.clonetool.name", "&AClone Tool");
 		maincfg.addDefault("Settings.clonetool.item-description", "");
+		maincfg.addDefault("Settings.parenttool.type", Material.SLIME_BALL.toString());
+		maincfg.addDefault("Settings.parenttool.name", "&AParent Tool");
+		maincfg.addDefault("Settings.parenttool.item-description", "");
 		maincfg.options().copyDefaults(true);
 		save();
 	}
@@ -72,6 +75,18 @@ public class DefaultSettings {
 			material = Material.POISONOUS_POTATO;
 		}
 		return new ItemStack(material);
+	}
+	
+	public ItemStack getParentTool() {
+		Material material = Material.getMaterial(maincfg.getString("Settings.parenttool.type"));
+		if(material == null) {
+			material = Material.SLIME_BALL;
+		}
+		ItemStack item = new ItemStack(material);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', maincfg.getString("Settings.parenttool.name")));
+		meta.setLore(Arrays.asList(maincfg.getString("Settings.parenttool.item-description").split("[|]")));
+		return item;
 	}
 	
 	public ItemStack getCloneTool() {

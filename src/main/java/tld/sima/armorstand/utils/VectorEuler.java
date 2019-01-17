@@ -1,4 +1,4 @@
-package tld.sima.armorstand;
+package tld.sima.armorstand.utils;
 
 import org.bukkit.Location;
 

@@ -1,5 +1,6 @@
-package tld.sima.armorstand.events;
+package tld.sima.armorstand.events.listeners;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,8 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -32,7 +35,12 @@ import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.MovementConv;
 import tld.sima.armorstand.conversations.NameConv;
 import tld.sima.armorstand.conversations.RotationConv;
-import tld.sima.armorstand.inventories.mainMenuInventory;
+import tld.sima.armorstand.events.created.ArmorstandClonedEvent;
+import tld.sima.armorstand.events.created.ArmorstandRemovedEvent;
+import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
+import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.utils.Pair;
+import tld.sima.armorstand.utils.ToolType;
 
 public class EventManager implements Listener {
 	
@@ -53,8 +61,7 @@ public class EventManager implements Listener {
 				ItemStack itemInHand = player.getInventory().getItemInMainHand();
 				if(itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
 					return;
-				}
-				if (itemInHand.isSimilar(plugin.getRemoveTool())) {
+				}else if (itemInHand.isSimilar(plugin.getRemoveTool())) {
 					ArmorStand stand = (ArmorStand)event.getEntity();
 					UUID standUUID = stand.getUniqueId();
 					ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
@@ -135,6 +142,25 @@ public class EventManager implements Listener {
 					}
 					default:
 						break;
+					}
+				}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool())) {
+					ArmorStand parentStand = plugin.getStandMap().get(player.getUniqueId());
+					ArmorStand entity = (ArmorStand) event.getEntity();
+					if(plugin.getSmartParent().containsKey(parentStand.getUniqueId())) {
+						if(entity.getUniqueId().equals(parentStand.getUniqueId())) {
+							return;
+						}
+						
+						ArrayList<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
+						if(list.contains(entity.getUniqueId())) {
+							return;
+						}else {
+							list.add(entity.getUniqueId());
+							plugin.getSmartParent().put(parentStand.getUniqueId(), list);
+							PotionEffectType type = PotionEffectType.GLOWING;
+							PotionEffect potion = new PotionEffect(type, 60, 1);
+							entity.addPotionEffect(potion);
+						}
 					}
 				}
 			}
@@ -235,7 +261,7 @@ public class EventManager implements Listener {
 				plugin.getServer().getPluginManager().callEvent(e);
 				
 				if(!e.isCancelled()) {
-					mainMenuInventory i = new mainMenuInventory();
+					MainMenuInventory i = new MainMenuInventory();
 					i.newInventory(player, stand);
 				}
 				plugin.getStandMap().put(player.getUniqueId(), stand);

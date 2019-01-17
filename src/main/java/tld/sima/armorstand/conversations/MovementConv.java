@@ -1,8 +1,10 @@
 package tld.sima.armorstand.conversations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -13,10 +15,10 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
-import tld.sima.armorstand.events.ArmorstandMovedEvent;
-import tld.sima.armorstand.events.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.mainMenuInventory;
-import tld.sima.armorstand.inventories.optionsMenuInventory;
+import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
+import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
+import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.inventories.OptionsMenuInventory;
 
 public class MovementConv extends StringPrompt{
 	
@@ -44,7 +46,21 @@ public class MovementConv extends StringPrompt{
 				return null;
 			}
 		}
-		if (plugin.getParentMap().containsKey(stand.getUniqueId())) {
+		
+		if(plugin.getSmartParent().containsKey(stand.getUniqueId())) {
+			ArrayList<UUID> stands = plugin.getSmartParent().get(stand.getUniqueId());
+			for(UUID uuid : stands) {
+				Entity entity = Bukkit.getEntity(uuid);
+				Location oldLoc = entity.getLocation().clone();
+				Location newLoc = oldLoc.clone().add(movement[0], movement[1], movement[2]);
+				ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
+				Bukkit.getServer().getPluginManager().callEvent(ame);
+				if(!ame.isCancelled()) {
+					entity.teleport(newLoc);
+				}
+			}
+			
+		}else if (plugin.getParentMap().containsKey(stand.getUniqueId())) {
 			int radius = plugin.getParentMap().get(stand.getUniqueId());
 			List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
 			for (Entity entity : entities) {
@@ -52,8 +68,8 @@ public class MovementConv extends StringPrompt{
 					Location loc = entity.getLocation().clone();
 					Location newLoc = loc.clone().add(movement[0], movement[1], movement[2]);
 					ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
+					plugin.getServer().getPluginManager().callEvent(ame);
 					if(!ame.isCancelled()) {
-						plugin.getServer().getPluginManager().callEvent(ame);
 						entity.teleport(newLoc);
 					}
 				}
@@ -85,11 +101,11 @@ public class MovementConv extends StringPrompt{
 			plugin.getServer().getPluginManager().callEvent(e);
 			
 			if(!e.isCancelled()) {
-				mainMenuInventory i = new mainMenuInventory();
+				MainMenuInventory i = new MainMenuInventory();
 				i.newInventory(player, stand);
 			}
 		}else {
-			optionsMenuInventory i = new optionsMenuInventory();
+			OptionsMenuInventory i = new OptionsMenuInventory();
 			i.openInventory(player, stand);
 		}
 	}

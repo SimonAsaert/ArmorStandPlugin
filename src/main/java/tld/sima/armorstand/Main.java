@@ -1,5 +1,7 @@
 package tld.sima.armorstand;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -15,20 +17,26 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
-import tld.sima.armorstand.api.API;
-import tld.sima.armorstand.events.EventManager;
-import tld.sima.armorstand.events.Pair;
-import tld.sima.armorstand.events.ToolType;
-import tld.sima.armorstand.events.inventoryEventManager;
+import tld.sima.armorstand.commands.ToolCommandManager;
+import tld.sima.armorstand.events.listeners.EventManager;
+import tld.sima.armorstand.events.listeners.inventoryEventManager;
 import tld.sima.armorstand.files.DefaultSettings;
+import tld.sima.armorstand.files.SmartParentStorage;
+import tld.sima.armorstand.files.StorageManager;
+import tld.sima.armorstand.inventories.items.ItemHub;
+import tld.sima.armorstand.utils.Pair;
+import tld.sima.armorstand.utils.ToolType;
 
 public class Main extends JavaPlugin {
 	
 	private HashMap<UUID, ArmorStand> standMap = new HashMap<UUID, ArmorStand>();
 	private HashMap<UUID, Conversation> convList = new HashMap<UUID, Conversation>();
 	private HashMap<UUID, Pair<Material, ToolType>> playerTool = new HashMap<UUID, Pair<Material, ToolType>>();
+	private HashMap<UUID, ArrayList<UUID>> smartParent = new HashMap<UUID, ArrayList<UUID>>();
 	private ItemStack removeTool;
 	private ItemStack cloneTool;
+	private ItemStack addToParentTool;
+	private ItemHub inventoryItems;
 
 	private HashMap<UUID,Integer> parentList;
 	private HashMap<UUID, ArmorStand> cloneMap = new HashMap<UUID, ArmorStand>();
@@ -42,7 +50,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EventManager(), this);
 		getServer().getPluginManager().registerEvents(new inventoryEventManager(), this);
 
-		// Setup storage manager and setup List of UUIDS for the parent list
+		// Setup storage manager and setup List of UUIDS for the parent list as well as setting up SmartParents
 		stmgr = new StorageManager();
 		stmgr.setup();
 		parentList = stmgr.getList();
@@ -51,11 +59,38 @@ public class Main extends JavaPlugin {
 			AnimationActive = true;
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Detected Armour stands animations.");
 		}
+
+		String fileName = this.getDataFolder().toString() + File.separator + "Storage" + File.separator + "SmartParent";
+		File dir = new File(fileName);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		File[] files = dir.listFiles();
+		for(File file : files) {
+			SmartParentStorage sps = new SmartParentStorage();
+			if(!sps.load(file)) {
+				continue;
+			}
+			smartParent.put(sps.getUUID(), sps.loadList());
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Smart parent UUID: " + sps.getUUID());
+			StringBuilder builder = new StringBuilder();
+			ArrayList<UUID> uuids = sps.loadList();
+			builder.append(ChatColor.GREEN).append("Child parents: ").append(ChatColor.WHITE).append(uuids.get(0));
+			for(int i = 1 ; i < uuids.size() ; i++) {
+				builder.append(", ").append(uuids.get(i));
+			}
+			Bukkit.getServer().getConsoleSender().sendMessage(builder.toString());
+		}
+		
 		// Initilize settings for plugin
 		DefaultSettings settings = new DefaultSettings();
 		settings.setup();
 		this.removeTool = settings.getRemoveTool();
 		this.cloneTool = settings.getCloneTool();
+		this.addToParentTool = settings.getParentTool();
+		
+		// Initilize inventory items
+		this.inventoryItems = new ItemHub();
 		
 		// Initialize command manager
 		ToolCommandManager tcm = new ToolCommandManager();
@@ -78,6 +113,12 @@ public class Main extends JavaPlugin {
 			if (convList.get(uuid) != null) {
 				convList.get(uuid).abandon();
 			}
+		}
+		for(UUID uuid : smartParent.keySet()) {
+			SmartParentStorage sps = new SmartParentStorage();
+			sps.setup(uuid);
+			sps.saveUUID(uuid);
+			sps.saveList(smartParent.get(uuid));
 		}
 		stmgr.scanList(parentList);
 		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Disabled.");
@@ -106,6 +147,14 @@ public class Main extends JavaPlugin {
 	public ItemStack getCloneTool() {
 		return cloneTool;
 	}
+	
+	public ItemStack getSmartParentTool() {
+		return addToParentTool;
+	}
+	
+	public ItemHub getItemHub() {
+		return inventoryItems;
+	}
 
 	public API getAPI() {
 		return api;
@@ -113,6 +162,10 @@ public class Main extends JavaPlugin {
 	
 	public HashMap<UUID, Pair<Material, ToolType>> getPlayerCustomTool() {
 		return playerTool;
+	}
+	
+	public HashMap<UUID, ArrayList<UUID>> getSmartParent() {
+		return smartParent;
 	}
 
 	public ItemStack createItem(ItemStack item, String disName, List<String> list) {

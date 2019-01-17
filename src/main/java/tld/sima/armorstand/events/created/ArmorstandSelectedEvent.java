@@ -1,4 +1,4 @@
-package tld.sima.armorstand.events;
+package tld.sima.armorstand.events.created;
 
 import java.util.UUID;
 

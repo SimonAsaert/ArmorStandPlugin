@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
 
-public class mainMenuInventory {
+public class MainMenuInventory {
 	private Main plugin = Main.getPlugin(Main.class);
 	
 	public void newInventory(Player player, ArmorStand stand){
@@ -23,7 +23,7 @@ public class mainMenuInventory {
 		UUID standuuid = stand.getUniqueId();
 		boolean parent = plugin.getParentMap().containsKey(standuuid);
 		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
-		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Set Parent", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent));
+		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Parent", Arrays.asList(""));
 
 		ItemStack delete = new ItemStack(Material.SKELETON_SKULL);
 		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
@@ -36,7 +36,6 @@ public class mainMenuInventory {
 
 		ItemStack position = new ItemStack(Material.STONE,1);
 		position = plugin.createItem(position, ChatColor.WHITE + "Position", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Move armorstands in XYZ position"));
-
 
 		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
 		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
