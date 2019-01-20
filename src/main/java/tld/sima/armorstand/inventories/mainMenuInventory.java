@@ -21,7 +21,7 @@ public class MainMenuInventory {
 		
 		// Parent Options come first as a check to ensure it isn't in place for anything else.
 		UUID standuuid = stand.getUniqueId();
-		boolean parent = plugin.getParentMap().containsKey(standuuid);
+		boolean parent = plugin.getParentMap().containsKey(standuuid) || plugin.getSmartParent().containsKey(standuuid);
 		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
 		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Parent", Arrays.asList(""));
 
@@ -47,9 +47,6 @@ public class MainMenuInventory {
 			// Further Options
 			ItemStack disabled = new ItemStack(Material.BARRIER,1);		
 			disabled = plugin.createItem(disabled, ChatColor.RED + "Disabled due to parent status", Arrays.asList(ChatColor.RED + "Disabled due to parent status"));
-
-			ItemStack setradius = new ItemStack(Material.STICK,1);
-			setradius = plugin.createItem(setradius, ChatColor.WHITE + "Set Radius", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId())));
 
 			i.setItem(0, disabled);
 			
@@ -85,7 +82,6 @@ public class MainMenuInventory {
 			i.setItem(39, options);
 			i.setItem(40, animations);
 			i.setItem(41, setparent);
-			i.setItem(42, setradius);
 			i.setItem(43, rotation);
 			
 			i.setItem(45, disabled);
@@ -244,8 +240,13 @@ public class MainMenuInventory {
 			i.setItem(43, rotation);
 			// Go to parent item
 			for(Entity entity : stand.getNearbyEntities(8, 8, 8)){
-				UUID uuid = entity.getUniqueId();
-				if(plugin.getParentMap().containsKey(uuid)) {
+				UUID parentUUID = entity.getUniqueId();
+				
+				if(plugin.getSmartParent().containsKey(parentUUID) && plugin.getSmartParent().get(parentUUID).contains(standuuid)) {
+					i.setItem(44, plugin.createItem(new ItemStack(Material.ITEM_FRAME), ChatColor.GREEN + "Go to parent stand", Arrays.asList("")));
+				}
+				
+				if(plugin.getParentMap().containsKey(parentUUID)) {
 					int distance = plugin.getParentMap().get(entity.getUniqueId());
 					if(Math.max(Math.abs(stand.getLocation().getX() - entity.getLocation().getX()), 
 						Math.abs(stand.getLocation().getZ() - entity.getLocation().getZ())) <= distance) {

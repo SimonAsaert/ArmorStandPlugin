@@ -31,6 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.MovementConv;
 import tld.sima.armorstand.conversations.NameConv;
@@ -153,13 +154,16 @@ public class EventManager implements Listener {
 						
 						ArrayList<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
 						if(list.contains(entity.getUniqueId())) {
-							return;
+							list.remove(entity.getUniqueId());
+							plugin.getSmartParent().put(parentStand.getUniqueId(), list);
+							player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.RED + "removed" + ChatColor.WHITE + " from parent map");
 						}else {
 							list.add(entity.getUniqueId());
 							plugin.getSmartParent().put(parentStand.getUniqueId(), list);
 							PotionEffectType type = PotionEffectType.GLOWING;
 							PotionEffect potion = new PotionEffect(type, 60, 1);
 							entity.addPotionEffect(potion);
+							player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.GREEN + "added" + ChatColor.WHITE + " to parent map");
 						}
 					}
 				}

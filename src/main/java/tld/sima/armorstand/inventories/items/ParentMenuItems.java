@@ -18,6 +18,9 @@ public class ParentMenuItems {
 	ItemStack smartParent;
 	ItemStack getTool;
 	
+	// Disable parent stand entirely
+	ItemStack stopParent;
+	
 	// Back button
 	ItemStack back;
 	
@@ -26,6 +29,9 @@ public class ParentMenuItems {
 
 		smartParent = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.GREEN + "Smart Parent", Arrays.asList(""));
 		getTool = plugin.createItem(new ItemStack(Material.STICK), ChatColor.GREEN + "Smart Parent tool", Arrays.asList(""));
+		
+		this.stopParent = plugin.createItem(new ItemStack(Material.REDSTONE_BLOCK), ChatColor.RED + "Remove this stand from being parent", Arrays.asList(""));
+		
 		back = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Back", Arrays.asList(""));
 	}
 	
@@ -43,5 +49,9 @@ public class ParentMenuItems {
 	
 	public ItemStack getBack() {
 		return back.clone();
+	}
+	
+	public ItemStack getStop() {
+		return stopParent.clone();
 	}
 }

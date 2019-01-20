@@ -49,13 +49,21 @@ public class MainMenuItemEvents {
 			return true;
 		}else if (itemName.contains("Go to parent stand")) {
 			ArmorStand parent = null;
-			for(Entity entity: stand.getNearbyEntities(8, 8, 8)) {
-				if(plugin.getParentMap().containsKey(entity.getUniqueId())) {
-					int distance = plugin.getParentMap().get(entity.getUniqueId());
-					if(Math.max(Math.abs(stand.getLocation().getX() - entity.getLocation().getX()), 
-							Math.abs(stand.getLocation().getZ() - entity.getLocation().getZ())) <= distance) {
-						parent = (ArmorStand) entity;
-						break;
+			for(UUID uuid : plugin.getSmartParent().keySet()) {
+				if(plugin.getSmartParent().get(uuid).contains(stand.getUniqueId())){
+					parent = (ArmorStand)Bukkit.getEntity(uuid);
+				}
+			}
+
+			if(parent == null) {
+				for(Entity entity: stand.getNearbyEntities(8, 8, 8)) {
+					if(plugin.getParentMap().containsKey(entity.getUniqueId())) {
+						int distance = plugin.getParentMap().get(entity.getUniqueId());
+						if(Math.max(Math.abs(stand.getLocation().getX() - entity.getLocation().getX()), 
+								Math.abs(stand.getLocation().getZ() - entity.getLocation().getZ())) <= distance) {
+							parent = (ArmorStand) entity;
+							break;
+						}
 					}
 				}
 			}

@@ -17,7 +17,7 @@ public class ParentMenuInventory {
 	private Main plugin = Main.getPlugin(Main.class);
 	
 	public void openInventory(Player player, ArmorStand stand) {
-		Inventory i = plugin.getServer().createInventory(null, 27, ChatColor.DARK_BLUE + "Armorstand Parent GUI Options");
+		Inventory i = plugin.getServer().createInventory(null, 9, ChatColor.DARK_BLUE + "Armorstand Parent GUI Options");
 		boolean smartFlag = plugin.getSmartParent().containsKey(stand.getUniqueId());
 		boolean defaultFlag = plugin.getParentMap().containsKey(stand.getUniqueId());
 		ItemStack disabled = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Disabled", Arrays.asList(""));
@@ -31,8 +31,11 @@ public class ParentMenuInventory {
 			
 			i.setItem(0, defaultParent);
 			i.setItem(1, disabled);
+			
 			i.setItem(3, smartParent);
 			i.setItem(4, getTool);
+			
+			i.setItem(6, hub.getStop());
 		}else if(defaultFlag) {
 			ItemStack defaultParent = hub.getDefaultParent();
 			
@@ -41,8 +44,11 @@ public class ParentMenuInventory {
 			
 			i.setItem(0, defaultParent);
 			i.setItem(1, radius);
+			
 			i.setItem(3, smartParent);
 			i.setItem(4, disabled);
+
+			i.setItem(6, hub.getStop());
 			
 		}else {
 			ItemStack defaultParent = hub.getDefaultParent();
@@ -50,6 +56,7 @@ public class ParentMenuInventory {
 
 			i.setItem(0, defaultParent);
 			i.setItem(1, disabled);
+			
 			i.setItem(3, smartParent);
 			i.setItem(4, disabled);
 		}

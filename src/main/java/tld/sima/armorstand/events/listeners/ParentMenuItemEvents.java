@@ -50,7 +50,7 @@ public class ParentMenuItemEvents {
 				
 			}else if (plugin.getParentMap().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
-				PotionEffect potion = new PotionEffect(type, 600, 1);
+				PotionEffect potion = new PotionEffect(type, 200, 1);
 				int radius = plugin.getParentMap().get(standUUID);
 				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
 				for(Entity entity: entities) {
@@ -74,11 +74,15 @@ public class ParentMenuItemEvents {
 				player.getInventory().addItem(plugin.getSmartParentTool());
 			}
 			player.sendMessage(ChatColor.GOLD + "Added tool to inventory");
-			
+		}else if (item.isSimilar(hub.getParentMenuItems().getStop())) {
+			plugin.getSmartParent().remove(standUUID);
+			plugin.getParentMap().remove(standUUID);
+			ParentMenuInventory pmi = new ParentMenuInventory();
+			pmi.openInventory(player, stand);
 		}else if (item.isSimilar(hub.getParentMenuItems().getSmartParent())) {
 			if(plugin.getSmartParent().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
-				PotionEffect potion = new PotionEffect(type, 600, 1);
+				PotionEffect potion = new PotionEffect(type, 200, 1);
 				ArrayList<UUID> uuids= plugin.getSmartParent().get(standUUID);
 				for(UUID uuid : uuids) {
 					Entity entity = Bukkit.getEntity(uuid);
@@ -86,6 +90,16 @@ public class ParentMenuItemEvents {
 						((ArmorStand) entity).addPotionEffect(potion);
 					}
 				}
+			}else if(plugin.getParentMap().containsKey(standUUID)){
+				int radius = plugin.getParentMap().get(standUUID);
+				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
+				ArrayList<UUID> uuids = new ArrayList<UUID>();
+				for(Entity entity: entities) {
+					uuids.add(entity.getUniqueId());
+				}
+				plugin.getSmartParent().put(standUUID, uuids);
+				ParentMenuInventory pmi = new ParentMenuInventory();
+				pmi.openInventory(player, stand);
 			}else {
 				plugin.getSmartParent().put(standUUID, new ArrayList<UUID>());
 				ParentMenuInventory pmi = new ParentMenuInventory();

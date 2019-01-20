@@ -33,9 +33,11 @@ public class Main extends JavaPlugin {
 	private HashMap<UUID, Conversation> convList = new HashMap<UUID, Conversation>();
 	private HashMap<UUID, Pair<Material, ToolType>> playerTool = new HashMap<UUID, Pair<Material, ToolType>>();
 	private HashMap<UUID, ArrayList<UUID>> smartParent = new HashMap<UUID, ArrayList<UUID>>();
+	
 	private ItemStack removeTool;
 	private ItemStack cloneTool;
 	private ItemStack addToParentTool;
+	
 	private ItemHub inventoryItems;
 
 	private HashMap<UUID,Integer> parentList;
