@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
-import tld.sima.armorstand.inventories.OptionsMenuInventory;
+import tld.sima.armorstand.inventories.OptionsMenuInventories;
 
 public class NameConv extends StringPrompt {
 	private UUID uuid;
@@ -29,7 +29,7 @@ public class NameConv extends StringPrompt {
 			stand.setCustomNameVisible(true);
 			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Name changed to: " + ChatColor.translateAlternateColorCodes('&', message) + ChatColor.GOLD + ".");
 		}
-		OptionsMenuInventory i = new OptionsMenuInventory();
+		OptionsMenuInventories i = new OptionsMenuInventories();
 		i.openInventory(player, stand);
 		return null;
 	}

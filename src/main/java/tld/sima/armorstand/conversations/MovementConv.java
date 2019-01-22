@@ -17,8 +17,8 @@ import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.MainMenuInventory;
-import tld.sima.armorstand.inventories.OptionsMenuInventory;
+import tld.sima.armorstand.inventories.MainMenuInventories;
+import tld.sima.armorstand.inventories.OptionsMenuInventories;
 
 public class MovementConv extends StringPrompt{
 	
@@ -101,11 +101,11 @@ public class MovementConv extends StringPrompt{
 			plugin.getServer().getPluginManager().callEvent(e);
 			
 			if(!e.isCancelled()) {
-				MainMenuInventory i = new MainMenuInventory();
+				MainMenuInventories i = new MainMenuInventories();
 				i.newInventory(player, stand);
 			}
 		}else {
-			OptionsMenuInventory i = new OptionsMenuInventory();
+			OptionsMenuInventories i = new OptionsMenuInventories();
 			i.openInventory(player, stand);
 		}
 	}
