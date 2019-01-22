@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.RadiusConv;
-import tld.sima.armorstand.inventories.MainMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.ParentMenuInventory;
 import tld.sima.armorstand.inventories.items.ItemHub;
 
@@ -107,7 +107,7 @@ public class ParentMenuItemEvents {
 			}
 			
 		}else if (item.isSimilar(hub.getParentMenuItems().getBack())) {
-			MainMenuInventories mmi = new MainMenuInventories();
+			MainMenuInventory mmi = new MainMenuInventory();
 			mmi.newInventory(player, stand);
 			
 		}

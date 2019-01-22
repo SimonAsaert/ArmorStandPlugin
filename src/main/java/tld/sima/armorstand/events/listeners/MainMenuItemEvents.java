@@ -17,8 +17,8 @@ import tld.sima.armorstand.conversations.RadiusConv;
 import tld.sima.armorstand.conversations.RotationConv;
 import tld.sima.armorstand.events.created.ArmorstandRemovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.MainMenuInventories;
-import tld.sima.armorstand.inventories.OptionsMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.inventories.OptionsMenuInventory;
 import tld.sima.armorstand.inventories.ParentMenuInventory;
 
 public class MainMenuItemEvents {
@@ -76,13 +76,13 @@ public class MainMenuItemEvents {
 			plugin.getServer().getPluginManager().callEvent(e);
 			
 			if(!e.isCancelled()) {
-				MainMenuInventories j = new MainMenuInventories();
+				MainMenuInventory j = new MainMenuInventory();
 				j.newInventory(player, parent);
 			}
 			plugin.getStandMap().put(player.getUniqueId(), parent);
 			return true;
 		}else if (itemName.contains("Options")) {
-			OptionsMenuInventories i = new OptionsMenuInventories();
+			OptionsMenuInventory i = new OptionsMenuInventory();
 			i.openInventory(player, stand);
 			return true;
 		}else if (itemName.contains("Delete Stand")) {

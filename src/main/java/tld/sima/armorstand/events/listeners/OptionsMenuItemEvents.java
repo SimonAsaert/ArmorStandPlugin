@@ -21,8 +21,8 @@ import tld.sima.armorstand.conversations.NameConv;
 import tld.sima.armorstand.conversations.RadiusConv;
 import tld.sima.armorstand.conversations.RotationConv;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.MainMenuInventories;
-import tld.sima.armorstand.inventories.OptionsMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.inventories.OptionsMenuInventory;
 
 public class OptionsMenuItemEvents {
 	public static Main plugin = Main.getPlugin(Main.class);
@@ -33,7 +33,7 @@ public class OptionsMenuItemEvents {
 			plugin.getServer().getPluginManager().callEvent(e);
 			
 			if(!e.isCancelled()) {
-				MainMenuInventories i = new MainMenuInventories();
+				MainMenuInventory i = new MainMenuInventory();
 				i.newInventory(player, stand);
 			}
 			return;
@@ -118,7 +118,7 @@ public class OptionsMenuItemEvents {
 			player.sendMessage(ChatColor.GOLD + "Stand cloned");
 		}
 
-		OptionsMenuInventories i = new OptionsMenuInventories();
+		OptionsMenuInventory i = new OptionsMenuInventory();
 		if (itemName.contains("Toggle Glow")) {
 			stand.setGlowing(!stand.isGlowing());
 			i.openInventory(player, stand);

@@ -17,8 +17,8 @@ import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.MainMenuInventories;
-import tld.sima.armorstand.inventories.OptionsMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.inventories.OptionsMenuInventory;
 import tld.sima.armorstand.utils.VectorEuler;
 
 public class RotationConv extends StringPrompt {
@@ -44,10 +44,10 @@ public class RotationConv extends StringPrompt {
 		if (typeUsed == null) {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "Something somewhere went wrong");
 			if(invType) {
-				MainMenuInventories i = new MainMenuInventories();
+				MainMenuInventory i = new MainMenuInventory();
 				i.newInventory(player, plugin.getStandMap().get(player.getUniqueId()));
 			}else {
-				OptionsMenuInventories i = new OptionsMenuInventories();
+				OptionsMenuInventory i = new OptionsMenuInventory();
 				i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
 			}
 			return null;
@@ -60,10 +60,10 @@ public class RotationConv extends StringPrompt {
 		}catch(Exception e) {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "You need to put an number value here");
 			if(invType) {
-				MainMenuInventories i = new MainMenuInventories();
+				MainMenuInventory i = new MainMenuInventory();
 				i.newInventory(player, plugin.getStandMap().get(player.getUniqueId()));
 			}else {
-				OptionsMenuInventories i = new OptionsMenuInventories();
+				OptionsMenuInventory i = new OptionsMenuInventory();
 				i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
 			}
 			return null;
@@ -215,11 +215,11 @@ public class RotationConv extends StringPrompt {
 			plugin.getServer().getPluginManager().callEvent(e);
 			
 			if(!e.isCancelled()) {
-				MainMenuInventories i = new MainMenuInventories();
+				MainMenuInventory i = new MainMenuInventory();
 				i.newInventory(player, stand);
 			}
 		}else {
-			OptionsMenuInventories i = new OptionsMenuInventories();
+			OptionsMenuInventory i = new OptionsMenuInventory();
 			i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
 		}
 		return null;

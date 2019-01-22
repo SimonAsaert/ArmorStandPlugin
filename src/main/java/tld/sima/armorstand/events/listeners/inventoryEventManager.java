@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
-import tld.sima.armorstand.inventories.MainMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
 
 public class inventoryEventManager implements Listener {
 	
@@ -63,7 +63,7 @@ public class inventoryEventManager implements Listener {
 				return;
 			}
 			
-			MainMenuInventories i = new MainMenuInventories();
+			MainMenuInventory i = new MainMenuInventory();
 			if (itemName.contains("Change Head")) {
 				ItemStack setter = event.getCursor();
 				if (!(stand.getEquipment().getHelmet().equals(new ItemStack(Material.AIR)))) {

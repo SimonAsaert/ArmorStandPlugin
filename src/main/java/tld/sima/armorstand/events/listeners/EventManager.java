@@ -39,7 +39,7 @@ import tld.sima.armorstand.conversations.RotationConv;
 import tld.sima.armorstand.events.created.ArmorstandClonedEvent;
 import tld.sima.armorstand.events.created.ArmorstandRemovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
-import tld.sima.armorstand.inventories.MainMenuInventories;
+import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.utils.Pair;
 import tld.sima.armorstand.utils.ToolType;
 
@@ -265,7 +265,7 @@ public class EventManager implements Listener {
 				plugin.getServer().getPluginManager().callEvent(e);
 				
 				if(!e.isCancelled()) {
-					MainMenuInventories i = new MainMenuInventories();
+					MainMenuInventory i = new MainMenuInventory();
 					i.newInventory(player, stand);
 				}
 				plugin.getStandMap().put(player.getUniqueId(), stand);
