@@ -82,12 +82,9 @@ public class RotationConv extends StringPrompt {
 				if(!(angle == 0) && !(angle % 360 == 0)) {
 					for(UUID uuid : UUIDS) {
 						Entity entity = Bukkit.getEntity(uuid);
-						Location vector = entity.getLocation().clone().subtract(stand.getLocation().clone());
-						VectorEuler euler = new VectorEuler(vector);
-						euler.add(angle * (Math.PI/180));
-						vector.setX(euler.getX());
-						vector.setZ(euler.getZ());
-						Location newloc = stand.getLocation().clone().add(vector);
+						VectorEuler euler = new VectorEuler(entity.getLocation().clone().subtract(stand.getLocation().clone()));
+						euler.addRadian(angle * (Math.PI/180));
+						Location newloc = stand.getLocation().clone().add(euler.getX(), 0, euler.getZ());
 						newloc.setYaw(stand.getLocation().getYaw() + (float) angle);
 						ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newloc, true);
 						plugin.getServer().getPluginManager().callEvent(ame);
@@ -105,7 +102,7 @@ public class RotationConv extends StringPrompt {
 						if(entity instanceof ArmorStand) {
 							Location vector = entity.getLocation().clone().subtract(stand.getLocation().clone());
 							VectorEuler euler = new VectorEuler(vector);
-							euler.add(angle*(Math.PI/180));
+							euler.addRadian(angle*(Math.PI/180));
 							vector.setX(euler.getX());
 							vector.setZ(euler.getZ());
 							Location newloc = stand.getLocation().clone().add(vector);

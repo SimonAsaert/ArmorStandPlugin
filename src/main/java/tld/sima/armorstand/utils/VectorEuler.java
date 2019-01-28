@@ -13,8 +13,13 @@ public class VectorEuler {
 		theta = Math.atan2(loc.getZ(), loc.getX());
 	}
 	
-	public void add(double theta) {
+	public void addRadian(double theta) {
 		this.theta += theta;
+	}
+	
+	public void addDegrees(double theta) {
+		double radian = theta * Math.PI/180.0;
+		this.theta += radian;
 	}
 	
 	public double getX() {
