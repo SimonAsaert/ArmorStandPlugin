@@ -52,6 +52,7 @@ public class DefaultSettings {
 		maincfg.addDefault("Settings.clonetool.type", Material.STICK.toString());
 		maincfg.addDefault("Settings.clonetool.name", "&AClone Tool");
 		maincfg.addDefault("Settings.clonetool.item-description", "");
+		
 		maincfg.addDefault("Settings.parenttool.type", Material.SLIME_BALL.toString());
 		maincfg.addDefault("Settings.parenttool.name", "&AParent Tool");
 		maincfg.addDefault("Settings.parenttool.item-description", "");
@@ -86,6 +87,7 @@ public class DefaultSettings {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', maincfg.getString("Settings.parenttool.name")));
 		meta.setLore(Arrays.asList(maincfg.getString("Settings.parenttool.item-description").split("[|]")));
+		item.setItemMeta(meta);
 		return item;
 	}
 	

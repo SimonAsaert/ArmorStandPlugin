@@ -74,12 +74,13 @@ public class Main extends JavaPlugin {
 				continue;
 			}
 			smartParent.put(sps.getUUID(), sps.loadList());
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Smart parent UUID: " + sps.getUUID());
 			StringBuilder builder = new StringBuilder();
 			ArrayList<UUID> uuids = sps.loadList();
-			builder.append(ChatColor.GREEN).append("Child parents: ").append(ChatColor.WHITE).append(uuids.get(0));
-			for(int i = 1 ; i < uuids.size() ; i++) {
-				builder.append(", ").append(uuids.get(i));
+			if(uuids.size() > 0) {
+				builder.append(ChatColor.GREEN).append("Child parents: ").append(ChatColor.WHITE).append(uuids.get(0));
+				for(int i = 1 ; i < uuids.size() ; i++) {
+					builder.append(", ").append(uuids.get(i));
+				}
 			}
 			Bukkit.getServer().getConsoleSender().sendMessage(builder.toString());
 		}

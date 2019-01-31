@@ -67,6 +67,15 @@ public class EventManager implements Listener {
 					UUID standUUID = stand.getUniqueId();
 					ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
 					plugin.getServer().getPluginManager().callEvent(are);
+					plugin.getParentMap().remove(standUUID);
+					plugin.getSmartParent().remove(standUUID);
+					
+					for(UUID uuid : plugin.getSmartParent().keySet()) {
+						if(plugin.getSmartParent().get(uuid).contains(standUUID)) {
+							plugin.getSmartParent().get(uuid).remove(standUUID);
+						}
+					}
+					
 					stand.remove();
 				}else if (itemInHand.getType().equals(plugin.getPlayerCustomTool().get(player.getUniqueId()).getLeft())) {
 					ToolType type = plugin.getPlayerCustomTool().get(player.getUniqueId()).getRight();
@@ -146,6 +155,9 @@ public class EventManager implements Listener {
 					}
 				}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool())) {
 					ArmorStand parentStand = plugin.getStandMap().get(player.getUniqueId());
+					if(parentStand == null) {
+						return;
+					}
 					ArmorStand entity = (ArmorStand) event.getEntity();
 					if(plugin.getSmartParent().containsKey(parentStand.getUniqueId())) {
 						if(entity.getUniqueId().equals(parentStand.getUniqueId())) {
