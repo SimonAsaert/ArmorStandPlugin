@@ -85,6 +85,7 @@ public class RotationConv extends StringPrompt {
 						VectorEuler euler = new VectorEuler(entity.getLocation().clone().subtract(stand.getLocation().clone()));
 						euler.addRadian(angle * (Math.PI/180));
 						Location newloc = stand.getLocation().clone().add(euler.getX(), 0, euler.getZ());
+						newloc.setY(entity.getLocation().getY());
 						newloc.setYaw(stand.getLocation().getYaw() + (float) angle);
 						ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newloc, true);
 						plugin.getServer().getPluginManager().callEvent(ame);
