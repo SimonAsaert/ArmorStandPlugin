@@ -130,7 +130,7 @@ public class OptionsMenuItemEvents {
 			i.openInventory(player, stand);
 		}else if (itemName.contains("Toggle Fire")) {
 			int fireTicks = stand.getFireTicks();
-			if (fireTicks == -1) {
+			if (fireTicks == -1 || fireTicks == 0) {
 				stand.setFireTicks(2147483645);
 				stand.setInvulnerable(true);
 			}else {

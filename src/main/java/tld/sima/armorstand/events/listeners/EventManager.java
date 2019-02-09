@@ -91,11 +91,12 @@ public class EventManager implements Listener {
 						stand.setVisible(!stand.isVisible());
 						break;
 					case FIRE:
-						int i = stand.getFireTicks();
-						if(i > 5) {
-							stand.setFireTicks(Integer.MAX_VALUE);
+						int fireTicks = stand.getFireTicks();
+						if(fireTicks == -1 || fireTicks == 0) {
+							stand.setFireTicks(2147483645);
+							stand.setInvulnerable(true);
 						}else {
-							stand.setFireTicks(0);
+							stand.setFireTicks(-1);
 						}
 						break;
 					case BASE:
