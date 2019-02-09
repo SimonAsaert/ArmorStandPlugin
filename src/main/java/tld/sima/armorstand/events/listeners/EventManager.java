@@ -1,7 +1,6 @@
 package tld.sima.armorstand.events.listeners;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -11,8 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -40,6 +37,7 @@ import tld.sima.armorstand.events.created.ArmorstandClonedEvent;
 import tld.sima.armorstand.events.created.ArmorstandRemovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
+import tld.sima.armorstand.utils.CloneClass;
 import tld.sima.armorstand.utils.Pair;
 import tld.sima.armorstand.utils.ToolType;
 
@@ -228,33 +226,16 @@ public class EventManager implements Listener {
 				Location loc = event.getClickedBlock().getLocation().clone();
 				loc.add(0.5, 1, 0.5);
 				
-				ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand, loc);
+				Vector delta = loc.clone().toVector().subtract(oldStand.getLocation().clone().toVector());
+				
+				ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand, delta);
 				plugin.getServer().getPluginManager().callEvent(e);
 				
 				if(!e.isCancelled()) {
-					if (plugin.getParentMap().containsKey(oldStand.getUniqueId())) {
-						int radius = plugin.getParentMap().get(oldStand.getUniqueId());
-						Collection<Entity> entities = oldStand.getLocation().getWorld().getNearbyEntities(oldStand.getLocation(), 2.0, 2.0, 2.0);
-						for (Entity entity : entities) {
-							if (entity instanceof ArmorStand) {
-								ArmorStand stands = (ArmorStand) entity;
-								Vector offset = stands.getLocation().toVector().subtract(oldStand.getLocation().toVector());
-								Location newloc = loc.clone();
-								newloc.add(offset);
-								newloc.setYaw(stands.getLocation().getYaw());
-								newloc.setPitch(stands.getLocation().getPitch());
-								ArmorStand newStand = (ArmorStand) newloc.getWorld().spawnEntity(newloc, EntityType.ARMOR_STAND);
-								copyStandSettings(stands, newStand);
-
-								if (plugin.getParentMap().containsKey(stands.getUniqueId())) {plugin.getParentMap().put(newStand.getUniqueId(), radius);}
-							}
-						}
-					}else {
-						loc.setYaw(oldStand.getLocation().getYaw());
-						loc.setPitch(oldStand.getLocation().getPitch());
-						ArmorStand newOStand = (ArmorStand) loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
-						copyStandSettings(oldStand, newOStand);
-					}
+					CloneClass cc = new CloneClass();
+					
+					cc.CloneStand(oldStand, delta);
+					player.sendMessage(ChatColor.GREEN + "Armorstand(s) cloned!");
 				}
 			}
 		}
@@ -283,36 +264,5 @@ public class EventManager implements Listener {
 				plugin.getStandMap().put(player.getUniqueId(), stand);
 			}
 		}
-	}
-	
-	private void copyStandSettings(ArmorStand oldStand, ArmorStand newStand) {
-		newStand.setBasePlate(oldStand.hasBasePlate());
-		
-		newStand.setLeftLegPose(oldStand.getLeftLegPose());
-		newStand.setRightLegPose(oldStand.getRightLegPose());
-		newStand.setLeftArmPose(oldStand.getLeftArmPose());
-		newStand.setRightArmPose(oldStand.getRightArmPose());
-		newStand.setBodyPose(oldStand.getBodyPose());
-		newStand.setHeadPose(oldStand.getHeadPose());
-		
-		newStand.setCustomName(oldStand.getCustomName());
-		if (!newStand.getCustomName().equals("N/A")) {
-			newStand.setCustomNameVisible(true);
-		}else {
-			newStand.setCustomNameVisible(false);
-		}
-		newStand.getEquipment().setItemInOffHand(oldStand.getEquipment().getItemInOffHand());
-		newStand.getEquipment().setItemInMainHand(oldStand.getEquipment().getItemInMainHand());
-		newStand.getEquipment().setBoots(oldStand.getEquipment().getBoots());
-		newStand.getEquipment().setLeggings(oldStand.getEquipment().getLeggings());
-		newStand.getEquipment().setChestplate(oldStand.getEquipment().getChestplate());
-		newStand.getEquipment().setHelmet(oldStand.getEquipment().getHelmet());
-		
-		newStand.setFireTicks(oldStand.getFireTicks());
-		newStand.setGlowing(oldStand.isGlowing());
-		newStand.setGravity(oldStand.hasGravity());
-		newStand.setSmall(oldStand.isSmall());
-		newStand.setVisible(oldStand.isVisible());
-		newStand.setArms(oldStand.hasArms());
 	}
 }
