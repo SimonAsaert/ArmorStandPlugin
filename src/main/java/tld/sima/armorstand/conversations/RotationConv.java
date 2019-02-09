@@ -136,7 +136,7 @@ public class RotationConv extends StringPrompt {
 					con.getForWhom().sendRawMessage(ChatColor.GOLD + "Head X angle changed to: " + ChatColor.WHITE + degreesD);
 					break;
 				case HY:
-					stand.setHeadPose(stand.getHeadPose().setX(degrees));
+					stand.setHeadPose(stand.getHeadPose().setY(degrees));
 					con.getForWhom().sendRawMessage(ChatColor.GOLD + "Head X angle changed to: " + ChatColor.WHITE + degreesD);
 					break;
 				case HZ:
