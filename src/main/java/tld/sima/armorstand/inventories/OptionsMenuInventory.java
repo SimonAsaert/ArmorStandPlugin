@@ -18,34 +18,34 @@ public class OptionsMenuInventory {
 		Inventory i = plugin.getServer().createInventory(null, 27, ChatColor.DARK_BLUE + "Armorstand GUI Options");
 		
 		boolean parent = plugin.getParentMap().containsKey(stand.getUniqueId());
-		ItemStack setparent = new ItemStack(Material.ARMOR_STAND,1);
+		ItemStack setparent = new ItemStack(Material.ARMOR_STAND);
 		setparent = plugin.createItem(setparent, ChatColor.WHITE + "Set Parent", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent));
 		
-		ItemStack position = new ItemStack(Material.STONE,1);
+		ItemStack position = new ItemStack(Material.STONE);
 		position = plugin.createItem(position, ChatColor.WHITE + "Position", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Position: " + ChatColor.WHITE + stand.getLocation().getX() + " " + stand.getLocation().getY() + " " + stand.getLocation().getZ() + " "));
 		
-		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
+		ItemStack clone = new ItemStack(Material.ARMOR_STAND);
 		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 
 		ItemStack delete = new ItemStack(Material.SKELETON_SKULL);
 		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 		
-		ItemStack back = new ItemStack(Material.BARRIER, 1);
+		ItemStack back = new ItemStack(Material.BARRIER);
 		back = plugin.createItem(back, ChatColor.WHITE + "Back", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Return to main menu"));
 
-				ItemStack toggleglow = new ItemStack(Material.GLOWSTONE,1);
+				ItemStack toggleglow = new ItemStack(Material.GLOWSTONE);
 		toggleglow = plugin.createItem(toggleglow, ChatColor.WHITE + "Toggle Glow", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + stand.isGlowing()));
 
 		if(!parent) {
-			ItemStack togglesize = new ItemStack(Material.RED_MUSHROOM,1);
-			ItemStack name = new ItemStack(Material.NAME_TAG,1);
-			ItemStack invisible = new ItemStack(Material.POTION, 1);
-			ItemStack togglearms = new ItemStack(Material.STICK, 1);
-			ItemStack togglefire = new ItemStack(Material.FLINT_AND_STEEL,1);
-			ItemStack rotation = new ItemStack(Material.OAK_WOOD,1);
-			ItemStack togglebase = new ItemStack(Material.STONE_PRESSURE_PLATE,1);
-			ItemStack togglegravity = new ItemStack(Material.APPLE,1);
-			ItemStack movement = new ItemStack(Material.ARROW,1);
+			ItemStack togglesize = new ItemStack(Material.RED_MUSHROOM);
+			ItemStack name = new ItemStack(Material.NAME_TAG);
+			ItemStack invisible = new ItemStack(Material.POTION);
+			ItemStack togglearms = new ItemStack(Material.STICK);
+			ItemStack togglefire = new ItemStack(Material.FLINT_AND_STEEL);
+			ItemStack rotation = new ItemStack(Material.OAK_WOOD);
+			ItemStack togglebase = new ItemStack(Material.STONE_PRESSURE_PLATE);
+			ItemStack togglegravity = new ItemStack(Material.APPLE);
+			ItemStack movement = new ItemStack(Material.ARROW);
 
 			movement = plugin.createItem(movement, ChatColor.WHITE + "Move Stand with Player", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Moves stand with respect to player."));
 
@@ -68,7 +68,7 @@ public class OptionsMenuInventory {
 			togglebase = plugin.createItem(togglebase, ChatColor.WHITE + "Toggle Base", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + stand.hasBasePlate()));
 			togglegravity = plugin.createItem(togglegravity, ChatColor.WHITE + "Toggle Gravity", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + stand.hasGravity()));
 			setparent = plugin.createItem(setparent, ChatColor.WHITE + "Set Parent", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Parent status: " + parent));
-			ItemStack specialClone = new ItemStack(Material.ARMOR_STAND, 1);
+			ItemStack specialClone = new ItemStack(Material.ARMOR_STAND);
 			specialClone = plugin.createItem(specialClone, ChatColor.WHITE + "Special Clone", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Clones stand 2 blocks above this one."));
 	
 			i.setItem(0, togglegravity);
@@ -92,10 +92,10 @@ public class OptionsMenuInventory {
 			i.setItem(25, delete);
 			i.setItem(26, back);
 		} else {
-			ItemStack disabled = new ItemStack(Material.BARRIER,1);
+			ItemStack disabled = new ItemStack(Material.BARRIER);
 			disabled = plugin.createItem(disabled, ChatColor.RED + "Disabled due to parent status", Arrays.asList(ChatColor.RED + "Disabled due to parent status"));
 			
-			ItemStack setradius = new ItemStack(Material.STICK,1);
+			ItemStack setradius = new ItemStack(Material.STICK);
 			setradius = plugin.createItem(setradius, ChatColor.WHITE + "Set Radius", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId())));
 
 

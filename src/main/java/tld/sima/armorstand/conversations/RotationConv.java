@@ -1,25 +1,19 @@
 package tld.sima.armorstand.conversations;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
-import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.OptionsMenuInventory;
-import tld.sima.armorstand.utils.VectorEuler;
+import tld.sima.armorstand.utils.RotationClass;
 
 public class RotationConv extends StringPrompt {
 	
@@ -74,58 +68,9 @@ public class RotationConv extends StringPrompt {
 		
 		// Setting armorstand rotations depending on type.
 		if (typeUsed.equals(rotationType.BODY)) {
-			
-			if(plugin.getSmartParent().containsKey(stand.getUniqueId())) {
-				ArrayList<UUID> UUIDS = plugin.getSmartParent().get(stand.getUniqueId());
-				double angle = degrees - stand.getLocation().getYaw();
-				
-				if(!(angle == 0) && !(angle % 360 == 0)) {
-					for(UUID uuid : UUIDS) {
-						Entity entity = Bukkit.getEntity(uuid);
-						VectorEuler euler = new VectorEuler(entity.getLocation().clone().subtract(stand.getLocation().clone()));
-						euler.addRadian(angle * (Math.PI/180));
-						Location newloc = stand.getLocation().clone().add(euler.getX(), 0, euler.getZ());
-						newloc.setY(entity.getLocation().getY());
-						newloc.setYaw(stand.getLocation().getYaw() + (float) angle);
-						ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newloc, true);
-						plugin.getServer().getPluginManager().callEvent(ame);
-						if(!ame.isCancelled()) {
-							entity.teleport(newloc);
-				}	}	}
-				
-			}else if(plugin.getParentMap().containsKey(stand.getUniqueId())) {
-				int radius = plugin.getParentMap().get(stand.getUniqueId());
-				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
-				double angle = degrees - stand.getLocation().getYaw();
-				
-				if(!(angle == 0) && !(angle % 360 == 0)) {
-					for(Entity entity : entities) {
-						if(entity instanceof ArmorStand) {
-							Location vector = entity.getLocation().clone().subtract(stand.getLocation().clone());
-							VectorEuler euler = new VectorEuler(vector);
-							euler.addRadian(angle*(Math.PI/180));
-							vector.setX(euler.getX());
-							vector.setZ(euler.getZ());
-							Location newloc = stand.getLocation().clone().add(vector);
-							newloc.setYaw(entity.getLocation().getYaw() + (float)angle);
-							ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newloc, true);
-							plugin.getServer().getPluginManager().callEvent(ame);
-							if(!ame.isCancelled()) {
-								entity.teleport(newloc);
-			}	}	}	}	}
-			
-			Location loc = stand.getLocation().clone();
-			Location newLoc = loc.clone();
-			newLoc.setYaw((float) degrees);
-			
-			ArmorstandMovedEvent ame = new ArmorstandMovedEvent(stand, newLoc, true);
-			plugin.getServer().getPluginManager().callEvent(ame);
-			
-			if(!ame.isCancelled()) {
-				stand.teleport(newLoc);
-				con.getForWhom().sendRawMessage(ChatColor.GOLD + "Body angle changed to: " + ChatColor.WHITE + degrees);
-			}
-			
+			RotationClass rc = new RotationClass();
+			rc.InsertionDegrees(stand.getUniqueId(), degrees);
+			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Body angle changed to: " + ChatColor.WHITE + degrees);
 		}else {
 			int degreesD = (int)degrees;
 			degrees = degrees*Math.PI/180;

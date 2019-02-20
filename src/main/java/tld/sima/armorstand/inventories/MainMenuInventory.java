@@ -28,24 +28,24 @@ public class MainMenuInventory {
 		ItemStack delete = new ItemStack(Material.SKELETON_SKULL);
 		delete = plugin.createItem(delete, ChatColor.WHITE + "Delete Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 		
-		ItemStack options = new ItemStack(Material.ANVIL, 1);
+		ItemStack options = new ItemStack(Material.ANVIL);
 		options = plugin.createItem(options, ChatColor.WHITE + "Options", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "More Armorstand Options"));
 
-		ItemStack animations = new ItemStack(Material.REDSTONE, 1);
+		ItemStack animations = new ItemStack(Material.REDSTONE);
 		animations = plugin.createItem(animations, ChatColor.WHITE + "Animations", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Armorstand animations"));
 
-		ItemStack position = new ItemStack(Material.STONE,1);
+		ItemStack position = new ItemStack(Material.STONE);
 		position = plugin.createItem(position, ChatColor.WHITE + "Position", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Move armorstands in XYZ position"));
 
-		ItemStack clone = new ItemStack(Material.ARMOR_STAND,1);
+		ItemStack clone = new ItemStack(Material.ARMOR_STAND);
 		clone = plugin.createItem(clone, ChatColor.WHITE + "Clone Stand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 		
-		ItemStack rotation = new ItemStack(Material.OAK_WOOD,1);
+		ItemStack rotation = new ItemStack(Material.OAK_WOOD);
 		rotation = plugin.createItem(rotation, ChatColor.WHITE + "Rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
 		
 		if (parent) {
 			// Further Options
-			ItemStack disabled = new ItemStack(Material.BARRIER,1);		
+			ItemStack disabled = new ItemStack(Material.BARRIER);		
 			disabled = plugin.createItem(disabled, ChatColor.RED + "Disabled due to parent status", Arrays.asList(ChatColor.RED + "Disabled due to parent status"));
 
 			i.setItem(0, disabled);
@@ -94,33 +94,33 @@ public class MainMenuInventory {
 		}else {
 		
 			// Further Options
-			ItemStack movement = new ItemStack(Material.ARROW,1);
+			ItemStack movement = new ItemStack(Material.ARROW);
 			movement = plugin.createItem(movement, ChatColor.WHITE + "Move Stand with Player", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Moves stand with respect to player."));
 			
 			// Segment rotation
-			ItemStack headx = new ItemStack(Material.LEATHER_HELMET, 1);
-			ItemStack heady = new ItemStack(Material.LEATHER_HELMET, 1);
-			ItemStack headz = new ItemStack(Material.LEATHER_HELMET, 1);
+			ItemStack headx = new ItemStack(Material.LEATHER_HELMET);
+			ItemStack heady = new ItemStack(Material.LEATHER_HELMET);
+			ItemStack headz = new ItemStack(Material.LEATHER_HELMET);
 
-			ItemStack torsox = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			ItemStack torsoy = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			ItemStack torsoz = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+			ItemStack torsox = new ItemStack(Material.LEATHER_CHESTPLATE);
+			ItemStack torsoy = new ItemStack(Material.LEATHER_CHESTPLATE);
+			ItemStack torsoz = new ItemStack(Material.LEATHER_CHESTPLATE);
 	
-			ItemStack leftarmx = new ItemStack(Material.STICK, 1);
-			ItemStack leftarmy = new ItemStack(Material.STICK, 1);
-			ItemStack leftarmz = new ItemStack(Material.STICK, 1);
+			ItemStack leftarmx = new ItemStack(Material.STICK);
+			ItemStack leftarmy = new ItemStack(Material.STICK);
+			ItemStack leftarmz = new ItemStack(Material.STICK);
 	
-			ItemStack rightarmx = new ItemStack(Material.STICK, 1);
-			ItemStack rightarmy = new ItemStack(Material.STICK, 1);
-			ItemStack rightarmz = new ItemStack(Material.STICK, 1);
+			ItemStack rightarmx = new ItemStack(Material.STICK);
+			ItemStack rightarmy = new ItemStack(Material.STICK);
+			ItemStack rightarmz = new ItemStack(Material.STICK);
 	
-			ItemStack leftlegx = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			ItemStack leftlegy = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			ItemStack leftlegz = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+			ItemStack leftlegx = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack leftlegy = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack leftlegz = new ItemStack(Material.LEATHER_LEGGINGS);
 	
-			ItemStack rightlegx = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			ItemStack rightlegy = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			ItemStack rightlegz = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+			ItemStack rightlegx = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack rightlegy = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack rightlegz = new ItemStack(Material.LEATHER_LEGGINGS);
 			
 			headx = plugin.createItem(headx, ChatColor.WHITE + "Change Head x-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Xhead: " + ChatColor.WHITE + (double)(stand.getHeadPose().getX())*180/Math.PI));
 			heady = plugin.createItem(heady, ChatColor.WHITE + "Change Head y-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of Yhead: " + ChatColor.WHITE + (double)stand.getHeadPose().getY()*180/Math.PI));
@@ -147,12 +147,12 @@ public class MainMenuInventory {
 			rightlegz = plugin.createItem(rightlegz, ChatColor.WHITE + "Change Right Leg's z-rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current angle of ZRight Leg: " + ChatColor.WHITE + (double)stand.getRightLegPose().getZ()*180/Math.PI));
 	
 			// Set Items in Positions
-			ItemStack head = new ItemStack(Material.LEATHER_HELMET, 1);
-			ItemStack torso = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-			ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS, 1);
-			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-			ItemStack leftHand = new ItemStack(Material.STICK, 1);
-			ItemStack rightHand = new ItemStack(Material.STICK, 1);
+			ItemStack head = new ItemStack(Material.LEATHER_HELMET);
+			ItemStack torso = new ItemStack(Material.LEATHER_CHESTPLATE);
+			ItemStack legs = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+			ItemStack leftHand = new ItemStack(Material.STICK);
+			ItemStack rightHand = new ItemStack(Material.STICK);
 			
 			head = plugin.createItem(head, ChatColor.WHITE + "Change Head", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the head"));
 			torso = plugin.createItem(torso, ChatColor.WHITE + "Change Chest", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Use to change what item is worn on the chest"));
@@ -163,37 +163,37 @@ public class MainMenuInventory {
 			
 			ItemStack curhead;
 			if(stand.getHelmet() == (null) || stand.getHelmet().equals(new ItemStack(Material.AIR))) {
-				curhead = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Head", Arrays.asList(""));
+				curhead = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}else {
 				curhead = plugin.createItem(stand.getHelmet(), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}
 			ItemStack curtorso;
 			if(stand.getChestplate() == (null) || stand.getChestplate().equals(new ItemStack(Material.AIR))) {
-				curtorso = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
+				curtorso = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}else {
 				curtorso = plugin.createItem(stand.getChestplate(), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}
 			ItemStack curlegs;
 			if(stand.getLeggings() == (null) || stand.getLeggings().equals(new ItemStack(Material.AIR))) {
-				curlegs = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
+				curlegs = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}else {
 				curlegs = plugin.createItem(stand.getLeggings(), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}
 			ItemStack curboots;
 			if(stand.getBoots() == (null) || stand.getBoots().equals(new ItemStack(Material.AIR))) {
-				curboots = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
+				curboots = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}else {
 				curboots = plugin.createItem(stand.getBoots(), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}
 			ItemStack curleftHand;
 			if(stand.getEquipment().getItemInOffHand() == (null) || stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR))) {
-				curleftHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
+				curleftHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}else {
 				curleftHand = plugin.createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}
 			ItemStack currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			if(stand.getEquipment().getItemInMainHand() == (null) || stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR))) {
-				currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
+				currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			}else {
 				currightHand = plugin.createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			}
