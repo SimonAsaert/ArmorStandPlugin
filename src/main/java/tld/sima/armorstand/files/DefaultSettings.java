@@ -43,7 +43,6 @@ public class DefaultSettings {
 		maincfg = YamlConfiguration.loadConfiguration(mainfile);
 
 		createMainConfigValues();
-		
 		return true;
 	}
 

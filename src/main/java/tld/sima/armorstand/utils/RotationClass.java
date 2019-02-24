@@ -28,7 +28,6 @@ public class RotationClass {
 		if (Bukkit.getEntity(standuuid) == null || (radians == 0.0 && movement.equals(new Vector(0, 0, 0)))) {
 			return;
 		}
-		Bukkit.getConsoleSender().sendMessage("Movement X: " + movement.getX() + " | Z: " + movement.getZ());
 		Location parentLocation = Bukkit.getEntity(standuuid).getLocation().clone();
 		
 		if(plugin.getSmartParent().containsKey(standuuid)) {
@@ -47,14 +46,11 @@ public class RotationClass {
 					euler.addRadian(radians * Math.PI/180);
 					
 					Location a = parentLocation.clone().add(euler.getX(), childLocation.getY(), euler.getZ());
-					Bukkit.getConsoleSender().sendMessage("Before Sub X: " + a.getX() + " | Z: " + a.getZ());
 					delta = a.subtract(childLocation);
-					Bukkit.getConsoleSender().sendMessage("After Sub X: " + a.getX() + " | Z: " + a.getZ());
 				}else {
 					delta = new Location(childEntity.getWorld(), 0, 0, 0);
 				}
 				delta.add(movement);
-				Bukkit.getConsoleSender().sendMessage("After add movement X: " + delta.getX() + " | Z: " + delta.getZ());
 				moveStand(child, radians, delta.toVector());
 			}
 			seenStands.remove(standuuid);
@@ -63,7 +59,7 @@ public class RotationClass {
 			int radius = plugin.getParentMap().get(standuuid);
 			List<Entity> entities = Bukkit.getEntity(standuuid).getNearbyEntities(radius, radius, radius);
 			for(Entity childEntity : entities) {
-				if(childEntity == null || childEntity.getType().equals(EntityType.ARMOR_STAND) || seenStands.contains(childEntity.getUniqueId())) {
+				if(childEntity == null || seenStands.contains(childEntity.getUniqueId()) || !childEntity.getType().equals(EntityType.ARMOR_STAND)) {
 					continue;
 				}
 				UUID child = childEntity.getUniqueId();
@@ -75,31 +71,23 @@ public class RotationClass {
 					euler.addRadian(radians * Math.PI/180);
 
 					Location a = parentLocation.clone().add(euler.getX(), childLocation.getY(), euler.getZ());
-					Bukkit.getConsoleSender().sendMessage("Before Sub X: " + a.getX() + " | Z: " + a.getZ());
 					delta = a.subtract(childLocation);
-					Bukkit.getConsoleSender().sendMessage("After Sub X: " + a.getX() + " | Z: " + a.getZ());
 				}else {
 					delta = new Location(childEntity.getWorld(), 0, 0, 0);
 				}
 				delta.add(movement);
-				Bukkit.getConsoleSender().sendMessage("After add movement X: " + delta.getX() + " | Z: " + delta.getZ());
 				moveStand(child, radians, delta.toVector());
 			}
 			seenStands.remove(standuuid);
 		}
 
-		Bukkit.getConsoleSender().sendMessage("Before movement add X: " + parentLocation.getX() + " | Z: " + parentLocation.getZ());
 		parentLocation.add(movement.getX(), 0, movement.getZ());
-		Bukkit.getConsoleSender().sendMessage("After movement add X: " + parentLocation.getX() + " | Z: " + parentLocation.getZ());
 		parentLocation.setYaw(parentLocation.getYaw() + (float)radians);
 		ArmorstandMovedEvent ame = new ArmorstandMovedEvent(Bukkit.getEntity(standuuid), parentLocation, (radians != 0.0));
 		plugin.getServer().getPluginManager().callEvent(ame);
 		
 		if(!ame.isCancelled()) {
 			Bukkit.getEntity(standuuid).teleport(parentLocation);
-			Bukkit.getServer().getConsoleSender().sendMessage("ROTATED SOMETHING!");
-		}else {
-			Bukkit.getServer().getConsoleSender().sendMessage("HAVEN'T ROTATED SOMETHING!");
 		}
 	}
 }

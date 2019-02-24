@@ -38,7 +38,6 @@ import tld.sima.armorstand.events.created.ArmorstandRemovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.utils.CloneClass;
-import tld.sima.armorstand.utils.Pair;
 import tld.sima.armorstand.utils.ToolType;
 
 public class EventManager implements Listener {
@@ -47,8 +46,7 @@ public class EventManager implements Listener {
 
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
-		Pair<Material, ToolType> pair = new Pair<Material, ToolType>(Material.AIR, ToolType.NONE);
-		plugin.getPlayerCustomTool().put(event.getPlayer().getUniqueId(), pair);
+		plugin.setupPlayerData(event.getPlayer().getUniqueId());
 	}
 	
 	@EventHandler
@@ -75,8 +73,8 @@ public class EventManager implements Listener {
 					}
 					
 					stand.remove();
-				}else if (itemInHand.getType().equals(plugin.getPlayerCustomTool().get(player.getUniqueId()).getLeft())) {
-					ToolType type = plugin.getPlayerCustomTool().get(player.getUniqueId()).getRight();
+				}else if (itemInHand.getType().equals(plugin.getArmorstandToolMaterial(player.getUniqueId()))) {
+					ToolType type = plugin.getArmorstandToolType(player.getUniqueId());
 					ArmorStand stand = (ArmorStand)event.getEntity();
 					switch(type) {
 					case NONE:
@@ -110,50 +108,41 @@ public class EventManager implements Listener {
 						break;
 					case NAME:
 					{
-						plugin.getStandMap().put(player.getUniqueId(), stand);
+						plugin.setPairedStand(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						NameConv conversation = new NameConv();
 						conversation.setData(player.getUniqueId());
 						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 						conv.begin();
-						if (plugin.getConv().containsKey(player.getUniqueId())) {
-							plugin.getConv().get(player.getUniqueId()).abandon();
-						}
-						plugin.getConv().put(player.getUniqueId(), conv);
+						plugin.replaceConversation(player.getUniqueId(), conv);
 					}
 						break;
 					case ROTATION:
 					{
-						plugin.getStandMap().put(player.getUniqueId(), stand);
+						plugin.setPairedStand(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						RotationConv converstaion = new RotationConv();
 						converstaion.setData(player.getUniqueId(), true, "BODY");
 						Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 						conv.begin();
-						if (plugin.getConv().containsKey(player.getUniqueId())) {
-							plugin.getConv().get(player.getUniqueId()).abandon();
-						}
-						plugin.getConv().put(player.getUniqueId(), conv);
+						plugin.replaceConversation(player.getUniqueId(), conv);
 					}
 						break;
 					case MOVE:
 					{
-						plugin.getStandMap().put(player.getUniqueId(), stand);
+						plugin.setPairedStand(player.getUniqueId(), stand);
 						ConversationFactory cf = new ConversationFactory(plugin);
 						MovementConv conversation = new MovementConv();
 						conversation.setData(player.getUniqueId(), true);
 						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 						conv.begin();
-						if (plugin.getConv().containsKey(player.getUniqueId())) {
-							plugin.getConv().get(player.getUniqueId()).abandon();
-						}
-						plugin.getConv().put(player.getUniqueId(), conv);
+						plugin.replaceConversation(player.getUniqueId(), conv);
 					}
 					default:
 						break;
 					}
 				}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool())) {
-					ArmorStand parentStand = plugin.getStandMap().get(player.getUniqueId());
+					ArmorStand parentStand = plugin.getPairedStand(player.getUniqueId());
 					if(parentStand == null) {
 						return;
 					}
@@ -221,21 +210,22 @@ public class EventManager implements Listener {
 					delay.remove(player.getUniqueId());
 				}
 			}.runTaskLater(this.plugin, 10);
-			if (plugin.getCloneMap().containsKey(player.getUniqueId())) {
-				ArmorStand oldStand = plugin.getCloneMap().get(player.getUniqueId());
+			if (plugin.getClonedStand(player.getUniqueId()) != null) {
+				ArmorStand oldStand = plugin.getClonedStand(player.getUniqueId());
 
 				Location loc = event.getClickedBlock().getLocation().clone();
 				loc.add(0.5, 1, 0.5);
 				
 				Vector delta = loc.clone().toVector().subtract(oldStand.getLocation().clone().toVector());
+				UUID worldUUID = event.getClickedBlock().getWorld().getUID();
 				
-				ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand, delta);
+				ArmorstandClonedEvent e = new ArmorstandClonedEvent(player, oldStand, delta, worldUUID);
 				plugin.getServer().getPluginManager().callEvent(e);
 				
 				if(!e.isCancelled()) {
 					CloneClass cc = new CloneClass();
 					
-					cc.CloneStand(oldStand, delta);
+					cc.CloneStand(oldStand, delta, worldUUID);
 					player.sendMessage(ChatColor.GREEN + "Armorstand(s) cloned!");
 				}
 			}
@@ -262,7 +252,7 @@ public class EventManager implements Listener {
 					MainMenuInventory i = new MainMenuInventory();
 					i.newInventory(player, stand);
 				}
-				plugin.getStandMap().put(player.getUniqueId(), stand);
+				plugin.setPairedStand(player.getUniqueId(), stand);
 			}
 		}
 	}

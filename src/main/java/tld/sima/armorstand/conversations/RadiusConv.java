@@ -21,7 +21,7 @@ public class RadiusConv extends StringPrompt {
 
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
-		ArmorStand stand = plugin.getStandMap().get(uuid);
+		ArmorStand stand = plugin.getPairedStand(uuid);
 		
 		int radius;
 		try {

@@ -51,10 +51,7 @@ public class OptionsMenuItemEvents {
 			conversation.setData(player.getUniqueId(), false);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 		}else if (itemName.contains("Rotation")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
@@ -62,10 +59,7 @@ public class OptionsMenuItemEvents {
 			converstaion.setData(player.getUniqueId(), false, "BODY");
 			Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 		}else if (itemName.contains("Name")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
@@ -73,10 +67,7 @@ public class OptionsMenuItemEvents {
 			conversation.setData(player.getUniqueId());
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 		}else if (itemName.contains("Set Radius")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
@@ -84,10 +75,7 @@ public class OptionsMenuItemEvents {
 			conversation.setData(player.getUniqueId(), false);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 		}else if (itemName.contains("Move Stand with Player")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
@@ -95,10 +83,7 @@ public class OptionsMenuItemEvents {
 			conversation.setData(player.getUniqueId());
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 			
 		}else if (itemName.contains("Clone Stand")) {
 			ItemStack tool = new ItemStack(Material.STICK);
@@ -108,7 +93,7 @@ public class OptionsMenuItemEvents {
 			if (!player.getInventory().contains(tool)) {
 				player.getInventory().addItem(tool);
 			}
-			plugin.getCloneMap().put(player.getUniqueId(), stand);
+			plugin.setClonedStand(player.getUniqueId(), stand);
 			player.closeInventory();
 		}else if (itemName.contains("Special Clone")) {
 			Location loc = stand.getLocation().clone();

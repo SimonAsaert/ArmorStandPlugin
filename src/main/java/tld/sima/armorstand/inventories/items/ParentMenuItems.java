@@ -1,13 +1,9 @@
 package tld.sima.armorstand.inventories.items;
 
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
-
+@Deprecated
 public class ParentMenuItems {
 	private Main plugin = Main.getPlugin(Main.class);
 	
@@ -25,14 +21,7 @@ public class ParentMenuItems {
 	ItemStack back;
 	
 	public ParentMenuItems() {
-		defaultParent = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.GREEN + "Set Parent", Arrays.asList(""));
-
-		smartParent = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.GREEN + "Smart Parent", Arrays.asList(""));
-		getTool = plugin.createItem(new ItemStack(Material.STICK), ChatColor.GREEN + "Smart Parent tool", Arrays.asList(""));
 		
-		this.stopParent = plugin.createItem(new ItemStack(Material.REDSTONE_BLOCK), ChatColor.RED + "Remove this stand from being parent", Arrays.asList(""));
-		
-		back = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Back", Arrays.asList(""));
 	}
 	
 	public ItemStack getDefaultParent() {

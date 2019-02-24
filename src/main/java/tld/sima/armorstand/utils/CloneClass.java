@@ -19,9 +19,10 @@ public class CloneClass {
 	private Main plugin = Main.getPlugin(Main.class);
 	private HashSet<UUID> parentList = new HashSet<UUID>();
 	
-	public UUID CloneStand(ArmorStand stand, Vector delta) {
+	public UUID CloneStand(ArmorStand stand, Vector delta, UUID worldUUID) {
 		UUID uuid = stand.getUniqueId();
 		Location newloc = stand.getLocation().clone().add(delta);
+		newloc.setWorld(Bukkit.getWorld(worldUUID));
 		ArmorStand newStand = (ArmorStand) newloc.getWorld().spawnEntity(newloc, EntityType.ARMOR_STAND);
 		copyStandSettings(stand, newStand);
 		
@@ -35,7 +36,7 @@ public class CloneClass {
 				}
 				Entity entity = Bukkit.getEntity(childuuid);
 				if(entity != null) {
-					newList.add(CloneStand((ArmorStand) entity, delta));
+					newList.add(CloneStand((ArmorStand) entity, delta, worldUUID));
 				}
 			}
 			plugin.getSmartParent().put(newStand.getUniqueId(), newList);
@@ -49,7 +50,7 @@ public class CloneClass {
 				}
 				
 				if(child.getType().equals(EntityType.ARMOR_STAND)) {
-					CloneStand((ArmorStand)child, delta);
+					CloneStand((ArmorStand)child, delta, worldUUID);
 				}
 			}
 			plugin.getParentMap().put(newStand.getUniqueId(), (int) radius);

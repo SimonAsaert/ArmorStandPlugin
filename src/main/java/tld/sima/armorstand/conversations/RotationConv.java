@@ -33,16 +33,17 @@ public class RotationConv extends StringPrompt {
 	
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
+		ArmorStand stand = plugin.getPairedStand(uuid);
 		
 		// If somehow input to function is incorrect, fallback to a main menu.
 		if (typeUsed == null) {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "Something somewhere went wrong");
 			if(invType) {
 				MainMenuInventory i = new MainMenuInventory();
-				i.newInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+				i.newInventory(player, stand);
 			}else {
 				OptionsMenuInventory i = new OptionsMenuInventory();
-				i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+				i.openInventory(player, stand);
 			}
 			return null;
 		}
@@ -55,16 +56,15 @@ public class RotationConv extends StringPrompt {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "You need to put an number value here");
 			if(invType) {
 				MainMenuInventory i = new MainMenuInventory();
-				i.newInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+				i.newInventory(player, stand);
 			}else {
 				OptionsMenuInventory i = new OptionsMenuInventory();
-				i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+				i.openInventory(player, stand);
 			}
 			return null;
 			
 		}
 		
-		ArmorStand stand = plugin.getStandMap().get(player.getUniqueId());
 		
 		// Setting armorstand rotations depending on type.
 		if (typeUsed.equals(rotationType.BODY)) {
@@ -163,7 +163,7 @@ public class RotationConv extends StringPrompt {
 			}
 		}else {
 			OptionsMenuInventory i = new OptionsMenuInventory();
-			i.openInventory(player, plugin.getStandMap().get(player.getUniqueId()));
+			i.openInventory(player, stand);
 		}
 		return null;
 	}

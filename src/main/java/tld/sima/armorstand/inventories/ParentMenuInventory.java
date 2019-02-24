@@ -10,8 +10,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
-import tld.sima.armorstand.inventories.items.ItemHub;
-import tld.sima.armorstand.inventories.items.ParentMenuItems;
 
 public class ParentMenuInventory {
 	private Main plugin = Main.getPlugin(Main.class);
@@ -21,13 +19,20 @@ public class ParentMenuInventory {
 		boolean smartFlag = plugin.getSmartParent().containsKey(stand.getUniqueId());
 		boolean defaultFlag = plugin.getParentMap().containsKey(stand.getUniqueId());
 		ItemStack disabled = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Disabled", Arrays.asList(""));
-		ItemHub ihub = plugin.getItemHub();
-		ParentMenuItems hub = ihub.getParentMenuItems();
+		
+		ItemStack defaultParent = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.GREEN + "Radius Parent", Arrays.asList(""));		
+		ItemStack smartParent = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.GREEN + "Smart Parent", Arrays.asList(""));
+
+		ItemStack getTool = plugin.createItem(new ItemStack(Material.STICK), ChatColor.GREEN + "Smart Parent tool", Arrays.asList(""));
+		ItemStack stop = plugin.createItem(new ItemStack(Material.REDSTONE_BLOCK), ChatColor.RED + "Remove this stand from being parent", Arrays.asList(""));
+
+		ItemStack back = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Back", Arrays.asList(""));
+		
 		if(smartFlag) {
-			ItemStack defaultParent = hub.getDefaultParent();
 			
-			ItemStack smartParent = hub.getSmartParent();
-			ItemStack getTool = hub.getTool();
+			
+			
+			
 			
 			i.setItem(0, defaultParent);
 			i.setItem(1, disabled);
@@ -35,12 +40,11 @@ public class ParentMenuInventory {
 			i.setItem(3, smartParent);
 			i.setItem(4, getTool);
 			
-			i.setItem(6, hub.getStop());
+			i.setItem(6, stop);
 		}else if(defaultFlag) {
-			ItemStack defaultParent = hub.getDefaultParent();
-			
-			ItemStack smartParent = hub.getSmartParent();
-			ItemStack radius = plugin.createItem(new ItemStack(Material.STICK), ChatColor.WHITE + "Set Radius", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId())));
+			ItemStack radius = plugin.createItem(new ItemStack(Material.STICK), 
+					ChatColor.WHITE + "Set Radius", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + 
+					"Current Radius: " + ChatColor.WHITE + plugin.getParentMap().get(stand.getUniqueId())));
 			
 			i.setItem(0, defaultParent);
 			i.setItem(1, radius);
@@ -48,11 +52,9 @@ public class ParentMenuInventory {
 			i.setItem(3, smartParent);
 			i.setItem(4, disabled);
 
-			i.setItem(6, hub.getStop());
+			i.setItem(6, stop);
 			
 		}else {
-			ItemStack defaultParent = hub.getDefaultParent();
-			ItemStack smartParent = hub.getSmartParent();
 
 			i.setItem(0, defaultParent);
 			i.setItem(1, disabled);
@@ -61,7 +63,6 @@ public class ParentMenuInventory {
 			i.setItem(4, disabled);
 		}
 		
-		ItemStack back = hub.getBack();
 		i.setItem(8, back);
 		
 		player.openInventory(i);

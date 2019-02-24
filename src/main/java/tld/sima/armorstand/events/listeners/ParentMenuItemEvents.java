@@ -19,35 +19,29 @@ import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.RadiusConv;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.ParentMenuInventory;
-import tld.sima.armorstand.inventories.items.ItemHub;
 
 public class ParentMenuItemEvents {
 	public static Main plugin = Main.getPlugin(Main.class);
 	
 	public static void parseItem(ItemStack item, Player player, ArmorStand stand) {
 		UUID standUUID = stand.getUniqueId();
-		ItemHub hub = plugin.getItemHub();
-		if(item.getItemMeta().getDisplayName().contains("Set Radius")) {
+		String itemName = item.getItemMeta().getDisplayName();
+		if(itemName.contains("Set Radius")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RadiusConv conversation = new RadiusConv();
 			conversation.setData(player.getUniqueId(), true);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
-			if (plugin.getConv().containsKey(player.getUniqueId())) {
-				plugin.getConv().get(player.getUniqueId()).abandon();
-			}
-			plugin.getConv().put(player.getUniqueId(), conv);
+			plugin.replaceConversation(player.getUniqueId(), conv);
 			return;
-			
-		}else if (item.isSimilar(hub.getParentMenuItems().getDefaultParent())) {
+		}else if (itemName.contains("Radius Parent")) {
 			if(plugin.getSmartParent().containsKey(standUUID)) {
 				plugin.getSmartParent().remove(standUUID);
 				plugin.getParentMap().put(standUUID, 1);
 				ParentMenuInventory pmi = new ParentMenuInventory();
 				pmi.openInventory(player, stand);
 				return;
-				
 			}else if (plugin.getParentMap().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
 				PotionEffect potion = new PotionEffect(type, 200, 1);
@@ -59,27 +53,24 @@ public class ParentMenuItemEvents {
 					}
 				}
 				return;
-				
 			}else {
 				plugin.getSmartParent().remove(standUUID);
 				plugin.getParentMap().put(standUUID, 1);
 				ParentMenuInventory pmi = new ParentMenuInventory();
 				pmi.openInventory(player, stand);
 				return;
-				
 			}
-			
-		}else if(item.isSimilar(hub.getParentMenuItems().getTool())){
+		}else if(itemName.contains("Smart Parent tool")){
 			if(!player.getInventory().contains(plugin.getSmartParentTool())) {
 				player.getInventory().addItem(plugin.getSmartParentTool());
 			}
 			player.sendMessage(ChatColor.GOLD + "Added tool to inventory");
-		}else if (item.isSimilar(hub.getParentMenuItems().getStop())) {
+		}else if (itemName.contains("Remove this stand from being parent")) {
 			plugin.getSmartParent().remove(standUUID);
 			plugin.getParentMap().remove(standUUID);
 			ParentMenuInventory pmi = new ParentMenuInventory();
 			pmi.openInventory(player, stand);
-		}else if (item.isSimilar(hub.getParentMenuItems().getSmartParent())) {
+		}else if (itemName.contains("Smart Parent")) {
 			if(plugin.getSmartParent().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
 				PotionEffect potion = new PotionEffect(type, 200, 1);
@@ -105,12 +96,9 @@ public class ParentMenuItemEvents {
 				ParentMenuInventory pmi = new ParentMenuInventory();
 				pmi.openInventory(player, stand);
 			}
-			
-		}else if (item.isSimilar(hub.getParentMenuItems().getBack())) {
+		}else if (itemName.contains("Back")) {
 			MainMenuInventory mmi = new MainMenuInventory();
 			mmi.newInventory(player, stand);
-			
 		}
 	}
-	
 }

@@ -20,29 +20,24 @@ import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.commands.ToolCommandManager;
 import tld.sima.armorstand.events.listeners.EventManager;
 import tld.sima.armorstand.events.listeners.inventoryEventManager;
-import tld.sima.armorstand.files.DefaultSettings;
 import tld.sima.armorstand.files.SmartParentStorage;
 import tld.sima.armorstand.files.StorageManager;
-import tld.sima.armorstand.inventories.items.ItemHub;
-import tld.sima.armorstand.utils.Pair;
+import tld.sima.armorstand.utils.ItemHub;
+import tld.sima.armorstand.utils.PlayerData;
 import tld.sima.armorstand.utils.ToolType;
 
 public class Main extends JavaPlugin {
+	// Player-based information
+	private HashMap<UUID, PlayerData> playerData = new HashMap<UUID, PlayerData>();
 	
-	private HashMap<UUID, ArmorStand> standMap = new HashMap<UUID, ArmorStand>();
-	private HashMap<UUID, Conversation> convList = new HashMap<UUID, Conversation>();
-	private HashMap<UUID, Pair<Material, ToolType>> playerTool = new HashMap<UUID, Pair<Material, ToolType>>();
+	// ItemHub for used items
+	private ItemHub itemHub;
+	
+	// Parent information
 	private HashMap<UUID, ArrayList<UUID>> smartParent = new HashMap<UUID, ArrayList<UUID>>();
-	
-	private ItemStack removeTool;
-	private ItemStack cloneTool;
-	private ItemStack addToParentTool;
-	
-	private ItemHub inventoryItems;
-
 	private HashMap<UUID,Integer> parentList;
-	private HashMap<UUID, ArmorStand> cloneMap = new HashMap<UUID, ArmorStand>();
 	private StorageManager stmgr;
+	
 	private API api;
 	public boolean AnimationActive = false;
 
@@ -86,22 +81,14 @@ public class Main extends JavaPlugin {
 		}
 		
 		// Initilize settings for plugin
-		DefaultSettings settings = new DefaultSettings();
-		settings.setup();
-		this.removeTool = settings.getRemoveTool();
-		this.cloneTool = settings.getCloneTool();
-		this.addToParentTool = settings.getParentTool();
-		
-		// Initilize inventory items
-		this.inventoryItems = new ItemHub();
+		itemHub = new ItemHub();
 		
 		// Initialize command manager
 		ToolCommandManager tcm = new ToolCommandManager();
 		this.getCommand(tcm.cmd1).setExecutor(tcm);
 		
 		for(Player player : this.getServer().getOnlinePlayers()) {
-			Pair<Material, ToolType> pair = new Pair<Material, ToolType>(Material.AIR, ToolType.NONE);
-			playerTool.put(player.getUniqueId(), pair);
+			playerData.put(player.getUniqueId(), new PlayerData());
 		}
 		
 		// Initialize API for other plugins to hook onto!
@@ -110,12 +97,9 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		standMap.clear();
 		// Clear Conversation list to cancel out all the conversations with players
-		for (UUID uuid : convList.keySet()) {
-			if (convList.get(uuid) != null) {
-				convList.get(uuid).abandon();
-			}
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			playerData.get(player.getUniqueId()).abandonConversation();
 		}
 		for(UUID uuid : smartParent.keySet()) {
 			SmartParentStorage sps = new SmartParentStorage();
@@ -127,48 +111,82 @@ public class Main extends JavaPlugin {
 		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Disabled.");
 	}
 
-	public HashMap<UUID, Conversation> getConv(){
-		return convList;
+	public Conversation getConv(UUID uuid){
+		return playerData.get(uuid).getCurrentConversation();
+	}
+	
+	public void replaceConversation(UUID uuid, Conversation conversation) {
+		playerData.get(uuid).replaceCurrentConversation(conversation);
 	}
 
-	public HashMap<UUID, ArmorStand> getStandMap(){
-		return standMap;
+	public ArmorStand getPairedStand(UUID uuid){
+		return playerData.get(uuid).getPairedStand();
+	}
+	
+	public void setPairedStand(UUID uuid, ArmorStand stand) {
+		playerData.get(uuid).setPairedStand(stand);
 	}
 
 	public HashMap<UUID, Integer> getParentMap(){
 		return parentList;
 	}
 
-	public HashMap<UUID, ArmorStand> getCloneMap(){
-		return cloneMap;
+	public ArmorStand getClonedStand(UUID uuid){
+		return playerData.get(uuid).getClonedStand();
+	}
+	
+	public void setClonedStand(UUID uuid, ArmorStand cloned) {
+		playerData.get(uuid).setClonedStand(cloned);
 	}
 
 	public ItemStack getRemoveTool() {
-		return removeTool;
+		return itemHub.getRemoveTool();
 	}
 	
 	public ItemStack getCloneTool() {
-		return cloneTool;
+		return itemHub.getCloneTool();
 	}
 	
 	public ItemStack getSmartParentTool() {
-		return addToParentTool;
-	}
-	
-	public ItemHub getItemHub() {
-		return inventoryItems;
+		return itemHub.getSmartParentTool();
 	}
 
 	public API getAPI() {
 		return api;
 	}
 	
-	public HashMap<UUID, Pair<Material, ToolType>> getPlayerCustomTool() {
-		return playerTool;
+	public Material getArmorstandToolMaterial(UUID uuid) {
+		return playerData.get(uuid).getToolMaterialType();
+	}
+	
+	public ToolType getArmorstandToolType(UUID uuid) {
+		return playerData.get(uuid).getToolType();
+	}
+	
+	public void setArmorstandToolMaterial(UUID uuid, Material material) {
+		playerData.get(uuid).setToolMaterialType(material);
+	}
+	
+	public void setArmorstandToolType(UUID uuid, ToolType tooltype) {
+		playerData.get(uuid).setToolType(tooltype);
+	}
+	
+	public void setArmorstandTool(UUID uuid, ToolType tooltype, Material material) {
+		playerData.get(uuid).setArmorstandTool(material, tooltype);
 	}
 	
 	public HashMap<UUID, ArrayList<UUID>> getSmartParent() {
 		return smartParent;
+	}
+	
+	public PlayerData getPlayerData(UUID uuid){
+		return playerData.get(uuid);
+	}
+	
+	public void setupPlayerData(UUID uuid) {
+		if(!playerData.containsKey(uuid)) {
+			playerData.put(uuid, new PlayerData());
+		}
 	}
 
 	public ItemStack createItem(ItemStack item, String disName, List<String> list) {

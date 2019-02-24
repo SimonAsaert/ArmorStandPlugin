@@ -19,7 +19,7 @@ public class MoveStandToPlayerConv extends StringPrompt {
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
 		if (!message.equalsIgnoreCase("cancel")) {
-			ArmorStand stand = plugin.getStandMap().get(uuid);
+			ArmorStand stand = plugin.getPairedStand(uuid);
 			
 			Location loc = player.getLocation();
 			stand.teleport(loc);

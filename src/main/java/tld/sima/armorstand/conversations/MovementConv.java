@@ -28,7 +28,7 @@ public class MovementConv extends StringPrompt{
 
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
-		ArmorStand stand = plugin.getStandMap().get(uuid);
+		ArmorStand stand = plugin.getPairedStand(uuid);
 		String delims = " ";
 		String[] tokens = message.split(delims);
 		if (tokens.length != 3) {

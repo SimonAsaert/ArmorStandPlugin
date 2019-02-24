@@ -33,7 +33,7 @@ public class inventoryEventManager implements Listener {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
-		ArmorStand stand = plugin.getStandMap().get(player.getUniqueId());
+		ArmorStand stand = plugin.getPairedStand(player.getUniqueId());
 		if (stand == null) {
 			return;
 		}

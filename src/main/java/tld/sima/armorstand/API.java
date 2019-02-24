@@ -10,7 +10,7 @@ public class API {
 	private Main plugin = Main.getPlugin(Main.class);
 	
 	public ArmorStand getStand(UUID uuid) {
-		return plugin.getStandMap().get(uuid);
+		return plugin.getPlayerData(uuid).getPairedStand();
 	}
 	
 	public HashMap<UUID, Integer> getParentMap() {

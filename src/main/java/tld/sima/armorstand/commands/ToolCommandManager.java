@@ -50,8 +50,7 @@ Main plugin = Main.getPlugin(Main.class);
 						player.sendMessage(ChatColor.RED + "Unable to bind tool to hand or use currently used tools.");
 						return true;
 					}
-					plugin.getPlayerCustomTool().get(player.getUniqueId()).setLeft(item.getType());
-					plugin.getPlayerCustomTool().get(player.getUniqueId()).setRight(type);
+					plugin.setArmorstandTool(player.getUniqueId(), type, item.getType());
 					player.sendMessage(ChatColor.GOLD + "Changed tool type to: " + ChatColor.WHITE + type.toString());
 				}
 				return true;
