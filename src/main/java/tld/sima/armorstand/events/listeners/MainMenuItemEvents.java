@@ -243,7 +243,7 @@ public class MainMenuItemEvents {
 				player.closeInventory();
 				converstaion.setData(player.getUniqueId(), true, "RLZ");
 			}else {
-				player.sendMessage("WTF did you click?");
+				player.sendMessage("What did you click?");
 				return true;
 			}
 			Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);

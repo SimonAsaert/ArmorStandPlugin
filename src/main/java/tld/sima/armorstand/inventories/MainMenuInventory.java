@@ -162,37 +162,39 @@ public class MainMenuInventory {
 			rightHand = plugin.createItem(rightHand, ChatColor.WHITE+ "Change Right Hand", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC  + "Use to change what item is in the right hand"));
 			
 			ItemStack curhead;
-			if(stand.getHelmet() == (null) || stand.getHelmet().equals(new ItemStack(Material.AIR))) {
+			if(stand.getHelmet() == (null) || stand.getHelmet().getType().equals(Material.AIR)) {
 				curhead = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}else {
 				curhead = plugin.createItem(stand.getHelmet(), ChatColor.WHITE + "Change Head", Arrays.asList(""));
 			}
 			ItemStack curtorso;
-			if(stand.getChestplate() == (null) || stand.getChestplate().equals(new ItemStack(Material.AIR))) {
+			if(stand.getChestplate() == (null) || stand.getChestplate().getType().equals(Material.AIR)) {
 				curtorso = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}else {
 				curtorso = plugin.createItem(stand.getChestplate(), ChatColor.WHITE + "Change Chest", Arrays.asList(""));
 			}
 			ItemStack curlegs;
-			if(stand.getLeggings() == (null) || stand.getLeggings().equals(new ItemStack(Material.AIR))) {
+			if(stand.getLeggings() == (null) || stand.getLeggings().getType().equals(Material.AIR)) {
 				curlegs = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}else {
 				curlegs = plugin.createItem(stand.getLeggings(), ChatColor.WHITE + "Change Legs", Arrays.asList(""));
 			}
 			ItemStack curboots;
-			if(stand.getBoots() == (null) || stand.getBoots().equals(new ItemStack(Material.AIR))) {
+			if(stand.getBoots() == (null) || stand.getBoots().getType().equals(Material.AIR)) {
 				curboots = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}else {
 				curboots = plugin.createItem(stand.getBoots(), ChatColor.WHITE + "Change Feet", Arrays.asList(""));
 			}
+			
 			ItemStack curleftHand;
-			if(stand.getEquipment().getItemInOffHand() == (null) || stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR))) {
+			if(stand.getEquipment().getItemInOffHand() == (null) || stand.getEquipment().getItemInOffHand().getType().equals(Material.AIR)) {
 				curleftHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}else {
 				curleftHand = plugin.createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand", Arrays.asList(""));
 			}
+			
 			ItemStack currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
-			if(stand.getEquipment().getItemInMainHand() == (null) || stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR))) {
+			if(stand.getEquipment().getItemInMainHand() == (null) || stand.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) {
 				currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));
 			}else {
 				currightHand = plugin.createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand", Arrays.asList(""));

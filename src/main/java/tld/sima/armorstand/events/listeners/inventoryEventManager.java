@@ -88,7 +88,7 @@ public class inventoryEventManager implements Listener {
 					player.getInventory().addItem(stand.getEquipment().getLeggings());
 				}
 				stand.getEquipment().setLeggings(setter);
-				player.sendMessage(ChatColor.GOLD + "Chestplate set.");
+				player.sendMessage(ChatColor.GOLD + "Leggings set.");
 				event.getCursor().setAmount(0);
 				i.newInventory(player, stand);
 			}else if (itemName.contains("Change Feet")) {
