@@ -24,11 +24,18 @@ public class MovementConv extends StringPrompt{
 	
 	private Main plugin = Main.getPlugin(Main.class);
 	private UUID uuid;
+	private UUID standUUID;
 	private boolean invType;
 
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
-		ArmorStand stand = plugin.getPairedStand(uuid);
+		ArmorStand stand = (ArmorStand) Bukkit.getEntity(standUUID);
+
+		if(stand == null) {
+			con.getForWhom().sendRawMessage(ChatColor.RED + "The stand has disappeared!");
+			return null;
+		}
+		
 		String delims = " ";
 		String[] tokens = message.split(delims);
 		if (tokens.length != 3) {
@@ -90,8 +97,9 @@ public class MovementConv extends StringPrompt{
 		return null;
 	}
 	
-	public void setData(UUID uuid, boolean invType) {
+	public void setData(UUID uuid, UUID standUUID, boolean invType) {
 		this.uuid = uuid;
+		this.standUUID = standUUID;
 		this.invType = invType;
 	}
 	

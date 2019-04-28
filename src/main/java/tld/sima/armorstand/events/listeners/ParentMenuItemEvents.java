@@ -9,6 +9,7 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -30,7 +31,7 @@ public class ParentMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RadiusConv conversation = new RadiusConv();
-			conversation.setData(player.getUniqueId(), true);
+			conversation.setData(player.getUniqueId(), standUUID, true);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -86,7 +87,9 @@ public class ParentMenuItemEvents {
 				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
 				ArrayList<UUID> uuids = new ArrayList<UUID>();
 				for(Entity entity: entities) {
-					uuids.add(entity.getUniqueId());
+					if(entity.getType().equals(EntityType.ARMOR_STAND)) {
+						uuids.add(entity.getUniqueId());
+					}
 				}
 				plugin.getSmartParent().put(standUUID, uuids);
 				ParentMenuInventory pmi = new ParentMenuInventory();

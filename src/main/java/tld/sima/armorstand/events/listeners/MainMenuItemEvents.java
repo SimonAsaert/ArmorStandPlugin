@@ -30,7 +30,7 @@ public class MainMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			MoveStandToPlayerConv conversation = new MoveStandToPlayerConv();
-			conversation.setData(player.getUniqueId());
+			conversation.setData(player.getUniqueId(), stand.getUniqueId());
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -102,146 +102,156 @@ public class MainMenuItemEvents {
 				player.sendMessage(ChatColor.WHITE + "You do not have armorstand.clone permision");
 			}
 			return true;
+		}else if (itemName.contains("Protect stand")) {
+			if(plugin.getProtectedStands().contains(stand.getUniqueId())) {
+				plugin.getProtectedStands().remove(stand.getUniqueId());
+				player.sendMessage(ChatColor.WHITE + "Stand has been " + ChatColor.RED + "Removed" + ChatColor.WHITE + " from protection.");
+			}else {
+				plugin.getProtectedStands().add(stand.getUniqueId());
+				player.sendMessage(ChatColor.WHITE + "Stand has been " + ChatColor.GREEN + "Added" + ChatColor.WHITE + " to the protection.");
+			}
+			MainMenuInventory j = new MainMenuInventory();
+			j.newInventory(player, stand);
+			return true;
 		}else if (itemName.contains("Position")) {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			MovementConv conversation = new MovementConv();
-			conversation.setData(player.getUniqueId(), true);
+			conversation.setData(player.getUniqueId(), stand.getUniqueId(), true);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
 			return true;
 		}else if(itemName.contains("otation")) {
-			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RotationConv converstaion = new RotationConv();
 			if (itemName.contains("Rotation")) {
-				converstaion.setData(player.getUniqueId(), true, "BODY");
+				player.closeInventory();
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "BODY");
 			}else if (itemName.contains("Change Head x-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "HX");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "HX");
 			}else if (itemName.contains("Change Head y-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "HY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "HY");
 			}else if (itemName.contains("Change Head z-rotation")) {
 				if (stand.hasMetadata("HeadLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "HZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "HZ");
 			}else if (itemName.contains("Change Torso x-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "TX");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "TX");
 			}else if (itemName.contains("Change Torso y-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "TY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "TY");
 			}else if (itemName.contains("Change Torso z-rotation")) {
 				if (stand.hasMetadata("TorsoLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "TZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "TZ");
 			}else if (itemName.contains("Change Left Arm's x-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LAX");
-				return true;
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LAX");
 			}else if (itemName.contains("Change Left Arm's y-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LAY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LAY");
 			}else if (itemName.contains("Change Left Arm's z-rotation")) {
 				if (stand.hasMetadata("LeftArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LAZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LAZ");
 			}else if (itemName.contains("Change Right Arm's x-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "RAX");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RAX");
 			}else if (itemName.contains("Change Right Arm's y-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "RAY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RAY");
 			}else if (itemName.contains("Change Right Arm's z-rotation")) {
 				if (stand.hasMetadata("RightArmLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "RAZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RAZ");
 			}else if (itemName.contains("Change Left Leg's x-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LLX");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LLX");
 			}else if (itemName.contains("Change Left Leg's y-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LLY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LLY");
 			}else if (itemName.contains("Change Left Leg's z-rotation")) {
 				if (stand.hasMetadata("LeftLegLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "LLZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "LLZ");
 			}else if (itemName.contains("Change Right Leg's x-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "RLX");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RLX");
 			}else if (itemName.contains("Change Right Leg's y-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
-				converstaion.setData(player.getUniqueId(), true, "RLY");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RLY");
 			}else if (itemName.contains("Change Right Leg's z-rotation")) {
 				if (stand.hasMetadata("RightLegLock")) {
 					player.sendMessage(ChatColor.RED + "Limb Locked");
 					return true;
 				}
 				player.closeInventory();
-				converstaion.setData(player.getUniqueId(), true, "RLZ");
+				converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "RLZ");
 			}else {
 				player.sendMessage("What did you click?");
 				return true;
@@ -254,7 +264,7 @@ public class MainMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RadiusConv conversation = new RadiusConv();
-			conversation.setData(player.getUniqueId(), true);
+			conversation.setData(player.getUniqueId(), stand.getUniqueId(), true);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);

@@ -21,7 +21,6 @@ public class inventoryEventManager implements Listener {
 	
 	Main plugin = Main.getPlugin(Main.class);
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
@@ -41,7 +40,7 @@ public class inventoryEventManager implements Listener {
 		String prefixOptions = (ChatColor.DARK_BLUE + "Armorstand GUI Options");
 		String prefixParent = (ChatColor.DARK_BLUE + "Armorstand Parent GUI Options");
 		
-		if (open.getName().equals(prefixMain) && !event.isCancelled()) {
+		if (event.getView().getTitle().equals(prefixMain) && !event.isCancelled()) {
 			event.setCancelled(true);
 
 			if (item == null) {
@@ -152,7 +151,7 @@ public class inventoryEventManager implements Listener {
 				}
 				i.newInventory(player, stand);
 			}
-		}else if (open.getName().equals(prefixOptions)) {
+		}else if (event.getView().getTitle().equals(prefixOptions)) {
 			event.setCancelled(true);
 
 			if (item == null) {
@@ -165,7 +164,7 @@ public class inventoryEventManager implements Listener {
 			
 			String itemName = item.getItemMeta().getDisplayName();
 			OptionsMenuItemEvents.parseItem(itemName, player, stand);
-		}else if (open.getName().equals(prefixParent)) {
+		}else if (event.getView().getTitle().equals(prefixParent)) {
 			event.setCancelled(true);
 
 			if (item == null) {

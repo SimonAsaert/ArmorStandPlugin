@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.ArmorStand;
@@ -51,130 +50,152 @@ public class EventManager implements Listener {
 	
 	@EventHandler
 	public void leftClicked(EntityDamageByEntityEvent event) {
-		if(event.getEntity() instanceof ArmorStand) {
-			event.setCancelled(true);
-			if(event.getDamager() instanceof Player) {
-				Player player = (Player) event.getDamager();
-				ItemStack itemInHand = player.getInventory().getItemInMainHand();
-				if(itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
-					return;
-				}else if (itemInHand.isSimilar(plugin.getRemoveTool())) {
-					ArmorStand stand = (ArmorStand)event.getEntity();
-					UUID standUUID = stand.getUniqueId();
-					ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
-					plugin.getServer().getPluginManager().callEvent(are);
-					plugin.getParentMap().remove(standUUID);
-					plugin.getSmartParent().remove(standUUID);
-					
-					for(UUID uuid : plugin.getSmartParent().keySet()) {
-						if(plugin.getSmartParent().get(uuid).contains(standUUID)) {
-							plugin.getSmartParent().get(uuid).remove(standUUID);
-						}
-					}
-					
-					stand.remove();
-				}else if (itemInHand.getType().equals(plugin.getArmorstandToolMaterial(player.getUniqueId()))) {
-					ToolType type = plugin.getArmorstandToolType(player.getUniqueId());
-					ArmorStand stand = (ArmorStand)event.getEntity();
-					switch(type) {
-					case NONE:
-						break;
-					case GRAVITY:
-						stand.setGravity(!stand.hasGravity());
-						break;
-					case SIZE:
-						stand.setSmall(!stand.isSmall());
-						break;
-					case INVISIBLE:
-						stand.setVisible(!stand.isVisible());
-						break;
-					case FIRE:
-						int fireTicks = stand.getFireTicks();
-						if(fireTicks == -1 || fireTicks == 0) {
-							stand.setFireTicks(2147483645);
-							stand.setInvulnerable(true);
-						}else {
-							stand.setFireTicks(-1);
-						}
-						break;
-					case BASE:
-						stand.setBasePlate(!stand.hasBasePlate());
-						break;
-					case ARMS:
-						stand.setArms(!stand.hasArms());
-						break;
-					case GLOW:
-						stand.setGlowing(!stand.isGlowing());
-						break;
-					case NAME:
-					{
-						plugin.setPairedStand(player.getUniqueId(), stand);
-						ConversationFactory cf = new ConversationFactory(plugin);
-						NameConv conversation = new NameConv();
-						conversation.setData(player.getUniqueId());
-						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
-						conv.begin();
-						plugin.replaceConversation(player.getUniqueId(), conv);
-					}
-						break;
-					case ROTATION:
-					{
-						plugin.setPairedStand(player.getUniqueId(), stand);
-						ConversationFactory cf = new ConversationFactory(plugin);
-						RotationConv converstaion = new RotationConv();
-						converstaion.setData(player.getUniqueId(), true, "BODY");
-						Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
-						conv.begin();
-						plugin.replaceConversation(player.getUniqueId(), conv);
-					}
-						break;
-					case MOVE:
-					{
-						plugin.setPairedStand(player.getUniqueId(), stand);
-						ConversationFactory cf = new ConversationFactory(plugin);
-						MovementConv conversation = new MovementConv();
-						conversation.setData(player.getUniqueId(), true);
-						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
-						conv.begin();
-						plugin.replaceConversation(player.getUniqueId(), conv);
-					}
-					default:
-						break;
-					}
-				}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool())) {
-					ArmorStand parentStand = plugin.getPairedStand(player.getUniqueId());
-					if(parentStand == null) {
-						return;
-					}
-					ArmorStand entity = (ArmorStand) event.getEntity();
-					if(plugin.getSmartParent().containsKey(parentStand.getUniqueId())) {
-						if(entity.getUniqueId().equals(parentStand.getUniqueId())) {
-							return;
-						}
-						
-						ArrayList<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
-						if(list.contains(entity.getUniqueId())) {
-							list.remove(entity.getUniqueId());
-							plugin.getSmartParent().put(parentStand.getUniqueId(), list);
-							player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.RED + "removed" + ChatColor.WHITE + " from parent map");
-						}else {
-							list.add(entity.getUniqueId());
-							plugin.getSmartParent().put(parentStand.getUniqueId(), list);
-							PotionEffectType type = PotionEffectType.GLOWING;
-							PotionEffect potion = new PotionEffect(type, 60, 1);
-							entity.addPotionEffect(potion);
-							player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.GREEN + "added" + ChatColor.WHITE + " to parent map");
-						}
+		if(		event.getEntity() instanceof ArmorStand && 
+				event.getDamager() instanceof Player && 
+				(event.getDamager().hasPermission("Armorstand.atool") || event.getDamager().hasPermission("Armorstand.break") || 
+				 event.getDamager().hasPermission("Armorstand.smartparenttool") || event.getDamager().hasPermission("Armorstand.atool") ||
+				 event.getDamager().isOp())) {
+			Player player = (Player) event.getDamager();
+			
+			ItemStack itemInHand = player.getInventory().getItemInMainHand();
+			if (	itemInHand.isSimilar(plugin.getRemoveTool()) && 
+					(player.hasPermission("Armorstand.break") || event.getDamager().isOp())) {
+				event.setCancelled(true);
+				ArmorStand stand = (ArmorStand)event.getEntity();
+				UUID standUUID = stand.getUniqueId();
+				ArmorstandRemovedEvent are = new ArmorstandRemovedEvent(standUUID);
+				plugin.getServer().getPluginManager().callEvent(are);
+				plugin.getParentMap().remove(standUUID);
+				plugin.getSmartParent().remove(standUUID);
+				
+				for(UUID uuid : plugin.getSmartParent().keySet()) {
+					if(plugin.getSmartParent().get(uuid).contains(standUUID)) {
+						plugin.getSmartParent().get(uuid).remove(standUUID);
 					}
 				}
+				
+				stand.remove();
+				return;
+			}else if (itemInHand.getType().equals(plugin.getArmorstandToolMaterial(player.getUniqueId())) && 
+					(player.hasPermission("Armorstand.atool") || event.getDamager().isOp())) {
+				event.setCancelled(true);
+				ToolType type = plugin.getArmorstandToolType(player.getUniqueId());
+				ArmorStand stand = (ArmorStand)event.getEntity();
+				switch(type) {
+				case NONE:
+					break;
+				case GRAVITY:
+					stand.setGravity(!stand.hasGravity());
+					break;
+				case SIZE:
+					stand.setSmall(!stand.isSmall());
+					break;
+				case INVISIBLE:
+					stand.setVisible(!stand.isVisible());
+					break;
+				case FIRE:
+					int fireTicks = stand.getFireTicks();
+					if(fireTicks == -1 || fireTicks == 0) {
+						stand.setFireTicks(2147483645);
+						stand.setInvulnerable(true);
+					}else {
+						stand.setFireTicks(-1);
+					}
+					break;
+				case BASE:
+					stand.setBasePlate(!stand.hasBasePlate());
+					break;
+				case ARMS:
+					stand.setArms(!stand.hasArms());
+					break;
+				case GLOW:
+					stand.setGlowing(!stand.isGlowing());
+					break;
+				case NAME:
+				{
+					plugin.setPairedStand(player.getUniqueId(), stand);
+					ConversationFactory cf = new ConversationFactory(plugin);
+					NameConv conversation = new NameConv();
+					conversation.setData(player.getUniqueId(), stand.getUniqueId());
+					Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+					conv.begin();
+					plugin.replaceConversation(player.getUniqueId(), conv);
+				}
+					break;
+				case ROTATION:
+				{
+					plugin.setPairedStand(player.getUniqueId(), stand);
+					ConversationFactory cf = new ConversationFactory(plugin);
+					RotationConv converstaion = new RotationConv();
+					converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "BODY");
+					Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
+					conv.begin();
+					plugin.replaceConversation(player.getUniqueId(), conv);
+				}
+					break;
+				case MOVE:
+				{
+					plugin.setPairedStand(player.getUniqueId(), stand);
+					ConversationFactory cf = new ConversationFactory(plugin);
+					MovementConv conversation = new MovementConv();
+					conversation.setData(player.getUniqueId(), stand.getUniqueId(), true);
+					Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+					conv.begin();
+					plugin.replaceConversation(player.getUniqueId(), conv);
+				}
+					break;
+				default:
+					break;
+				}
+				return;
+			}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool()) && 
+					(player.hasPermission("Armorstand.smartparenttool") || event.getDamager().isOp())) {
+				event.setCancelled(true);
+				ArmorStand parentStand = plugin.getPairedStand(player.getUniqueId());
+				if(parentStand == null) {
+					return;
+				}
+				ArmorStand entity = (ArmorStand) event.getEntity();
+				if(plugin.getSmartParent().containsKey(parentStand.getUniqueId())) {
+					if(entity.getUniqueId().equals(parentStand.getUniqueId())) {
+						return;
+					}
+					
+					ArrayList<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
+					if(list.contains(entity.getUniqueId())) {
+						list.remove(entity.getUniqueId());
+						plugin.getSmartParent().put(parentStand.getUniqueId(), list);
+						player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.RED + "removed" + ChatColor.WHITE + " from parent map");
+					}else {
+						list.add(entity.getUniqueId());
+						plugin.getSmartParent().put(parentStand.getUniqueId(), list);
+						PotionEffectType type = PotionEffectType.GLOWING;
+						PotionEffect potion = new PotionEffect(type, 60, 1);
+						entity.addPotionEffect(potion);
+						player.sendMessage(ChatColor.WHITE + "Stand " + ChatColor.GREEN + "added" + ChatColor.WHITE + " to parent map");
+					}
+				}
+				return;
 			}
+		}
+		
+		if(plugin.getProtectedStands().contains(event.getEntity().getUniqueId())) {
+			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof ArmorStand && plugin.getProtectedStands().contains(event.getEntity().getUniqueId())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onStandDeath(EntityDeathEvent event) {
 		if (event.getEntity() instanceof ArmorStand) {
-			event.setCancelled(true);;
+			ArmorstandRemovedEvent e = new ArmorstandRemovedEvent(event.getEntity().getUniqueId());
+			plugin.getServer().getPluginManager().callEvent(e);
 		}
 	}
 	
@@ -187,14 +208,6 @@ public class EventManager implements Listener {
 			stand.setCustomName("N/A");
 			stand.setCustomNameVisible(false);
 			stand.setGravity(false); 
-		}
-	}
-	
-	@EventHandler
-	public void onStandDeath(EntityDeathEvent event) {
-		if (event.getEntity() instanceof ArmorStand) {
-			ArmorstandRemovedEvent e = new ArmorstandRemovedEvent(event.getEntity().getUniqueId());
-			plugin.getServer().getPluginManager().callEvent(e);
 		}
 	}
 	
@@ -240,9 +253,9 @@ public class EventManager implements Listener {
 		}
 		
 		if (event.getRightClicked() instanceof ArmorStand) {
-			event.setCancelled(true);
 			
-			if(player.hasPermission("stand.interact")) {
+			if(player.hasPermission("stand.interact") || player.hasPermission("armorstand.interact")) {
+				event.setCancelled(true);
 				ArmorStand stand = (ArmorStand) event.getRightClicked();
 				
 				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
@@ -253,6 +266,8 @@ public class EventManager implements Listener {
 					i.newInventory(player, stand);
 				}
 				plugin.setPairedStand(player.getUniqueId(), stand);
+			}else if(plugin.getProtectedStands().contains(event.getRightClicked().getUniqueId())) {
+				event.setCancelled(true);
 			}
 		}
 	}

@@ -48,7 +48,7 @@ public class OptionsMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			MovementConv conversation = new MovementConv();
-			conversation.setData(player.getUniqueId(), false);
+			conversation.setData(player.getUniqueId(), stand.getUniqueId(), false);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -56,7 +56,7 @@ public class OptionsMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RotationConv converstaion = new RotationConv();
-			converstaion.setData(player.getUniqueId(), false, "BODY");
+			converstaion.setData(player.getUniqueId(), stand.getUniqueId(), false, "BODY");
 			Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -64,7 +64,7 @@ public class OptionsMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			NameConv conversation = new NameConv();
-			conversation.setData(player.getUniqueId());
+			conversation.setData(player.getUniqueId(), stand.getUniqueId());
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -72,7 +72,7 @@ public class OptionsMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			RadiusConv conversation = new RadiusConv();
-			conversation.setData(player.getUniqueId(), false);
+			conversation.setData(player.getUniqueId(), stand.getUniqueId(), false);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
@@ -80,7 +80,7 @@ public class OptionsMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			MoveStandToPlayerConv conversation = new MoveStandToPlayerConv();
-			conversation.setData(player.getUniqueId());
+			conversation.setData(player.getUniqueId(), stand.getUniqueId());
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);

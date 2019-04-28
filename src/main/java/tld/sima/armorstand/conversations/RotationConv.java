@@ -2,6 +2,7 @@ package tld.sima.armorstand.conversations;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
@@ -19,6 +20,7 @@ public class RotationConv extends StringPrompt {
 	
 	private Main plugin = Main.getPlugin(Main.class);
 	private UUID uuid;
+	private UUID standUUID;
 	private boolean invType;
 	private enum rotationType {
 		BODY,
@@ -33,10 +35,10 @@ public class RotationConv extends StringPrompt {
 	
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
-		ArmorStand stand = plugin.getPairedStand(uuid);
+		ArmorStand stand = (ArmorStand) Bukkit.getEntity(standUUID);
 		
 		// If somehow input to function is incorrect, fallback to a main menu.
-		if (typeUsed == null) {
+		if (typeUsed == null || stand == null) {
 			con.getForWhom().sendRawMessage(ChatColor.RED + "Something somewhere went wrong");
 			if(invType) {
 				MainMenuInventory i = new MainMenuInventory();
@@ -168,8 +170,9 @@ public class RotationConv extends StringPrompt {
 		return null;
 	}
 
-	public void setData(UUID uuid, boolean invType, String type) {
+	public void setData(UUID uuid, UUID standUUID, boolean invType, String type) {
 		this.uuid = uuid;
+		this.standUUID = standUUID;
 		this.invType = invType;
 		typeUsed = rotationType.valueOf(type);
 	}

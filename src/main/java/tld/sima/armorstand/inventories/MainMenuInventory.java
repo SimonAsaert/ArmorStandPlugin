@@ -43,6 +43,9 @@ public class MainMenuInventory {
 		ItemStack rotation = new ItemStack(Material.OAK_WOOD);
 		rotation = plugin.createItem(rotation, ChatColor.WHITE + "Rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
 		
+		ItemStack protect = new ItemStack(Material.STONE_BUTTON);
+		protect = plugin.createItem(protect, ChatColor.WHITE + "Protect stand", Arrays.asList(ChatColor.WHITE + "Protection status: " + ChatColor.GRAY + plugin.getProtectedStands().contains(standuuid)));
+		
 		if (parent) {
 			// Further Options
 			ItemStack disabled = new ItemStack(Material.BARRIER);		
@@ -82,6 +85,7 @@ public class MainMenuInventory {
 			i.setItem(39, options);
 			i.setItem(40, animations);
 			i.setItem(41, setparent);
+			i.setItem(42, protect);
 			i.setItem(43, rotation);
 			
 			i.setItem(45, disabled);
@@ -239,6 +243,7 @@ public class MainMenuInventory {
 			i.setItem(39, options);
 			i.setItem(40, animations);
 			i.setItem(41, setparent);
+			i.setItem(42, protect);
 			i.setItem(43, rotation);
 			// Go to parent item
 			for(Entity entity : stand.getNearbyEntities(8, 8, 8)){
