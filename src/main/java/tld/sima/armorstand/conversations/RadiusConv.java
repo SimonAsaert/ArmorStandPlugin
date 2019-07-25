@@ -3,13 +3,13 @@ package tld.sima.armorstand.conversations;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.OptionsMenuInventory;

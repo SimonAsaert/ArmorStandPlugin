@@ -2,6 +2,7 @@ package tld.sima.armorstand.events.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -13,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 
@@ -23,14 +23,15 @@ public class inventoryEventManager implements Listener {
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().equals(event.getView().getBottomInventory())) {
+			return;
+		}
+		
 		Player player = (Player) event.getWhoClicked();
 		if (player == null) {
 			return;
 		}
-		Inventory open = event.getClickedInventory();
-		if (open == null) {
-			return;
-		}
+		
 		ItemStack item = event.getCurrentItem();
 		ArmorStand stand = plugin.getPairedStand(player.getUniqueId());
 		if (stand == null) {
@@ -176,6 +177,18 @@ public class inventoryEventManager implements Listener {
 			}
 			
 			ParentMenuItemEvents.parseItem(item, player, stand);
+		}
+		
+		Inventory open = event.getClickedInventory();
+		if (open == null) {
+			return;
+		}else if(event.isShiftClick()) {
+			event.setCancelled(true);
+			if(event.getView().getBottomInventory().equals(open)) {
+				
+				
+				
+			}
 		}
 	}
 }

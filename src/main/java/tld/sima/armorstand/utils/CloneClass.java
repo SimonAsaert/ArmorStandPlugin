@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -18,8 +19,13 @@ public class CloneClass {
 	
 	private Main plugin = Main.getPlugin(Main.class);
 	private HashSet<UUID> parentList = new HashSet<UUID>();
+	private HashSet<Chunk> chunks = new HashSet<Chunk>();
 	
 	public UUID CloneStand(ArmorStand stand, Vector delta, UUID worldUUID) {
+		if(!stand.getLocation().getChunk().isLoaded()) {
+			stand.getLocation().getChunk().load();
+		}
+		
 		UUID uuid = stand.getUniqueId();
 		Location newloc = stand.getLocation().clone().add(delta);
 		newloc.setWorld(Bukkit.getWorld(worldUUID));
@@ -56,6 +62,12 @@ public class CloneClass {
 			plugin.getParentMap().put(newStand.getUniqueId(), (int) radius);
 		}
 		return newStand.getUniqueId();
+	}
+	
+	public void unloadChunks() {
+		for(Chunk chunk : chunks) {
+			chunk.unload(true);
+		}
 	}
 
 	private void copyStandSettings(ArmorStand oldStand, ArmorStand newStand) {

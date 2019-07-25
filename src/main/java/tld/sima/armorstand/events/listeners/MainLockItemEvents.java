@@ -1,10 +1,10 @@
 package tld.sima.armorstand.events.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 
 public class MainLockItemEvents {

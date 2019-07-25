@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
@@ -27,7 +28,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.MovementConv;
 import tld.sima.armorstand.conversations.NameConv;
@@ -239,6 +239,7 @@ public class EventManager implements Listener {
 					CloneClass cc = new CloneClass();
 					
 					cc.CloneStand(oldStand, delta, worldUUID);
+					cc.unloadChunks();
 					player.sendMessage(ChatColor.GREEN + "Armorstand(s) cloned!");
 				}
 			}

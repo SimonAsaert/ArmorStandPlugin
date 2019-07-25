@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.ArmorStand;
@@ -17,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.md_5.bungee.api.ChatColor;
 import tld.sima.armorstand.commands.ToolCommandManager;
 import tld.sima.armorstand.events.listeners.EventManager;
 import tld.sima.armorstand.events.listeners.inventoryEventManager;
