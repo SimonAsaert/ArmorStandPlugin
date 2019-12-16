@@ -23,7 +23,7 @@ public class NameConv extends StringPrompt {
 		ArmorStand stand = (ArmorStand) Bukkit.getEntity(standUUID);
 		
 		if(stand == null) {
-			con.getForWhom().sendRawMessage(ChatColor.RED + "Your stand has been removed in the time.");
+			con.getForWhom().sendRawMessage(ChatColor.RED + "Your stand has been removed in the time it took to rename it.");
 			return null;
 		}
 		

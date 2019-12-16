@@ -30,7 +30,7 @@ public class MainMenuItemEvents {
 			player.closeInventory();
 			ConversationFactory cf = new ConversationFactory(plugin);
 			MoveStandToPlayerConv conversation = new MoveStandToPlayerConv();
-			conversation.setData(player.getUniqueId(), stand.getUniqueId());
+			conversation.setData(player.getUniqueId(), stand.getUniqueId(), true);
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);

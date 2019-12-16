@@ -1,7 +1,6 @@
 package tld.sima.armorstand.conversations;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -19,6 +18,7 @@ import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.OptionsMenuInventory;
+import tld.sima.armorstand.utils.Utils;
 
 public class MovementConv extends StringPrompt{
 	
@@ -54,47 +54,25 @@ public class MovementConv extends StringPrompt{
 			}
 		}
 		
-		if(plugin.getSmartParent().containsKey(stand.getUniqueId())) {
-			ArrayList<UUID> stands = plugin.getSmartParent().get(stand.getUniqueId());
-			for(UUID uuid : stands) {
-				Entity entity = Bukkit.getEntity(uuid);
-				Location oldLoc = entity.getLocation().clone();
-				Location newLoc = oldLoc.clone().add(movement[0], movement[1], movement[2]);
-				ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
-				Bukkit.getServer().getPluginManager().callEvent(ame);
-				if(!ame.isCancelled()) {
-					entity.teleport(newLoc);
-				}
-			}
-			
-		}else if (plugin.getParentMap().containsKey(stand.getUniqueId())) {
-			int radius = plugin.getParentMap().get(stand.getUniqueId());
-			List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
-			for (Entity entity : entities) {
-				if (entity instanceof ArmorStand) {
-					Location loc = entity.getLocation().clone();
-					Location newLoc = loc.clone().add(movement[0], movement[1], movement[2]);
-					ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
-					plugin.getServer().getPluginManager().callEvent(ame);
-					if(!ame.isCancelled()) {
-						entity.teleport(newLoc);
-					}
-				}
-			}
-		}
-		Location oldLoc = stand.getLocation().clone();
-		Location newLoc = oldLoc.clone().add(movement[0], movement[1], movement[2]);
+		ArrayList<UUID> entitiesToMove = new ArrayList<UUID>();
+		entitiesToMove = (ArrayList<UUID>) Utils.collectAllChildStands(stand.getUniqueId(), entitiesToMove);
 		
-		ArmorstandMovedEvent ame = new ArmorstandMovedEvent(stand, newLoc, false);
-		plugin.getServer().getPluginManager().callEvent(ame);
-		
-		if(!ame.isCancelled()) {
-			stand.teleport(newLoc);
-			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Position set!");
+		for(UUID entity : entitiesToMove) {
+			moveEntity(Bukkit.getEntity(entity), movement);
 		}
 		openInventory(player, stand);
 		
 		return null;
+	}
+	
+	private void moveEntity(Entity entity, Double[] movement) {
+		Location loc = entity.getLocation().clone();
+		Location newLoc = loc.clone().add(movement[0], movement[1], movement[2]);
+		ArmorstandMovedEvent ame = new ArmorstandMovedEvent(entity, newLoc, false);
+		plugin.getServer().getPluginManager().callEvent(ame);
+		if(!ame.isCancelled()) {
+			entity.teleport(newLoc);
+		}
 	}
 	
 	public void setData(UUID uuid, UUID standUUID, boolean invType) {

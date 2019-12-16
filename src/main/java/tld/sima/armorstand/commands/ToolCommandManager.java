@@ -23,12 +23,7 @@ Main plugin = Main.getPlugin(Main.class);
 				if(args.length == 0) {
 					player.sendMessage(ChatColor.GOLD + "Use " + ChatColor.WHITE + "/atool <TYPE> " + ChatColor.GOLD + "to have the item in your hand set to a mass-altering tool.");
 					player.sendMessage(ChatColor.GOLD + "Then left-click a stand to toggle the stand using this method.");
-					StringBuilder builder = new StringBuilder();
-					ToolType[] types = ToolType.values();
-					builder.append(ChatColor.GOLD + "Current types: ").append(ChatColor.WHITE).append(types[0]);
-					for(int i = 1 ; i < types.length -1 ; i++) {
-						builder.append(", ").append(types[i]);
-					}
+					StringBuilder builder = getToolTypesBuilder();
 					player.sendMessage(builder.toString());
 				}else {
 					ToolType type;
@@ -36,12 +31,7 @@ Main plugin = Main.getPlugin(Main.class);
 						type = ToolType.valueOf(args[0].toUpperCase());
 					}catch(IllegalArgumentException e) {
 						player.sendMessage(ChatColor.RED + "Unable to find that tool!");
-						StringBuilder builder = new StringBuilder();
-						ToolType[] types = ToolType.values();
-						builder.append(ChatColor.GOLD + "Current types: ").append(ChatColor.WHITE).append(types[0]);
-						for(int i = 1 ; i < types.length -1 ; i++) {
-							builder.append(", ").append(types[i]);
-						}
+						StringBuilder builder = getToolTypesBuilder();
 						player.sendMessage(builder.toString());
 						return true;
 					}
@@ -59,5 +49,15 @@ Main plugin = Main.getPlugin(Main.class);
 			plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "You have to be a Player to use this command!");
 			}
 		return false;
+	}
+	
+	public StringBuilder getToolTypesBuilder() {
+		ToolType[] types = ToolType.values();
+		StringBuilder builder = new StringBuilder();
+		builder.append(ChatColor.GOLD + "Current types: ").append(ChatColor.WHITE).append(types[0]);
+		for(int i = 1 ; i < types.length -1 ; i++) {
+			builder.append(", ").append(types[i]);
+		}
+		return builder;
 	}
 }

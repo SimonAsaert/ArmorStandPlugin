@@ -55,7 +55,6 @@ public class Main extends JavaPlugin {
 		stmgr.setup();
 		parentList = stmgr.getList();
 		protectedStands = ProtectedStands.getList();
-		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Enabled.");
 		if (Bukkit.getServer().getPluginManager().getPlugin("ArmorstandAnimationPlugin") != null) {
 			AnimationActive = true;
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Detected Armour stands animations.");
@@ -97,6 +96,7 @@ public class Main extends JavaPlugin {
 		
 		// Initialize API for other plugins to hook onto!
 		api = new API(); 
+		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Enabled.");
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class EventManager implements Listener {
 		if(		event.getEntity() instanceof ArmorStand && 
 				event.getDamager() instanceof Player && 
 				(event.getDamager().hasPermission("Armorstand.atool") || event.getDamager().hasPermission("Armorstand.break") || 
-				 event.getDamager().hasPermission("Armorstand.smartparenttool") || event.getDamager().hasPermission("Armorstand.atool") ||
+				 event.getDamager().hasPermission("Armorstand.smartparenttool") ||
 				 event.getDamager().isOp())) {
 			Player player = (Player) event.getDamager();
 			
@@ -205,7 +205,6 @@ public class EventManager implements Listener {
 			ArmorStand stand = (ArmorStand) event.getEntity();
 			stand.setHeadPose(stand.getHeadPose().setX(0).setY(0).setZ(0));
 			stand.setBodyPose(stand.getBodyPose().setX(0).setY(0).setZ(0));
-			stand.setCustomName("N/A");
 			stand.setCustomNameVisible(false);
 			stand.setGravity(false); 
 		}
@@ -237,9 +236,7 @@ public class EventManager implements Listener {
 				
 				if(!e.isCancelled()) {
 					CloneClass cc = new CloneClass();
-					
 					cc.CloneStand(oldStand, delta, worldUUID);
-					cc.unloadChunks();
 					player.sendMessage(ChatColor.GREEN + "Armorstand(s) cloned!");
 				}
 			}

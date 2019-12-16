@@ -53,7 +53,6 @@ public class RotationClass {
 				delta.add(movement);
 				moveStand(child, radians, delta.toVector());
 			}
-			seenStands.remove(standuuid);
 		}else if (plugin.getParentMap().containsKey(standuuid)) {
 			seenStands.add(standuuid);
 			int radius = plugin.getParentMap().get(standuuid);
@@ -78,7 +77,6 @@ public class RotationClass {
 				delta.add(movement);
 				moveStand(child, radians, delta.toVector());
 			}
-			seenStands.remove(standuuid);
 		}
 
 		parentLocation.add(movement.getX(), 0, movement.getZ());

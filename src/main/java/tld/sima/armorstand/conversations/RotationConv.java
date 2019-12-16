@@ -64,14 +64,13 @@ public class RotationConv extends StringPrompt {
 				i.openInventory(player, stand);
 			}
 			return null;
-			
 		}
 		
 		
 		// Setting armorstand rotations depending on type.
 		if (typeUsed.equals(rotationType.BODY)) {
 			RotationClass rc = new RotationClass();
-			rc.InsertionDegrees(stand.getUniqueId(), degrees);
+			rc.InsertionDegrees(stand.getUniqueId(), degrees-(double)stand.getLocation().getYaw());
 			con.getForWhom().sendRawMessage(ChatColor.GOLD + "Body angle changed to: " + ChatColor.WHITE + degrees);
 		}else {
 			int degreesD = (int)degrees;
@@ -153,7 +152,8 @@ public class RotationConv extends StringPrompt {
 				default:
 					con.getForWhom().sendRawMessage(ChatColor.RED + "Unable to find rotation type... Something went wrong");
 					break;
-		}	}
+			}
+		}
 
 		if(invType) {
 			ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
@@ -178,7 +178,7 @@ public class RotationConv extends StringPrompt {
 	}
 	
 	public String getPromptText(ConversationContext arg0) {
-		String output = (ChatColor.GOLD + "Put in an angle in degrees, like: " + ChatColor.WHITE + "90");
+		String output = (ChatColor.GOLD + "Put in an angle in degrees, for example: " + ChatColor.WHITE + "90");
 		return output;
 	}
 }
