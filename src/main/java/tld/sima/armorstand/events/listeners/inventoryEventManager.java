@@ -11,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
@@ -23,7 +22,7 @@ public class inventoryEventManager implements Listener {
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
-		if(event.getClickedInventory().equals(event.getView().getBottomInventory())) {
+		if(event.getClickedInventory() == null || event.getView() == null) {
 			return;
 		}
 		
@@ -44,11 +43,8 @@ public class inventoryEventManager implements Listener {
 		if (event.getView().getTitle().equals(prefixMain) && !event.isCancelled()) {
 			event.setCancelled(true);
 
-			if (item == null) {
-				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
-				return;
-			}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-				player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
+			if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
+				player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 				return;
 			}
 			
@@ -155,11 +151,8 @@ public class inventoryEventManager implements Listener {
 		}else if (event.getView().getTitle().equals(prefixOptions)) {
 			event.setCancelled(true);
 
-			if (item == null) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
-				return;
-			}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
+			if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
+				player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 				return;
 			}
 			
@@ -168,27 +161,12 @@ public class inventoryEventManager implements Listener {
 		}else if (event.getView().getTitle().equals(prefixParent)) {
 			event.setCancelled(true);
 
-			if (item == null) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something null!");
-				return;
-			}else if (!item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-//				player.sendMessage(ChatColor.WHITE + "Clicked something without meta!");
+			if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
+				player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 				return;
 			}
 			
 			ParentMenuItemEvents.parseItem(item, player, stand);
-		}
-		
-		Inventory open = event.getClickedInventory();
-		if (open == null) {
-			return;
-		}else if(event.isShiftClick()) {
-			event.setCancelled(true);
-			if(event.getView().getBottomInventory().equals(open)) {
-				
-				
-				
-			}
 		}
 	}
 }
