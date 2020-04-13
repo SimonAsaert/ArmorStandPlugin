@@ -206,7 +206,7 @@ public class EventManager implements Listener {
 			stand.setHeadPose(stand.getHeadPose().setX(0).setY(0).setZ(0));
 			stand.setBodyPose(stand.getBodyPose().setX(0).setY(0).setZ(0));
 			stand.setCustomNameVisible(false);
-			stand.setGravity(false); 
+			stand.setGravity(false);
 		}
 	}
 	

@@ -42,11 +42,10 @@ public class DefaultSettings {
 		}
 		maincfg = YamlConfiguration.loadConfiguration(mainfile);
 
-		createMainConfigValues();
-		return true;
+		return createMainConfigValues();
 	}
 
-	private void createMainConfigValues() {
+	private boolean createMainConfigValues() {
 		maincfg.addDefault("Settings.removetool.type", Material.POISONOUS_POTATO.toString());
 		maincfg.addDefault("Settings.clonetool.type", Material.STICK.toString());
 		maincfg.addDefault("Settings.clonetool.name", "&AClone Tool");
@@ -56,7 +55,7 @@ public class DefaultSettings {
 		maincfg.addDefault("Settings.parenttool.name", "&AParent Tool");
 		maincfg.addDefault("Settings.parenttool.item-description", "");
 		maincfg.options().copyDefaults(true);
-		save();
+		return save();
 	}
 	
 	private boolean save() {

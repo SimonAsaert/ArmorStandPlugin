@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   
   <name>Armorstand-Plugin</name>
-  <description>Armorstand-handing plugin.</description>
+  <description>Armorstand-handing plugin</description>
   
   <build>
     <resources>
@@ -55,14 +55,14 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
         <artifactId>spigot-api</artifactId>
-        <version>1.14.4-R0.1-SNAPSHOT</version>
+        <version>1.15.2-R0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
     
     <dependency>
       <groupId>org.bukkit</groupId>
         <artifactId>bukkit</artifactId>
-        <version>1.14.4-R0.1-SNAPSHOT</version>
+        <version>1.15.2-R0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
   </dependencies>
