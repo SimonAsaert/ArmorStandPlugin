@@ -29,11 +29,6 @@ public class ParentMenuInventory {
 		ItemStack back = plugin.createItem(new ItemStack(Material.BARRIER), ChatColor.RED + "Back", Arrays.asList(""));
 		
 		if(smartFlag) {
-			
-			
-			
-			
-			
 			i.setItem(0, defaultParent);
 			i.setItem(1, disabled);
 			

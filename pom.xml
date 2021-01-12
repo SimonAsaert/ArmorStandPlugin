@@ -44,25 +44,13 @@
       <id>sk80q</id>
       <url>http://maven.sk89q.com/artifactory/repo/</url>
     </repository>
-    
-    <repository>
-        <id>PlotSquared-repo</id>
-        <url>http://ci.athion.net/job/PlotSquared/ws/mvn/</url>
-    </repository>
   </repositories>
   
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
         <artifactId>spigot-api</artifactId>
-        <version>1.15.2-R0.1-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.bukkit</groupId>
-        <artifactId>bukkit</artifactId>
-        <version>1.15.2-R0.1-SNAPSHOT</version>
+        <version>1.16.3-R0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
   </dependencies>
