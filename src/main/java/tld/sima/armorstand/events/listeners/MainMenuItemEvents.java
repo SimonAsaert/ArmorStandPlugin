@@ -23,7 +23,7 @@ import tld.sima.armorstand.inventories.ParentMenuInventory;
 
 public class MainMenuItemEvents {
 	
-	public static Main plugin = Main.getPlugin(Main.class);
+	public static final Main plugin = Main.getPlugin(Main.class);
 	
 	public static boolean parseItem(String itemName, Player player, ArmorStand stand) {
 		if (itemName.contains("Move Stand with Player")) {

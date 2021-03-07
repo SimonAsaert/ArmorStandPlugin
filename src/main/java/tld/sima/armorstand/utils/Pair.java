@@ -1,8 +1,8 @@
 package tld.sima.armorstand.utils;
 
 public class Pair<T1, T2> {
-	public T1 left;
-	public T2 right;
+	private T1 left;
+	private T2 right;
 	
 	public Pair() {
 		

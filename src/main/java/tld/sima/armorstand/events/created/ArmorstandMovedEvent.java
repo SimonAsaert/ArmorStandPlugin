@@ -9,11 +9,11 @@ import org.bukkit.event.HandlerList;
 
 public class ArmorstandMovedEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private UUID standUUID;
-	private Location oldLoc;
-	private Location newLoc;
+	private final UUID standUUID;
+	private final Location oldLoc;
+	private final Location newLoc;
 	private boolean cancelled = false;
-	private boolean isRotation;
+	private final boolean isRotation;
 	
 	public ArmorstandMovedEvent(UUID standUUID, Location oldLoc, Location newLoc, boolean flag){
 		this.standUUID = standUUID;

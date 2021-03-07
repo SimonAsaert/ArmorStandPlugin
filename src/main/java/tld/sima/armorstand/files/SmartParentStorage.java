@@ -2,10 +2,7 @@ package tld.sima.armorstand.files;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +13,7 @@ import org.bukkit.entity.Entity;
 import tld.sima.armorstand.Main;
 
 public class SmartParentStorage {
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	
 	// File and File Configurations here
 	private FileConfiguration maincfg;
@@ -55,7 +52,7 @@ public class SmartParentStorage {
 
 	private void createMainConfigValues() {
 		maincfg.addDefault("Parent.UUID", "");
-		maincfg.addDefault("Parent.List", Arrays.asList(""));
+		maincfg.addDefault("Parent.List", Collections.singletonList(""));
 		maincfg.options().copyDefaults(true);
 		save();
 	}
@@ -79,8 +76,8 @@ public class SmartParentStorage {
 	}
 	
 	// Setter, save array list
-	public boolean saveList(ArrayList<UUID> list) {
-		ArrayList<String> listAsString = new ArrayList<String>();
+	public boolean saveList(List<UUID> list) {
+		List<String> listAsString = new ArrayList<String>();
 		for(UUID uuid : list) {
 			listAsString.add(uuid.toString());
 		}
@@ -99,9 +96,9 @@ public class SmartParentStorage {
 	}
 	
 	// Getter, load array list
-	public ArrayList<UUID> loadList(){
+	public List<UUID> loadList(){
 		List<String> listAsString = maincfg.getStringList("Parent.List");
-		ArrayList<UUID> list = new ArrayList<UUID>();
+		List<UUID> list = new ArrayList<UUID>();
 		for(String string : listAsString) {
 			list.add(UUID.fromString(string));
 		}

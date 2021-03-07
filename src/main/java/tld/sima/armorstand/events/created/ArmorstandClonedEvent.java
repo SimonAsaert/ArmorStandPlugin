@@ -12,10 +12,10 @@ import org.bukkit.util.Vector;
 
 public class ArmorstandClonedEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private UUID playerUUID;
-	private UUID standUUID;
-	private UUID worldUUID;
-	private Vector loc;
+	private final UUID playerUUID;
+	private final UUID standUUID;
+	private final UUID worldUUID;
+	private final Vector loc;
 	private boolean cancelled = false;
 
 	public ArmorstandClonedEvent(Player player, ArmorStand stand, Vector loc, UUID worldUUID) {

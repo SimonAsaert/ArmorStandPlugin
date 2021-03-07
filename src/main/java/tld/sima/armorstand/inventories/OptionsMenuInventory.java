@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import tld.sima.armorstand.Main;
 
 public class OptionsMenuInventory {
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	
 	public void openInventory(Player player, ArmorStand stand) {
 		Inventory i = plugin.getServer().createInventory(null, 27, ChatColor.DARK_BLUE + "Armorstand GUI Options");
@@ -51,7 +51,7 @@ public class OptionsMenuInventory {
 
 			togglesize = plugin.createItem(togglesize, ChatColor.WHITE + "Toggle Size", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + stand.isSmall()));
 			
-			if (stand.isCustomNameVisible() == true){
+			if (stand.isCustomNameVisible()){
 				name = plugin.createItem(name, ChatColor.WHITE + "Name", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current name: " + stand.getName()));
 			}else{
 				name = plugin.createItem(name, ChatColor.WHITE + "Name", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current name: "));
@@ -61,7 +61,7 @@ public class OptionsMenuInventory {
 			togglearms = plugin.createItem(togglearms, ChatColor.WHITE + "Toggle Arms", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current state: " + ChatColor.WHITE + stand.hasArms()));
 			
 			boolean onFire;
-			if (stand.getFireTicks() == -1){ onFire = false;} else {onFire = true;}
+			onFire = stand.getFireTicks() != -1;
 			togglefire = plugin.createItem(togglefire, ChatColor.WHITE + "Toggle Fire",Arrays.asList( ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: "+ ChatColor.WHITE + onFire));
 			
 			rotation = plugin.createItem(rotation, ChatColor.WHITE + "Rotation", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));

@@ -15,7 +15,7 @@ import tld.sima.armorstand.Main;
 
 public class Utils {
 	
-	private static Main plugin = Main.getPlugin(Main.class);
+	private final static Main plugin = Main.getPlugin(Main.class);
 	
 	public static List<UUID> collectAllChildStands(UUID parent, List<UUID> currentList){
 		currentList.add(parent);
@@ -44,7 +44,7 @@ public class Utils {
 		ArrayList<Chunk> chunksToUnload = new ArrayList<Chunk>();
 		for(UUID uuid : entityList) {
 			Entity entity = Bukkit.getEntity(uuid);
-			if(entity != null && entity instanceof ArmorStand) {
+			if(entity instanceof ArmorStand) {
 				Location loc = entity.getLocation();
 				if(!loc.getChunk().isLoaded()) {
 					loc.getChunk().load();

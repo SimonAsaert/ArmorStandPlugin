@@ -18,7 +18,7 @@ import tld.sima.armorstand.utils.RotationClass;
 
 public class RotationConv extends StringPrompt {
 	
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	private UUID uuid;
 	private UUID standUUID;
 	private boolean invType;

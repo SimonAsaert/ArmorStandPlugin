@@ -1,6 +1,7 @@
 package tld.sima.armorstand.conversations;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -22,7 +23,7 @@ import tld.sima.armorstand.utils.Utils;
 
 public class MovementConv extends StringPrompt{
 	
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	private UUID uuid;
 	private UUID standUUID;
 	private boolean invType;
@@ -35,7 +36,7 @@ public class MovementConv extends StringPrompt{
 			con.getForWhom().sendRawMessage(ChatColor.RED + "The stand has disappeared!");
 			return null;
 		}
-		
+
 		String delims = " ";
 		String[] tokens = message.split(delims);
 		if (tokens.length != 3) {
@@ -53,12 +54,14 @@ public class MovementConv extends StringPrompt{
 				return null;
 			}
 		}
+
+		List<UUID> entitiesToMove = Utils.collectAllChildStands(stand.getUniqueId(), new ArrayList<UUID>());
 		
-		ArrayList<UUID> entitiesToMove = new ArrayList<UUID>();
-		entitiesToMove = (ArrayList<UUID>) Utils.collectAllChildStands(stand.getUniqueId(), entitiesToMove);
-		
-		for(UUID entity : entitiesToMove) {
-			moveEntity(Bukkit.getEntity(entity), movement);
+		for(UUID entityUUID : entitiesToMove) {
+			Entity entity = Bukkit.getEntity(entityUUID);
+			if (entity != null) {
+				moveEntity(entity, movement);
+			}
 		}
 		openInventory(player, stand);
 		
@@ -97,8 +100,6 @@ public class MovementConv extends StringPrompt{
 	}
 
 	public String getPromptText(ConversationContext arg0) {
-		String output = (ChatColor.GOLD + "Type relative input in format: " + ChatColor.WHITE + "0 1 0" + ChatColor.GOLD + ".");
-		return output;
+		return (ChatColor.GOLD + "Type relative input in format: " + ChatColor.WHITE + "0 1 0" + ChatColor.GOLD + ".");
 	}
-
 }

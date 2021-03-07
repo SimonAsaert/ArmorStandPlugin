@@ -2,10 +2,7 @@ package tld.sima.armorstand.files;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +13,7 @@ import tld.sima.armorstand.Main;
 
 public class StorageManager {
 	
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 
 	private FileConfiguration storagecfg;
 	private File storagefile;
@@ -60,7 +57,7 @@ public class StorageManager {
 		return true;
 	}
 	
-	public void scanList(HashMap<UUID, Integer> list) {
+	public void scanList(Map<UUID, Integer> list) {
 		// Get List of UUIDS from HashMap and convert to String
 		List<String> strings = new ArrayList<String>();
 		for (UUID uuid : list.keySet()) {
@@ -104,7 +101,6 @@ public class StorageManager {
 	}
 	
 	public void removeUUID(UUID uuid) {
-		
 		List<String> list = storagecfg.getStringList("Stands.parent.uuids");
 		if (list.contains(uuid.toString())) {
 			list.remove(uuid.toString());
@@ -123,9 +119,9 @@ public class StorageManager {
 		savecfg();
 	}
 
-	public HashMap<UUID, Integer> getList(){
+	public Map<UUID, Integer> getList(){
 		List<String> list = storagecfg.getStringList("Stands.parent.uuids");
-		HashMap<UUID, Integer> returnList = new HashMap<UUID, Integer>();
+		Map<UUID, Integer> returnList = new HashMap<UUID, Integer>();
 		int radius;
 		for (String string : list) {
 			radius = storagecfg.getInt("Stands." + string + ".radius");

@@ -1,11 +1,7 @@
 package tld.sima.armorstand;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,15 +26,15 @@ import tld.sima.armorstand.utils.ToolType;
 
 public class Main extends JavaPlugin {
 	// Player-based information
-	private HashMap<UUID, PlayerData> playerData = new HashMap<UUID, PlayerData>();
-	private HashSet<UUID> protectedStands = new HashSet<UUID>();
+	private final Map<UUID, PlayerData> playerData = new HashMap<UUID, PlayerData>();
+	private Set<UUID> protectedStands = new HashSet<UUID>();
 	
 	// ItemHub for used items
 	private ItemHub itemHub;
 	
 	// Parent information
-	private HashMap<UUID, ArrayList<UUID>> smartParent = new HashMap<UUID, ArrayList<UUID>>();
-	private HashMap<UUID,Integer> parentList;
+	private final Map<UUID, List<UUID>> smartParent = new HashMap<UUID, List<UUID>>();
+	private Map<UUID,Integer> parentList;
 	private StorageManager stmgr;
 	
 	private API api;
@@ -73,7 +69,7 @@ public class Main extends JavaPlugin {
 			}
 			smartParent.put(sps.getUUID(), sps.loadList());
 			StringBuilder builder = new StringBuilder();
-			ArrayList<UUID> uuids = sps.loadList();
+			List<UUID> uuids = sps.loadList();
 			if(uuids.size() > 0) {
 				builder.append(ChatColor.GREEN).append("Child parents: ").append(ChatColor.WHITE).append(uuids.get(0));
 				for(int i = 1 ; i < uuids.size() ; i++) {
@@ -88,8 +84,10 @@ public class Main extends JavaPlugin {
 		
 		// Initialize command manager
 		ToolCommandManager tcm = new ToolCommandManager();
+
 		this.getCommand(tcm.cmd1).setExecutor(tcm);
-		
+		this.getCommand(tcm.cmd1).setTabCompleter(tcm);
+
 		for(Player player : this.getServer().getOnlinePlayers()) {
 			playerData.put(player.getUniqueId(), new PlayerData());
 		}
@@ -132,7 +130,7 @@ public class Main extends JavaPlugin {
 		playerData.get(uuid).setPairedStand(stand);
 	}
 
-	public HashMap<UUID, Integer> getParentMap(){
+	public Map<UUID, Integer> getParentMap(){
 		return parentList;
 	}
 
@@ -180,7 +178,7 @@ public class Main extends JavaPlugin {
 		playerData.get(uuid).setArmorstandTool(material, tooltype);
 	}
 	
-	public HashMap<UUID, ArrayList<UUID>> getSmartParent() {
+	public Map<UUID, List<UUID>> getSmartParent() {
 		return smartParent;
 	}
 	
@@ -194,19 +192,24 @@ public class Main extends JavaPlugin {
 		}
 	}
 
-	public ItemStack createItem(ItemStack item, String disName, List<String> list) {
+	public ItemStack createItem(ItemStack item, String disName, List<String> loreList) {
 		ItemMeta itemM = item.getItemMeta();
-		itemM.setDisplayName(disName);
-		itemM.setLore(list);
-		itemM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		itemM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		itemM.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		item.setItemMeta(itemM);
-		
+		if (itemM != null) {
+			if (!disName.equals("")) {
+				itemM.setDisplayName(disName);
+			}
+			if(!loreList.isEmpty()) {
+				itemM.setLore(loreList);
+			}
+			itemM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			itemM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			itemM.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+			item.setItemMeta(itemM);
+		}
 		return item;
 	}
 	
-	public HashSet<UUID> getProtectedStands(){
+	public Set<UUID> getProtectedStands(){
 		return protectedStands;
 	}
 }

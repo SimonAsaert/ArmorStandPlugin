@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 
 public class ArmorstandRemovedEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private UUID standUUID;
+	private final UUID standUUID;
 
 	public ArmorstandRemovedEvent(UUID standUUID) {
 		this.standUUID = standUUID;

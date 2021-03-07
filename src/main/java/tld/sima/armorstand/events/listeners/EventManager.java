@@ -1,9 +1,6 @@
 package tld.sima.armorstand.events.listeners;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -41,7 +38,7 @@ import tld.sima.armorstand.utils.ToolType;
 
 public class EventManager implements Listener {
 	
-	Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
@@ -82,9 +79,7 @@ public class EventManager implements Listener {
 				ToolType type = plugin.getArmorstandToolType(player.getUniqueId());
 				ArmorStand stand = (ArmorStand)event.getEntity();
 				switch(type) {
-				case NONE:
-					break;
-				case GRAVITY:
+					case GRAVITY:
 					stand.setGravity(!stand.hasGravity());
 					break;
 				case SIZE:
@@ -161,7 +156,7 @@ public class EventManager implements Listener {
 						return;
 					}
 					
-					ArrayList<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
+					List<UUID> list = plugin.getSmartParent().get(parentStand.getUniqueId());
 					if(list.contains(entity.getUniqueId())) {
 						list.remove(entity.getUniqueId());
 						plugin.getSmartParent().put(parentStand.getUniqueId(), list);
@@ -246,10 +241,6 @@ public class EventManager implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void onRightClickStand(PlayerInteractAtEntityEvent event) {
 		Player player = event.getPlayer();
-		if (player == null) {
-			return;
-		}
-		
 		if (event.getRightClicked() instanceof ArmorStand) {
 			
 			if(player.hasPermission("stand.interact") || player.hasPermission("armorstand.interact")) {

@@ -16,7 +16,7 @@ import tld.sima.armorstand.inventories.OptionsMenuInventory;
 
 public class RadiusConv extends StringPrompt {
 	
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	private UUID uuid;
 	private UUID standUUID;
 	private boolean invType;
@@ -62,8 +62,7 @@ public class RadiusConv extends StringPrompt {
 	}
 
 	public String getPromptText(ConversationContext arg0) {
-		String output = (ChatColor.GOLD + "Type radius. eg: " + ChatColor.WHITE + "1" + ChatColor.GOLD + ".");
-		return output;
+		return (ChatColor.GOLD + "Type radius. eg: " + ChatColor.WHITE + "1" + ChatColor.GOLD + ".");
 	}
 
 }

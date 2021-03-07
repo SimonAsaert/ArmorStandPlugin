@@ -25,7 +25,7 @@ import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.OptionsMenuInventory;
 
 public class OptionsMenuItemEvents {
-	public static Main plugin = Main.getPlugin(Main.class);
+	public final static Main plugin = Main.getPlugin(Main.class);
 	
 	public static void parseItem(String itemName, Player player, ArmorStand stand) {
 		if (itemName.contains("Back")) {

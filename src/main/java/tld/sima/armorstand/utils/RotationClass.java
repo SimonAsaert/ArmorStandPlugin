@@ -15,8 +15,8 @@ import tld.sima.armorstand.events.created.ArmorstandMovedEvent;
 
 public class RotationClass {
 	
-	private Main plugin = Main.getPlugin(Main.class);
-	private ArrayList<UUID> seenStands;
+	private final Main plugin = Main.getPlugin(Main.class);
+	private List<UUID> seenStands;
 	
 	public void InsertionDegrees(UUID standuuid, double degrees) {
 		seenStands = new ArrayList<UUID>();
@@ -32,7 +32,7 @@ public class RotationClass {
 		
 		if(plugin.getSmartParent().containsKey(standuuid)) {
 			seenStands.add(standuuid);
-			ArrayList<UUID> children = plugin.getSmartParent().get(standuuid);
+			List<UUID> children = plugin.getSmartParent().get(standuuid);
 			for(UUID child : children) {
 				Entity childEntity = Bukkit.getEntity(child);
 				if(seenStands.contains(child) || childEntity == null) {

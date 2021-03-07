@@ -24,7 +24,7 @@ public class MoveStandToPlayerConv extends StringPrompt {
 	private UUID uuid;
 	private UUID standUUID;
 	private boolean mainInventory;
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
@@ -34,7 +34,7 @@ public class MoveStandToPlayerConv extends StringPrompt {
 			return null;
 		}
 		
-		if (!message.equalsIgnoreCase("cancel")) {
+		if (!message.equalsIgnoreCase("cancel") && player != null) {
 			Location finalLocation = player.getLocation();
 			Location currentStandLocation = stand.getLocation();
 			Vector movement = new Vector();
@@ -77,8 +77,6 @@ public class MoveStandToPlayerConv extends StringPrompt {
 	}
 	
 	public String getPromptText(ConversationContext arg0) {
-		String output = (ChatColor.GOLD + "Once you are in the correct position, type anything into chat. \nTo abandon, type " + ChatColor.WHITE + "cancel" + ChatColor.GOLD + " instead");
-		return output;
+		return (ChatColor.GOLD + "Once you are in the correct position, type anything into chat. \nTo abandon, type " + ChatColor.WHITE + "cancel" + ChatColor.GOLD + " instead");
 	}
-
 }

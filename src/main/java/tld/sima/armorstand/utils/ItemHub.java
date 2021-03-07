@@ -6,9 +6,9 @@ import tld.sima.armorstand.files.DefaultSettings;
 
 public class ItemHub {
 	
-	private ItemStack smartParentTool;
-	private ItemStack cloneTool;
-	private ItemStack removeTool;
+	private final ItemStack smartParentTool;
+	private final ItemStack cloneTool;
+	private final ItemStack removeTool;
 	
 	public ItemHub() {
 		DefaultSettings settings = new DefaultSettings();

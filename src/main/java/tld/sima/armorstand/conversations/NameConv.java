@@ -16,7 +16,7 @@ import tld.sima.armorstand.inventories.OptionsMenuInventory;
 public class NameConv extends StringPrompt {
 	private UUID uuid;
 	private UUID standUUID;
-	private Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	
 	public Prompt acceptInput(ConversationContext con, String message) {
 		Player player = plugin.getServer().getPlayer(uuid);
@@ -47,8 +47,6 @@ public class NameConv extends StringPrompt {
 	}
 	
 	public String getPromptText(ConversationContext arg0) {
-		String output = (ChatColor.GOLD + "Input name. Type " + ChatColor.WHITE + "N/A" + ChatColor.GOLD + " if you want to clear the name.");
-		return output;
+		return (ChatColor.GOLD + "Input name. Type " + ChatColor.WHITE + "N/A" + ChatColor.GOLD + " if you want to clear the name.");
 	}
-
 }

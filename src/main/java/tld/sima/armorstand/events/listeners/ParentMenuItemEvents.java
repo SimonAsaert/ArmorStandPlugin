@@ -22,7 +22,7 @@ import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.ParentMenuInventory;
 
 public class ParentMenuItemEvents {
-	public static Main plugin = Main.getPlugin(Main.class);
+	public final static Main plugin = Main.getPlugin(Main.class);
 	
 	public static void parseItem(ItemStack item, Player player, ArmorStand stand) {
 		UUID standUUID = stand.getUniqueId();
@@ -35,14 +35,12 @@ public class ParentMenuItemEvents {
 			Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
 			conv.begin();
 			plugin.replaceConversation(player.getUniqueId(), conv);
-			return;
 		}else if (itemName.contains("Radius Parent")) {
 			if(plugin.getSmartParent().containsKey(standUUID)) {
 				plugin.getSmartParent().remove(standUUID);
 				plugin.getParentMap().put(standUUID, 1);
 				ParentMenuInventory pmi = new ParentMenuInventory();
 				pmi.openInventory(player, stand);
-				return;
 			}else if (plugin.getParentMap().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
 				PotionEffect potion = new PotionEffect(type, 200, 1);
@@ -53,13 +51,11 @@ public class ParentMenuItemEvents {
 						((ArmorStand) entity).addPotionEffect(potion);
 					}
 				}
-				return;
 			}else {
 				plugin.getSmartParent().remove(standUUID);
 				plugin.getParentMap().put(standUUID, 1);
 				ParentMenuInventory pmi = new ParentMenuInventory();
 				pmi.openInventory(player, stand);
-				return;
 			}
 		}else if(itemName.contains("Smart Parent tool")){
 			if(!player.getInventory().contains(plugin.getSmartParentTool())) {
@@ -75,7 +71,7 @@ public class ParentMenuItemEvents {
 			if(plugin.getSmartParent().containsKey(standUUID)) {
 				PotionEffectType type = PotionEffectType.GLOWING;
 				PotionEffect potion = new PotionEffect(type, 200, 1);
-				ArrayList<UUID> uuids= plugin.getSmartParent().get(standUUID);
+				List<UUID> uuids= plugin.getSmartParent().get(standUUID);
 				for(UUID uuid : uuids) {
 					Entity entity = Bukkit.getEntity(uuid);
 					if(entity instanceof ArmorStand) {
@@ -85,7 +81,7 @@ public class ParentMenuItemEvents {
 			}else if(plugin.getParentMap().containsKey(standUUID)){
 				int radius = plugin.getParentMap().get(standUUID);
 				List<Entity> entities = stand.getNearbyEntities(radius, radius, radius);
-				ArrayList<UUID> uuids = new ArrayList<UUID>();
+				List<UUID> uuids = new ArrayList<UUID>();
 				for(Entity entity: entities) {
 					if(entity.getType().equals(EntityType.ARMOR_STAND)) {
 						uuids.add(entity.getUniqueId());

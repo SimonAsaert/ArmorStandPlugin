@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -16,7 +17,7 @@ import tld.sima.armorstand.Main;
 
 public class ProtectedStands {
 	
-	public static void saveList(HashSet<UUID> uuids) {
+	public static void saveList(Set<UUID> uuids) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(Main.getPlugin(Main.class).getDataFolder().toString() + File.separator + "Storage" + File.separator + "ProtectedStands.obj");
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -30,8 +31,8 @@ public class ProtectedStands {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static HashSet<UUID> getList(){
-		HashSet<UUID> prot = new HashSet<UUID>();
+	public static Set<UUID> getList(){
+		Set<UUID> prot = new HashSet<UUID>();
 		try {
 			FileInputStream fis = new FileInputStream(Main.getPlugin(Main.class).getDataFolder().toString() + File.separator + "Storage" + File.separator + "ProtectedStands.obj");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -40,11 +41,11 @@ public class ProtectedStands {
 			
 			ois.close();
 			fis.close();
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException ignored) {
 			
-		} catch (IOException e) {
+		} catch (IOException ignored) {
 			
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException ignored) {
 			
 		}
 		

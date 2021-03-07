@@ -9,8 +9,8 @@ import org.bukkit.event.HandlerList;
 
 public class ArmorstandSelectedEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
-	private UUID playerUUID;
-	private UUID standUUID;
+	private final UUID playerUUID;
+	private final UUID standUUID;
 	private boolean cancelled = false;
 
 	public ArmorstandSelectedEvent(Player player, ArmorStand stand) {

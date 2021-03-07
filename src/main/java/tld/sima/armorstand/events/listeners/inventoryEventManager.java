@@ -18,19 +18,18 @@ import tld.sima.armorstand.inventories.MainMenuInventory;
 
 public class inventoryEventManager implements Listener {
 	
-	Main plugin = Main.getPlugin(Main.class);
+	private final Main plugin = Main.getPlugin(Main.class);
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
-		if(event.getClickedInventory() == null || event.getView() == null) {
+		if(event.getClickedInventory() == null) {
 			return;
+		} else {
+			event.getView();
 		}
-		
+
 		Player player = (Player) event.getWhoClicked();
-		if (player == null) {
-			return;
-		}
-		
+
 		ItemStack item = event.getCurrentItem();
 		ArmorStand stand = plugin.getPairedStand(player.getUniqueId());
 		if (stand == null) {

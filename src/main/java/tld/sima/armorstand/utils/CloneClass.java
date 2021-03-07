@@ -16,8 +16,8 @@ import tld.sima.armorstand.Main;
 
 public class CloneClass {
 	
-	private Main plugin = Main.getPlugin(Main.class);
-	private HashSet<UUID> parentList = new HashSet<UUID>();
+	private final Main plugin = Main.getPlugin(Main.class);
+	private final HashSet<UUID> parentList = new HashSet<UUID>();
 	
 	public UUID CloneStand(ArmorStand stand, Vector delta, UUID worldUUID) {
 		boolean loadChunk = false;
