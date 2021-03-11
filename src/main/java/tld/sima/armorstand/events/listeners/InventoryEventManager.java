@@ -84,6 +84,7 @@ public class InventoryEventManager implements Listener {
 					stand.getEquipment().setChestplate(setter);
 					player.sendMessage(ChatColor.GOLD + "Chestplate set.");
 					event.getCursor().setAmount(0);
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
@@ -96,6 +97,7 @@ public class InventoryEventManager implements Listener {
 					stand.getEquipment().setLeggings(setter);
 					player.sendMessage(ChatColor.GOLD + "Leggings set.");
 					event.getCursor().setAmount(0);
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
@@ -108,6 +110,7 @@ public class InventoryEventManager implements Listener {
 					stand.getEquipment().setBoots(setter);
 					player.sendMessage(ChatColor.GOLD + "Boots set.");
 					event.getCursor().setAmount(0);
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
@@ -120,6 +123,7 @@ public class InventoryEventManager implements Listener {
 					stand.getEquipment().setItemInOffHand(setter);
 					player.sendMessage(ChatColor.GOLD + "Off-hand set.");
 					event.getCursor().setAmount(0);
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
@@ -132,6 +136,7 @@ public class InventoryEventManager implements Listener {
 					stand.getEquipment().setItemInMainHand(setter);
 					player.sendMessage(ChatColor.GOLD + "Main-hand set.");
 					event.getCursor().setAmount(0);
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
@@ -168,6 +173,7 @@ public class InventoryEventManager implements Listener {
 						plugin.getParentMap().remove(uuid);
 						stand.setVisible(true);
 					}
+					plugin.getServer().getPluginManager().callEvent(e);
 					if (!e.isCancelled()) {
 						MainMenuInventory i = new MainMenuInventory();
 						i.newInventory(player, stand);
