@@ -45,14 +45,12 @@ public class InventoryEventManager implements Listener {
 		
 		if(event.getClickedInventory().equals(event.getView().getTopInventory())) {
 			if (openName.equals(prefixMain)) {
-				plugin.getServer().getConsoleSender().sendMessage("Got to main menu");
 				event.setCancelled(true);
 
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
 					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 					return;
 				}
-				plugin.getServer().getConsoleSender().sendMessage("Item isn't Null!");
 				
 				String itemName = item.getItemMeta().getDisplayName();
 				if (event.getAction().equals(InventoryAction.PICKUP_HALF)) {
@@ -60,12 +58,10 @@ public class InventoryEventManager implements Listener {
 						return;
 					}
 				}
-				plugin.getServer().getConsoleSender().sendMessage("Action is fine.");
 				
 				if(MainMenuItemEvents.parseItem(itemName, player, stand)) {
 					return;
 				}
-				plugin.getServer().getConsoleSender().sendMessage("Was something outside of parseItem method");
 				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
 				if (itemName.contains("Change Head")) {
 					ItemStack setter = event.getCursor();

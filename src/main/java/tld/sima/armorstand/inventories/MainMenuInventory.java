@@ -26,7 +26,7 @@ public class MainMenuInventory {
 		boolean parent = plugin.getParentMap().containsKey(standuuid) || plugin.getSmartParent().containsKey(standuuid);
 		ItemStack setparent = plugin.createItem(new ItemStack(Material.ARMOR_STAND,1), ChatColor.WHITE + "Parent", new ArrayList<String>());
 
-		ItemStack delete = plugin.createItem(new ItemStack(Material.SKULL), ChatColor.WHITE + "Delete Stand", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
+		ItemStack delete = plugin.createItem(new ItemStack(Material.SKELETON_SKULL), ChatColor.WHITE + "Delete Stand", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Deletes Stand"));
 
 		ItemStack options = plugin.createItem(new ItemStack(Material.ANVIL), ChatColor.WHITE + "Options", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "More Armorstand Options"));
 
@@ -36,7 +36,7 @@ public class MainMenuInventory {
 
 		ItemStack clone = plugin.createItem(new ItemStack(Material.ARMOR_STAND), ChatColor.WHITE + "Clone Stand", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Get clone tool"));
 
-		ItemStack rotation = plugin.createItem(new ItemStack(Material.WOOD), ChatColor.WHITE + "Rotation", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
+		ItemStack rotation = plugin.createItem(new ItemStack(Material.OAK_WOOD), ChatColor.WHITE + "Rotation", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current Angle: " + ChatColor.WHITE + stand.getLocation().getYaw()));
 
 		ItemStack protect = plugin.createItem(new ItemStack(Material.STONE_BUTTON), ChatColor.WHITE + "Protect stand", Collections.singletonList(ChatColor.WHITE + "Protection status: " + ChatColor.GRAY + plugin.getProtectedStands().contains(standuuid)));
 		
@@ -159,39 +159,39 @@ public class MainMenuInventory {
 			
 			ItemStack curhead;
 			if(stand.getEquipment().getHelmet() == (null) || stand.getEquipment().getHelmet().getType().equals(Material.AIR)) {
-				curhead = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Head",  new ArrayList<String>());
+				curhead = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Head",  new ArrayList<String>());
 			}else {
 				curhead = plugin.createItem(stand.getEquipment().getHelmet(), ChatColor.WHITE + "Change Head",  new ArrayList<String>());
 			}
 			ItemStack curtorso;
 			if(stand.getEquipment().getChestplate() == (null) || stand.getEquipment().getChestplate().getType().equals(Material.AIR)) {
-				curtorso = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Chest",  new ArrayList<String>());
+				curtorso = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Chest",  new ArrayList<String>());
 			}else {
 				curtorso = plugin.createItem(stand.getEquipment().getChestplate(), ChatColor.WHITE + "Change Chest",  new ArrayList<String>());
 			}
 			ItemStack curlegs;
 			if(stand.getEquipment().getLeggings() == (null) || stand.getEquipment().getLeggings().getType().equals(Material.AIR)) {
-				curlegs = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Legs",  new ArrayList<String>());
+				curlegs = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Legs",  new ArrayList<String>());
 			}else {
 				curlegs = plugin.createItem(stand.getEquipment().getLeggings(), ChatColor.WHITE + "Change Legs",  new ArrayList<String>());
 			}
 			ItemStack curboots;
 			if(stand.getEquipment().getBoots() == (null) || stand.getEquipment().getBoots().getType().equals(Material.AIR)) {
-				curboots = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Feet",  new ArrayList<String>());
+				curboots = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Feet",  new ArrayList<String>());
 			}else {
 				curboots = plugin.createItem(stand.getEquipment().getBoots(), ChatColor.WHITE + "Change Feet",  new ArrayList<String>());
 			}
 			
 			ItemStack curleftHand;
 			if(stand.getEquipment().getItemInOffHand().getType().equals(Material.AIR)) {
-				curleftHand = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Left Hand",  new ArrayList<String>());
+				curleftHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Left Hand",  new ArrayList<String>());
 			}else {
 				curleftHand = plugin.createItem(stand.getEquipment().getItemInOffHand(), ChatColor.WHITE + "Change Left Hand",  new ArrayList<String>());
 			}
 			
 			ItemStack currightHand;
 			if( stand.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) {
-				currightHand = plugin.createItem(new ItemStack(Material.STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand",  new ArrayList<String>());
+				currightHand = plugin.createItem(new ItemStack(Material.WHITE_STAINED_GLASS_PANE), ChatColor.WHITE + "Change Right Hand",  new ArrayList<String>());
 			}else {
 				currightHand = plugin.createItem(stand.getEquipment().getItemInMainHand(), ChatColor.WHITE + "Change Right Hand",  new ArrayList<String>());
 			}
