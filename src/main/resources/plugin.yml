@@ -3,7 +3,7 @@ main: tld.sima.armorstand.Main
 version: 0.1
 author: Simon A
 description: A plugin that deals with armorstand interactions
-api-version: 1.13
+#api-version: 1.13
 permissions:
   stand:
     description: Allow interaction with armorstand

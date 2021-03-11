@@ -32,6 +32,14 @@ public class ToolCommandManager implements CommandExecutor, TabExecutor {
 					StringBuilder builder = getToolTypesBuilder();
 					player.sendMessage(builder.toString());
 				}else {
+					if (args.length == 2){
+						try {
+							plugin.setFuzzyToolRadius(player.getUniqueId(), Double.parseDouble(args[1]));
+						}catch(NumberFormatException e){
+							player.sendMessage(ChatColor.RED + "Unable to read radius as number!");
+						}
+					}
+
 					ToolType type;
 					try {
 						type = ToolType.valueOf(args[0].toUpperCase());
@@ -46,7 +54,7 @@ public class ToolCommandManager implements CommandExecutor, TabExecutor {
 						player.sendMessage(ChatColor.RED + "Unable to bind tool to hand or use currently used tools.");
 						return true;
 					}
-					plugin.setArmorstandTool(player.getUniqueId(), type, item.getType());
+					plugin.setArmorstandTool(player.getUniqueId(), item.clone(), type);
 					player.sendMessage(ChatColor.GOLD + "Changed tool type to: " + ChatColor.WHITE + type.toString());
 				}
 				return true;

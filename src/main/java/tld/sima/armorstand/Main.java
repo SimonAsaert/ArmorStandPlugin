@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import tld.sima.armorstand.commands.ToolCommandManager;
 import tld.sima.armorstand.events.listeners.EventManager;
-import tld.sima.armorstand.events.listeners.inventoryEventManager;
+import tld.sima.armorstand.events.listeners.InventoryEventManager;
 import tld.sima.armorstand.files.ProtectedStands;
 import tld.sima.armorstand.files.SmartParentStorage;
 import tld.sima.armorstand.files.StorageManager;
@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		// Setup Events
 		getServer().getPluginManager().registerEvents(new EventManager(), this);
-		getServer().getPluginManager().registerEvents(new inventoryEventManager(), this);
+		getServer().getPluginManager().registerEvents(new InventoryEventManager(), this);
 
 		// Setup storage manager and setup List of UUIDS for the parent list as well as setting up SmartParents
 		stmgr = new StorageManager();
@@ -157,25 +157,33 @@ public class Main extends JavaPlugin {
 	public API getAPI() {
 		return api;
 	}
+
+	public double getFuzzyToolRadius(UUID uuid){
+		return playerData.get(uuid).getCustomArmorstandTool().getFuzzyRadius();
+	}
+
+	public void setFuzzyToolRadius(UUID uuid, double radius){
+		this.playerData.get(uuid).setFuzzyRadius(radius);
+	}
 	
-	public Material getArmorstandToolMaterial(UUID uuid) {
-		return playerData.get(uuid).getToolMaterialType();
+	public boolean isArmorstandCustomTool(UUID uuid, ItemStack item) {
+		return playerData.get(uuid).getCustomArmorstandTool().isTool(item);
 	}
 	
 	public ToolType getArmorstandToolType(UUID uuid) {
 		return playerData.get(uuid).getToolType();
 	}
 	
-	public void setArmorstandToolMaterial(UUID uuid, Material material) {
-		playerData.get(uuid).setToolMaterialType(material);
+	public void setArmorstandCustomTool(UUID uuid, ItemStack newTool) {
+		playerData.get(uuid).getCustomArmorstandTool().setTool(newTool);
 	}
 	
-	public void setArmorstandToolType(UUID uuid, ToolType tooltype) {
+	public void setArmorstandCustomToolType(UUID uuid, ToolType tooltype) {
 		playerData.get(uuid).setToolType(tooltype);
 	}
 	
-	public void setArmorstandTool(UUID uuid, ToolType tooltype, Material material) {
-		playerData.get(uuid).setArmorstandTool(material, tooltype);
+	public void setArmorstandTool(UUID uuid, ItemStack newTool, ToolType tooltype) {
+		playerData.get(uuid).setArmorstandTool(newTool, tooltype);
 	}
 	
 	public Map<UUID, List<UUID>> getSmartParent() {

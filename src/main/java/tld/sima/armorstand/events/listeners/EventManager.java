@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,84 +67,115 @@ public class EventManager implements Listener {
 				plugin.getSmartParent().remove(standUUID);
 				
 				for(UUID uuid : plugin.getSmartParent().keySet()) {
-					if(plugin.getSmartParent().get(uuid).contains(standUUID)) {
-						plugin.getSmartParent().get(uuid).remove(standUUID);
-					}
+					plugin.getSmartParent().get(uuid).remove(standUUID);
 				}
 				
 				stand.remove();
 				return;
-			}else if (itemInHand.getType().equals(plugin.getArmorstandToolMaterial(player.getUniqueId())) && 
+			}else if (plugin.isArmorstandCustomTool(player.getUniqueId(), itemInHand) &&
 					(player.hasPermission("Armorstand.atool") || event.getDamager().isOp())) {
 				event.setCancelled(true);
 				ToolType type = plugin.getArmorstandToolType(player.getUniqueId());
-				ArmorStand stand = (ArmorStand)event.getEntity();
+				ArmorStand mainStand = (ArmorStand)event.getEntity();
+				List<ArmorStand> affectedLists = new ArrayList<ArmorStand>();
+				affectedLists.add(mainStand);
+				double fuzzyRadius = plugin.getFuzzyToolRadius(player.getUniqueId());
+				if (fuzzyRadius > 0.1){
+					for (Entity entity : mainStand.getNearbyEntities(fuzzyRadius, fuzzyRadius*2, fuzzyRadius)){
+						if (entity instanceof ArmorStand){
+							affectedLists.add((ArmorStand) entity);
+						}
+					}
+				}
+				boolean flag;
 				switch(type) {
 					case GRAVITY:
-					stand.setGravity(!stand.hasGravity());
-					break;
-				case SIZE:
-					stand.setSmall(!stand.isSmall());
-					break;
-				case INVISIBLE:
-					stand.setVisible(!stand.isVisible());
-					break;
-				case FIRE:
-					int fireTicks = stand.getFireTicks();
-					if(fireTicks == -1 || fireTicks == 0) {
-						stand.setFireTicks(2147483645);
-						stand.setInvulnerable(true);
-					}else {
-						stand.setFireTicks(-1);
+						flag = !mainStand.hasGravity();
+						for (ArmorStand stand : affectedLists) {
+							stand.setGravity(flag);
+						}
+						break;
+					case SIZE:
+						flag = !mainStand.isSmall();
+						for (ArmorStand stand : affectedLists){
+							stand.setSmall(flag);
+						}
+						break;
+					case INVISIBLE:
+						flag = !mainStand.isVisible();
+						for (ArmorStand stand : affectedLists){
+							stand.setVisible(flag);
+						}
+						break;
+					case FIRE:
+						int fireTicks = mainStand.getFireTicks();
+						flag = (fireTicks == -1 || fireTicks == 0);
+
+						for (ArmorStand stand : affectedLists){
+							if (flag){
+								stand.setFireTicks(2147483645);
+								stand.setInvulnerable(true);
+							}else{
+								stand.setFireTicks(-1);
+							}
+						}
+						break;
+					case BASE:
+						flag = !mainStand.hasBasePlate();
+						for (ArmorStand stand : affectedLists){
+							stand.setBasePlate(flag);
+						}
+						break;
+					case ARMS:
+						flag = !mainStand.hasArms();
+						for (ArmorStand stand : affectedLists){
+							stand.setArms(flag);
+						}
+						break;
+					case GLOW:
+						flag = !mainStand.isGlowing();
+						for (ArmorStand stand : affectedLists){
+							stand.setGlowing(flag);
+						}
+						break;
+					case NAME:
+					{
+						plugin.setPairedStand(player.getUniqueId(), mainStand);
+						ConversationFactory cf = new ConversationFactory(plugin);
+						NameConv conversation = new NameConv();
+						conversation.setData(player.getUniqueId(), mainStand.getUniqueId());
+						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+						conv.begin();
+						plugin.replaceConversation(player.getUniqueId(), conv);
 					}
-					break;
-				case BASE:
-					stand.setBasePlate(!stand.hasBasePlate());
-					break;
-				case ARMS:
-					stand.setArms(!stand.hasArms());
-					break;
-				case GLOW:
-					stand.setGlowing(!stand.isGlowing());
-					break;
-				case NAME:
-				{
-					plugin.setPairedStand(player.getUniqueId(), stand);
-					ConversationFactory cf = new ConversationFactory(plugin);
-					NameConv conversation = new NameConv();
-					conversation.setData(player.getUniqueId(), stand.getUniqueId());
-					Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
-					conv.begin();
-					plugin.replaceConversation(player.getUniqueId(), conv);
-				}
-					break;
-				case ROTATION:
-				{
-					plugin.setPairedStand(player.getUniqueId(), stand);
-					ConversationFactory cf = new ConversationFactory(plugin);
-					RotationConv converstaion = new RotationConv();
-					converstaion.setData(player.getUniqueId(), stand.getUniqueId(), true, "BODY");
-					Conversation conv = cf.withFirstPrompt(converstaion).withLocalEcho(true).buildConversation(player);
-					conv.begin();
-					plugin.replaceConversation(player.getUniqueId(), conv);
-				}
-					break;
-				case MOVE:
-				{
-					plugin.setPairedStand(player.getUniqueId(), stand);
-					ConversationFactory cf = new ConversationFactory(plugin);
-					MovementConv conversation = new MovementConv();
-					conversation.setData(player.getUniqueId(), stand.getUniqueId(), true);
-					Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
-					conv.begin();
-					plugin.replaceConversation(player.getUniqueId(), conv);
-				}
-					break;
-				default:
-					break;
-				}
+						break;
+					case ROTATION:
+					{
+						plugin.setPairedStand(player.getUniqueId(), mainStand);
+						ConversationFactory cf = new ConversationFactory(plugin);
+						RotationConv conversation = new RotationConv();
+						conversation.setData(player.getUniqueId(), mainStand.getUniqueId(), true, "BODY");
+						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+						conv.begin();
+						plugin.replaceConversation(player.getUniqueId(), conv);
+					}
+						break;
+					case MOVE:
+					{
+						plugin.setPairedStand(player.getUniqueId(), mainStand);
+						ConversationFactory cf = new ConversationFactory(plugin);
+						MovementConv conversation = new MovementConv();
+						conversation.setData(player.getUniqueId(), mainStand.getUniqueId(), true);
+						Conversation conv = cf.withFirstPrompt(conversation).withLocalEcho(true).buildConversation(player);
+						conv.begin();
+						plugin.replaceConversation(player.getUniqueId(), conv);
+					}
+						break;
+					default:
+						break;
+					}
 				return;
-			}else if (player.getEquipment().getItemInMainHand().isSimilar(plugin.getSmartParentTool()) && 
+			}else if (itemInHand.isSimilar(plugin.getSmartParentTool()) &&
 					(player.hasPermission("Armorstand.smartparenttool") || event.getDamager().isOp())) {
 				event.setCancelled(true);
 				ArmorStand parentStand = plugin.getPairedStand(player.getUniqueId());

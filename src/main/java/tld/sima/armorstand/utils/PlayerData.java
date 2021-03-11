@@ -3,19 +3,19 @@ package tld.sima.armorstand.utils;
 import org.bukkit.Material;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerData {
+
+	private final CustomArmorstandTool customArmorstandTool;
 	
 	private ArmorStand pairedStand;
 	private Conversation currentConversation;
 	
-	private Material materialType;
-	private ToolType toolType;
-	
 	private ArmorStand clonedStand;
 	
 	public PlayerData() {
-		toolType = ToolType.NONE;
+		this.customArmorstandTool = new CustomArmorstandTool();
 	}
 
 	public void replaceCurrentConversation(Conversation currentConversation) {
@@ -30,6 +30,10 @@ public class PlayerData {
 			this.currentConversation.abandon();
 		}
 	}
+
+	public CustomArmorstandTool getCustomArmorstandTool(){
+		return this.customArmorstandTool;
+	}
 	
 	public ArmorStand getPairedStand() {
 		return pairedStand;
@@ -39,12 +43,12 @@ public class PlayerData {
 		return currentConversation;
 	}
 	
-	public Material getToolMaterialType() {
-		return materialType;
+	public boolean isArmorstandTool(ItemStack item){
+		return this.customArmorstandTool.isTool(item);
 	}
 	
 	public ToolType getToolType() {
-		return toolType;
+		return this.customArmorstandTool.getToolType();
 	}
 	
 	public ArmorStand getClonedStand() {
@@ -59,17 +63,21 @@ public class PlayerData {
 		this.currentConversation = currentConversation;
 	}
 	
-	public void setToolMaterialType(Material material) {
-		this.materialType = material;
+	public void setToolItemType(ItemStack newTool) {
+		this.customArmorstandTool.setTool(newTool);
 	}
 	
 	public void setToolType(ToolType type) {
-		this.toolType = type;
+		this.customArmorstandTool.setToolType(type);
 	}
 	
-	public void setArmorstandTool(Material material, ToolType type) {
-		this.materialType = material;
-		this.toolType = type;
+	public void setArmorstandTool(ItemStack newTool, ToolType type) {
+		this.customArmorstandTool.setTool(newTool);
+		this.customArmorstandTool.setToolType(type);
+	}
+
+	public void setFuzzyRadius(double radius){
+		this.customArmorstandTool.setFuzzyRadius(radius);
 	}
 	
 	public void setClonedStand(ArmorStand cloned) {

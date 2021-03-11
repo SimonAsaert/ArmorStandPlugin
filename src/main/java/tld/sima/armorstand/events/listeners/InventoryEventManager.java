@@ -11,42 +11,48 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
+import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 
-public class inventoryEventManager implements Listener {
+public class InventoryEventManager implements Listener {
 	
 	private final Main plugin = Main.getPlugin(Main.class);
 	
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent event) {
-		if(event.getClickedInventory() == null) {
-			return;
-		} else {
-			event.getView();
-		}
-
 		Player player = (Player) event.getWhoClicked();
 
-		ItemStack item = event.getCurrentItem();
 		ArmorStand stand = plugin.getPairedStand(player.getUniqueId());
 		if (stand == null) {
 			return;
 		}
+
+		Inventory open = event.getClickedInventory();
+		if (open == null) {
+			return;
+		}
+
+		String openName = event.getView().getTitle();
+		ItemStack item = event.getCurrentItem();
+
 		String prefixMain = (ChatColor.DARK_BLUE + "Armorstand GUI");
 		String prefixOptions = (ChatColor.DARK_BLUE + "Armorstand GUI Options");
 		String prefixParent = (ChatColor.DARK_BLUE + "Armorstand Parent GUI Options");
 		
 		if(event.getClickedInventory().equals(event.getView().getTopInventory())) {
-			if (event.getView().getTitle().equals(prefixMain) && !event.isCancelled()) {
+			if (openName.equals(prefixMain)) {
+				plugin.getServer().getConsoleSender().sendMessage("Got to main menu");
 				event.setCancelled(true);
-	
+
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
 					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 					return;
 				}
+				plugin.getServer().getConsoleSender().sendMessage("Item isn't Null!");
 				
 				String itemName = item.getItemMeta().getDisplayName();
 				if (event.getAction().equals(InventoryAction.PICKUP_HALF)) {
@@ -54,12 +60,13 @@ public class inventoryEventManager implements Listener {
 						return;
 					}
 				}
+				plugin.getServer().getConsoleSender().sendMessage("Action is fine.");
 				
 				if(MainMenuItemEvents.parseItem(itemName, player, stand)) {
 					return;
 				}
-				
-				MainMenuInventory i = new MainMenuInventory();
+				plugin.getServer().getConsoleSender().sendMessage("Was something outside of parseItem method");
+				ArmorstandSelectedEvent e = new ArmorstandSelectedEvent(player, stand);
 				if (itemName.contains("Change Head")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getHelmet().equals(new ItemStack(Material.AIR)))) {
@@ -68,7 +75,11 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setHelmet(setter);
 					player.sendMessage(ChatColor.GOLD + "Helmet set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					plugin.getServer().getPluginManager().callEvent(e);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Change Chest")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getChestplate().equals(new ItemStack(Material.AIR)))) {
@@ -77,7 +88,10 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setChestplate(setter);
 					player.sendMessage(ChatColor.GOLD + "Chestplate set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Change Legs")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getLeggings().equals(new ItemStack(Material.AIR)))) {
@@ -86,7 +100,10 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setLeggings(setter);
 					player.sendMessage(ChatColor.GOLD + "Leggings set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Change Feet")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getBoots().equals(new ItemStack(Material.AIR)))) {
@@ -95,7 +112,10 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setBoots(setter);
 					player.sendMessage(ChatColor.GOLD + "Boots set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Change Left Hand")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getItemInOffHand().equals(new ItemStack(Material.AIR)))) {
@@ -104,7 +124,10 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setItemInOffHand(setter);
 					player.sendMessage(ChatColor.GOLD + "Off-hand set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Change Right Hand")) {
 					ItemStack setter = event.getCursor();
 					if (!(stand.getEquipment().getItemInMainHand().equals(new ItemStack(Material.AIR)))) {
@@ -113,7 +136,10 @@ public class inventoryEventManager implements Listener {
 					stand.getEquipment().setItemInMainHand(setter);
 					player.sendMessage(ChatColor.GOLD + "Main-hand set.");
 					event.getCursor().setAmount(0);
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}else if (itemName.contains("Set Parent")) {
 					UUID uuid = stand.getUniqueId();
 					if (!plugin.getParentMap().containsKey(uuid)) {
@@ -130,7 +156,7 @@ public class inventoryEventManager implements Listener {
 						player.getInventory().addItem(stand.getEquipment().getBoots());
 						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
 						player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
-	
+
 						stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
 						stand.getEquipment().setChestplate(new ItemStack(Material.AIR));
 						stand.getEquipment().setLeggings(new ItemStack(Material.AIR));
@@ -146,9 +172,12 @@ public class inventoryEventManager implements Listener {
 						plugin.getParentMap().remove(uuid);
 						stand.setVisible(true);
 					}
-					i.newInventory(player, stand);
+					if (!e.isCancelled()) {
+						MainMenuInventory i = new MainMenuInventory();
+						i.newInventory(player, stand);
+					}
 				}
-			}else if (event.getView().getTitle().equals(prefixOptions)) {
+			}else if (openName.equals(prefixOptions)) {
 				event.setCancelled(true);
 	
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
