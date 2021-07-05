@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -150,14 +151,16 @@ public class InventoryEventManager implements Listener {
 						stand.setVisible(false);
 						stand.setCustomNameVisible(false);
 						stand.setCustomName("N/A");
-	
-						player.getInventory().addItem(stand.getEquipment().getHelmet());
-						player.getInventory().addItem(stand.getEquipment().getChestplate());
-						player.getInventory().addItem(stand.getEquipment().getLeggings());
-						player.getInventory().addItem(stand.getEquipment().getBoots());
-						player.getInventory().addItem(stand.getEquipment().getItemInMainHand());
-						player.getInventory().addItem(stand.getEquipment().getItemInOffHand());
 
+						EntityEquipment equipment = stand.getEquipment();
+						if (equipment != null) {
+							player.getInventory().addItem(equipment.getHelmet());
+							player.getInventory().addItem(equipment.getChestplate());
+							player.getInventory().addItem(equipment.getLeggings());
+							player.getInventory().addItem(equipment.getBoots());
+							player.getInventory().addItem(equipment.getItemInMainHand());
+							player.getInventory().addItem(equipment.getItemInOffHand());
+						}
 						stand.getEquipment().setHelmet(new ItemStack(Material.AIR));
 						stand.getEquipment().setChestplate(new ItemStack(Material.AIR));
 						stand.getEquipment().setLeggings(new ItemStack(Material.AIR));

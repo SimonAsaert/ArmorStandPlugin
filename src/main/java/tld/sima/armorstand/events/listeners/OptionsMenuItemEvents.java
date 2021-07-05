@@ -23,6 +23,7 @@ import tld.sima.armorstand.conversations.RotationConv;
 import tld.sima.armorstand.events.created.ArmorstandSelectedEvent;
 import tld.sima.armorstand.inventories.MainMenuInventory;
 import tld.sima.armorstand.inventories.OptionsMenuInventory;
+import tld.sima.armorstand.utils.Pair;
 
 public class OptionsMenuItemEvents {
 	public final static Main plugin = Main.getPlugin(Main.class);
@@ -105,7 +106,18 @@ public class OptionsMenuItemEvents {
 
 		OptionsMenuInventory i = new OptionsMenuInventory();
 		if (itemName.contains("Toggle Glow")) {
-			stand.setGlowing(!stand.isGlowing());
+			boolean flag = false;
+			for (Pair<ArmorStand, Boolean> pair : plugin.getPairCollection()){
+				if (pair.getLeft() != null && pair.getLeft().getUniqueId().equals(stand.getUniqueId())){
+					flag = true;
+					pair.setRight(!pair.getRight());
+					break;
+				}
+			}
+
+			if (!flag) {
+				stand.setGlowing(!stand.isGlowing());
+			}
 			i.openInventory(player, stand);
 		}else if (itemName.contains("Toggle Size")){
 			stand.setSmall(!stand.isSmall());

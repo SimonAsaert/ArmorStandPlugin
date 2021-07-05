@@ -8,8 +8,8 @@ public class VectorEuler {
 	double theta;
 	
 	public VectorEuler(Location loc) {
-		double radiussquared = Math.pow(loc.getX(), 2) + Math.pow(loc.getZ(), 2);
-		radius = Math.sqrt(radiussquared);
+		double radiusSquared = Math.pow(loc.getX(), 2) + Math.pow(loc.getZ(), 2);
+		radius = Math.sqrt(radiusSquared);
 		theta = Math.atan2(loc.getZ(), loc.getX());
 	}
 	

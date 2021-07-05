@@ -3,7 +3,7 @@ main: tld.sima.armorstand.Main
 version: 0.1
 author: Simon A
 description: A plugin that deals with armorstand interactions
-api-version: 1.13
+api-version: 1.16
 permissions:
   stand:
     description: Allow interaction with armorstand
@@ -11,8 +11,9 @@ permissions:
     permission-message: You don't have the armorstand.stand permission.
   interact:
     description: Allow interaction with armorstand
-    permission: stand.interact
-    permission: armorstand.interact
+    permissions:
+      stand.interact
+      armorstand.interact
     permission-message: You don't have the armorstand.stand permission.
   clone:
     description: When interacting with stand, usually when placing items into it, it returns a copy of the old item and the item placed. This ensures only item that was in place is returned.
@@ -32,4 +33,9 @@ commands:
     usage: /atool <type>
     permission: armorstand.atool
     permission-message: You don't have the armorstand.tool permission.
+  ScanStand:
+    description: DEBUG test for ray-trace entity scanning in front of player to find pointed-at armorstand.
+    usage: /ScanStand
+    permission: armorstand.ScanStand
+    permission-message: You don't have the armorstand.ScanStand permission.
     

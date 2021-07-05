@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import tld.sima.armorstand.Main;
+import tld.sima.armorstand.utils.Pair;
 
 public class OptionsMenuInventory {
 	private final Main plugin = Main.getPlugin(Main.class);
@@ -33,8 +34,16 @@ public class OptionsMenuInventory {
 		ItemStack back = new ItemStack(Material.BARRIER);
 		back = plugin.createItem(back, ChatColor.WHITE + "Back", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Return to main menu"));
 
-				ItemStack toggleglow = new ItemStack(Material.GLOWSTONE);
-		toggleglow = plugin.createItem(toggleglow, ChatColor.WHITE + "Toggle Glow", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + stand.isGlowing()));
+		ItemStack toggleglow = new ItemStack(Material.GLOWSTONE);
+		boolean flag = stand.isGlowing();
+		for (Pair<ArmorStand, Boolean> pair : plugin.getPairCollection()){
+			if (pair.getLeft() != null && pair.getLeft().getUniqueId().equals(stand.getUniqueId())){
+				flag = pair.getRight();
+				break;
+			}
+		}
+
+		toggleglow = plugin.createItem(toggleglow, ChatColor.WHITE + "Toggle Glow", Arrays.asList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Current State: " + ChatColor.WHITE + flag));
 
 		if(!parent) {
 			ItemStack togglesize = new ItemStack(Material.RED_MUSHROOM);
