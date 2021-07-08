@@ -36,7 +36,7 @@ public class OptionsMenuInventory {
 
 		ItemStack toggleglow = new ItemStack(Material.GLOWSTONE);
 		boolean flag = stand.isGlowing();
-		for (Pair<ArmorStand, Boolean> pair : plugin.getPairCollection()){
+		for (Pair<ArmorStand, Boolean> pair : plugin.getVisualStand().getPairs()){
 			if (pair.getLeft() != null && pair.getLeft().getUniqueId().equals(stand.getUniqueId())){
 				flag = pair.getRight();
 				break;

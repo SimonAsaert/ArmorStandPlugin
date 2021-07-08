@@ -6,16 +6,12 @@ import java.util.*;
 import org.bukkit.*;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.RayTraceResult;
 import tld.sima.armorstand.commands.ToolCommandManager;
 import tld.sima.armorstand.commands.WorldInteractionCommandManger;
 import tld.sima.armorstand.events.listeners.EventManager;
@@ -23,15 +19,11 @@ import tld.sima.armorstand.events.listeners.InventoryEventManager;
 import tld.sima.armorstand.files.ProtectedStands;
 import tld.sima.armorstand.files.SmartParentStorage;
 import tld.sima.armorstand.files.StorageManager;
-import tld.sima.armorstand.utils.ItemHub;
-import tld.sima.armorstand.utils.Pair;
-import tld.sima.armorstand.utils.PlayerData;
-import tld.sima.armorstand.utils.ToolType;
+import tld.sima.armorstand.utils.*;
 
 public class Main extends JavaPlugin {
 	// Player-based information
 	private final Map<UUID, PlayerData> playerData = new HashMap<UUID, PlayerData>();
-	private final Set<UUID> playersScanning = Collections.synchronizedSet(new LinkedHashSet<>());
 	private Set<UUID> protectedStands;
 	
 	// ItemHub for used items
@@ -42,9 +34,8 @@ public class Main extends JavaPlugin {
 	private Map<UUID,Integer> parentList;
 	private StorageManager stmgr;
 
-	// Runnables
-	private BukkitTask scanStand;
-	private Map<UUID, Pair<ArmorStand, Boolean>> previousScannedStand;
+	// Screen scanning
+	private VisualStand visualStand;
 
 	// Extras
 	private API api;
@@ -105,52 +96,7 @@ public class Main extends JavaPlugin {
 		}
 
 		// Start the armorstand scanning task
-		previousScannedStand = new HashMap<>();
-		scanStand = new BukkitRunnable(){
-			@Override
-			public void run() {
-				Iterator<UUID> iter = playersScanning.iterator();
-				Set<UUID> interactedStands = new HashSet<UUID>();
-				while(iter.hasNext()){
-					UUID pUUID = iter.next();
-					Pair<ArmorStand, Boolean> pair = previousScannedStand.get(pUUID);
-					Player p = (Player) Bukkit.getEntity(pUUID);
-					if (p == null){
-						if (pair != null && pair.getLeft() != null){
-							pair.getLeft().setGlowing(pair.getRight());
-						}
-						previousScannedStand.remove(pUUID);
-						iter.remove();
-						continue;
-					}
-					RayTraceResult rayTraceResult = p.getWorld().rayTraceEntities(p.getEyeLocation(), p.getEyeLocation().getDirection(), 4, (entity) -> entity instanceof ArmorStand);
-
-					if (rayTraceResult != null){
-						final Entity e = rayTraceResult.getHitEntity();
-						if (e instanceof ArmorStand){
-							if(!interactedStands.contains(e.getUniqueId())) {
-								interactedStands.add(e.getUniqueId());
-								if (pair == null) {
-									previousScannedStand.put(pUUID, new Pair<ArmorStand, Boolean>((ArmorStand) e, e.isGlowing()));
-									e.setGlowing(true);
-								} else if (!pair.getLeft().getUniqueId().equals(e.getUniqueId())) {
-									if (pair.getLeft() != null) {
-										pair.getLeft().setGlowing(pair.getRight());
-									}
-									previousScannedStand.put(pUUID, new Pair<ArmorStand, Boolean>((ArmorStand) e, e.isGlowing()));
-									e.setGlowing(true);
-								}
-							}
-							continue;
-						}
-					}
-					if (pair != null && pair.getLeft() != null){
-						pair.getLeft().setGlowing(pair.getRight());
-					}
-					previousScannedStand.remove(pUUID);
-				}
-			}
-		}.runTaskTimer(this, 20, 5);
+		this.visualStand = new VisualStand();
 
 		// Initialize API for other plugins to hook onto!
 		api = new API(); 
@@ -172,7 +118,7 @@ public class Main extends JavaPlugin {
 		ProtectedStands.saveList(protectedStands);
 		stmgr.scanList(parentList);
 
-		scanStand.cancel();
+		this.visualStand.delete();
 
 		this.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Armorstand API Disabled.");
 	}
@@ -185,31 +131,16 @@ public class Main extends JavaPlugin {
 		playerData.get(uuid).replaceCurrentConversation(conversation);
 	}
 
-	public boolean addRemoveToPlayerScanningSet(UUID pUUID){
-		if (this.playersScanning.contains(pUUID)){
-			this.playersScanning.remove(pUUID);
-			Pair<ArmorStand, Boolean> pair = previousScannedStand.get(pUUID);
-			if (pair != null && pair.getLeft() != null){
-				pair.getLeft().setGlowing(pair.getRight());
-			}
-			previousScannedStand.remove(pUUID);
-			return false;
-		}else{
-			this.playersScanning.add(pUUID);
-			return true;
-		}
-	}
-
-	public Collection<Pair<ArmorStand, Boolean>> getPairCollection(){
-		return previousScannedStand.values();
-	}
-
 	public ArmorStand getPairedStand(UUID uuid){
 		return playerData.get(uuid).getPairedStand();
 	}
 	
 	public void setPairedStand(UUID uuid, ArmorStand stand) {
 		playerData.get(uuid).setPairedStand(stand);
+	}
+
+	public VisualStand getVisualStand(){
+		return this.visualStand;
 	}
 
 	public Map<UUID, Integer> getParentMap(){

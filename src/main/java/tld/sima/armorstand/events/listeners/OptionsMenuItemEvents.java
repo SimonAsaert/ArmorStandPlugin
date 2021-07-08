@@ -107,7 +107,7 @@ public class OptionsMenuItemEvents {
 		OptionsMenuInventory i = new OptionsMenuInventory();
 		if (itemName.contains("Toggle Glow")) {
 			boolean flag = false;
-			for (Pair<ArmorStand, Boolean> pair : plugin.getPairCollection()){
+			for (Pair<ArmorStand, Boolean> pair : plugin.getVisualStand().getPairs()){
 				if (pair.getLeft() != null && pair.getLeft().getUniqueId().equals(stand.getUniqueId())){
 					flag = true;
 					pair.setRight(!pair.getRight());
