@@ -30,7 +30,7 @@ public class MainMenuInventory {
 
 		ItemStack options = plugin.createItem(new ItemStack(Material.ANVIL), ChatColor.WHITE + "Options", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "More Armorstand Options"));
 
-		ItemStack animations = plugin.createItem(new ItemStack(Material.REDSTONE), ChatColor.WHITE + "Animations", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Armorstand animations"));
+//		ItemStack animations = plugin.createItem(new ItemStack(Material.REDSTONE), ChatColor.WHITE + "Animations", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Armorstand animations"));
 
 		ItemStack position = plugin.createItem(new ItemStack(Material.STONE), ChatColor.WHITE + "Position", Collections.singletonList(ChatColor.GRAY + "" + ChatColor.ITALIC + "Move armorstands in XYZ position"));
 
@@ -76,7 +76,6 @@ public class MainMenuInventory {
 			i.setItem(36, disabled);
 			
 			i.setItem(39, options);
-			i.setItem(40, animations);
 			i.setItem(41, setparent);
 			i.setItem(42, protect);
 			i.setItem(43, rotation);
@@ -233,7 +232,6 @@ public class MainMenuInventory {
 			i.setItem(37, curleftHand);
 			
 			i.setItem(39, options);
-			i.setItem(40, animations);
 			i.setItem(41, setparent);
 			i.setItem(42, protect);
 			i.setItem(43, rotation);

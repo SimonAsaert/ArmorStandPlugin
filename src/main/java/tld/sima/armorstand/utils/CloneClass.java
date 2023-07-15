@@ -79,11 +79,7 @@ public class CloneClass {
 		newStand.setHeadPose(oldStand.getHeadPose());
 		
 		newStand.setCustomName(oldStand.getCustomName());
-		if (!newStand.getCustomName().equals("N/A")) {
-			newStand.setCustomNameVisible(true);
-		}else {
-			newStand.setCustomNameVisible(false);
-		}
+		newStand.setCustomNameVisible(!newStand.getCustomName().equals("N/A"));
 		newStand.getEquipment().setItemInOffHand(oldStand.getEquipment().getItemInOffHand());
 		newStand.getEquipment().setItemInMainHand(oldStand.getEquipment().getItemInMainHand());
 		newStand.getEquipment().setBoots(oldStand.getEquipment().getBoots());

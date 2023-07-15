@@ -12,7 +12,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import tld.sima.armorstand.Main;
 import tld.sima.armorstand.conversations.MoveStandToPlayerConv;
@@ -87,12 +86,8 @@ public class OptionsMenuItemEvents {
 			plugin.replaceConversation(player.getUniqueId(), conv);
 			
 		}else if (itemName.contains("Clone Stand")) {
-			ItemStack tool = new ItemStack(Material.STICK);
-			ItemMeta toolMeta = tool.getItemMeta();
-			toolMeta.setDisplayName(ChatColor.GREEN + "Clone tool");
-			tool.setItemMeta(toolMeta);
-			if (!player.getInventory().contains(tool)) {
-				player.getInventory().addItem(tool);
+			if (!player.getInventory().contains(plugin.getCloneTool())) {
+				player.getInventory().addItem(plugin.getCloneTool());
 			}
 			plugin.setClonedStand(player.getUniqueId(), stand);
 			player.closeInventory();

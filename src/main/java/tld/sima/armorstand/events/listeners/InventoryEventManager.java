@@ -49,7 +49,7 @@ public class InventoryEventManager implements Listener {
 				event.setCancelled(true);
 
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
+//					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 					return;
 				}
 				
@@ -186,7 +186,7 @@ public class InventoryEventManager implements Listener {
 				event.setCancelled(true);
 	
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
+//					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 					return;
 				}
 				
@@ -196,7 +196,7 @@ public class InventoryEventManager implements Listener {
 				event.setCancelled(true);
 	
 				if (item == null || !item.hasItemMeta() || !item.getItemMeta().hasDisplayName()) {
-					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
+//					player.sendMessage(ChatColor.WHITE + "Clicked something strange!");
 					return;
 				}
 				

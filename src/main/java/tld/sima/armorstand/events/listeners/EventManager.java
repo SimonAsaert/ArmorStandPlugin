@@ -20,10 +20,10 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import tld.sima.armorstand.Main;
@@ -237,23 +237,16 @@ public class EventManager implements Listener {
 		}
 	}
 	
-	Set<UUID> delay = new HashSet<UUID>();
-	
 	@EventHandler(priority = EventPriority.LOW)
 	public void onRightClick(PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.hasPermission("armorstand.clone") && player.getInventory().getItemInMainHand().isSimilar(plugin.getCloneTool()) && !delay.contains(player.getUniqueId())) {
-			delay.add(player.getUniqueId());
-			new BukkitRunnable() {
-				public void run() {
-					delay.remove(player.getUniqueId());
-				}
-			}.runTaskLater(this.plugin, 10);
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getHand() != null &&
+				event.getHand().equals(EquipmentSlot.HAND) && player.hasPermission("armorstand.clone") &&
+				player.getInventory().getItemInMainHand().isSimilar(plugin.getCloneTool())) {
 			if (plugin.getClonedStand(player.getUniqueId()) != null) {
 				ArmorStand oldStand = plugin.getClonedStand(player.getUniqueId());
 
-				Location loc = event.getClickedBlock().getLocation().clone();
-				loc.add(0.5, 1, 0.5);
+				Location loc = event.getClickedBlock().getLocation().add(0.5, 1, 0.5);
 				
 				Vector delta = loc.clone().toVector().subtract(oldStand.getLocation().clone().toVector());
 				UUID worldUUID = event.getClickedBlock().getWorld().getUID();
